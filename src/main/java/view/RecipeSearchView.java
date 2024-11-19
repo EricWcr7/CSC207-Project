@@ -1,10 +1,11 @@
 package view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -14,12 +15,17 @@ import interface_adapter.recipe_search.RecipeSearchController;
 import interface_adapter.recipe_search.RecipeSearchState;
 import interface_adapter.recipe_search.RecipeSearchViewModel;
 
+/**
+ * The View for user search a recipe.
+ */
 public class RecipeSearchView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private final String viewName = "search recipe";
     private final RecipeSearchViewModel recipeSearchViewModel;
     private RecipeSearchController recipeSearchController;
     private LogoutController logoutController;
+
+    private final JLabel recipeNotFountErrorField = new JLabel();
 
     private final JButton logOut;
     private final JButton edit;
@@ -32,10 +38,28 @@ public class RecipeSearchView extends JPanel implements ActionListener, Property
         this.recipeSearchViewModel = recipeSearchViewModel;
         this.recipeSearchViewModel.addPropertyChangeListener(this);
 
+        // Main panel with vertical alignment
         final JPanel searchPanel = new JPanel();
+        searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.Y_AXIS));
+
+        // Error field at the top
+        recipeNotFountErrorField.setForeground(Color.RED);
+        searchPanel.add(recipeNotFountErrorField);
+
+        // Sub-panel for input field and button on the same line
+        final JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         search = new JButton("Search");
-        searchPanel.add(dishInputField);
-        searchPanel.add(search);
+        inputPanel.add(dishInputField);
+        inputPanel.add(search);
+
+        // Add sub-panel to main panel
+        searchPanel.add(inputPanel);
+
+//        final JPanel searchPanel = new JPanel();
+//        search = new JButton("Search");
+//        searchPanel.add(dishInputField);
+//        searchPanel.add(recipeNotFountErrorField);
+//        searchPanel.add(search);
         final JLabel title = new JLabel("Please enter the dish you want to search for");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -57,7 +81,7 @@ public class RecipeSearchView extends JPanel implements ActionListener, Property
 
             private void documentListenerHelper() {
                 final RecipeSearchState currentState = recipeSearchViewModel.getState();
-                currentState.setSearchKeyWord(dishInputField.getText());
+                currentState.setSearchKeyWord(new String(dishInputField.getText()));
                 recipeSearchViewModel.setState(currentState);
             }
 
@@ -120,7 +144,10 @@ public class RecipeSearchView extends JPanel implements ActionListener, Property
     }
 
     private void setFields(RecipeSearchState state) {
+        recipeNotFountErrorField.setText(state.getErrorMessage());
         dishInputField.setText(state.getSearchKeyword());
+        // if 119,118, then, error message disappear
+        // but why there is no problem for login view?
     }
 
     public String getViewName() {

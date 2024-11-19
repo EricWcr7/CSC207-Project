@@ -51,7 +51,7 @@ public class ChooseRecipePresenter implements ChooseRecipeOutputBoundary {
         // Switch to the display recipe view
         this.viewManagerModel.setState(displayRecipeViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
-    };
+    }
 
     /**
      * Prepares the recipe list view by updating the ViewModel with the given recipe names.

@@ -47,19 +47,19 @@ public class RecipeSearchPresenter implements RecipeSearchOutputBoundary {
                 .map(recipe -> recipe.getName())
                 .collect(Collectors.toList());
 
-        if (recipeNames.isEmpty()) {
-            recipeSearchState.setErrorMessage("No recipes found for the keyword.");
-            this.recipeSearchViewModel.firePropertyChanged();
-            viewManagerModel.setState(recipeSearchViewModel.getViewName());
-        } else {
-            chooseRecipeState.setSearchKeyword(outputData.getSearchKeyword());
-            chooseRecipeState.setRecipeNames(recipeNames);
+//        if (recipeNames.isEmpty()) {
+//            recipeSearchState.setErrorMessage("No recipes found for the keyword.");
+//            this.recipeSearchViewModel.firePropertyChanged();
+//            viewManagerModel.setState(recipeSearchViewModel.getViewName());
+//        } else {
+        chooseRecipeState.setSearchKeyword(outputData.getSearchKeyword());
+        chooseRecipeState.setRecipeNames(recipeNames);
 
             // Notify changes in ChooseRecipeState and switch view
-            this.chooseRecipeViewModel.setState(chooseRecipeState);
-            this.chooseRecipeViewModel.firePropertyChanged();
-            this.viewManagerModel.setState(chooseRecipeViewModel.getViewName());
-        }
+        this.chooseRecipeViewModel.setState(chooseRecipeState);
+        this.chooseRecipeViewModel.firePropertyChanged();
+        this.viewManagerModel.setState(chooseRecipeViewModel.getViewName());
+//        }
         this.viewManagerModel.firePropertyChanged();
     }
 
@@ -67,16 +67,12 @@ public class RecipeSearchPresenter implements RecipeSearchOutputBoundary {
     @Override
     public void prepareFailureView(String errorMessage) {
         // Set the error message in RecipeSearchState
-        RecipeSearchState recipeSearchState = recipeSearchViewModel.getState();
+        final RecipeSearchState recipeSearchState = recipeSearchViewModel.getState();
         recipeSearchState.setErrorMessage(errorMessage);
 
         // Notify the view model of the state change
-        recipeSearchViewModel.setState(recipeSearchState);
         recipeSearchViewModel.firePropertyChanged();
 
-        // Optionally, update the view manager to reflect the failure state in the UI
-        viewManagerModel.setState(recipeSearchViewModel.getViewName()); // Go to the search view with error
-        viewManagerModel.firePropertyChanged();
     }
 
     @Override
