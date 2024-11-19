@@ -51,6 +51,7 @@ public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoun
         this.viewManagerModel.setState(recipeSearchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
+
     @Override
     public void fromFavoriteRecipeBackToSearchMenu() {
         final FavoriteRecipeState favoriteRecipeState = favoriteRecipeViewModel.getState();
@@ -60,4 +61,5 @@ public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoun
 
         this.viewManagerModel.setState(recipeSearchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
+    }
 }
