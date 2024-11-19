@@ -1,6 +1,6 @@
 package use_case.ReturnToSearchMenu;
 
-public class ReturnToSearchMenuInteractor implements ReturnToSearchMenuInputBoundary{
+public class ReturnToSearchMenuInteractor implements ReturnToSearchMenuInputBoundary {
     private ReturnToSearchMenuOutputBoundary returnToSearchMenuPresenter;
 
     public ReturnToSearchMenuInteractor(ReturnToSearchMenuOutputBoundary returnToSearchMenuPresenter) {
@@ -15,9 +15,9 @@ public class ReturnToSearchMenuInteractor implements ReturnToSearchMenuInputBoun
     @Override
     public void fromEditRecipeBackToSearchMenu() {
         returnToSearchMenuPresenter.fromEditRecipeBackToSearchMenu();
-
-    @Override
-    public void fromFavoriteRecipeBackToSearchMenu() {
-        returnToSearchMenuPresenter.fromFavoriteRecipeBackToSearchMenu();
     }
-}
+    @Override
+    public void fromFavoriteRecipeBackToSearchMenu () {
+        returnToSearchMenuPresenter.fromFavoriteRecipeBackToSearchMenu();
+        }
+    }
