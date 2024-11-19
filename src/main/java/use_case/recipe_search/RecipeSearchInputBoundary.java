@@ -10,6 +10,8 @@ public interface RecipeSearchInputBoundary {
      * @param recipeSearchInputData the input data
      */
     void execute(RecipeSearchInputData recipeSearchInputData);
+
+    void switchToFavoriteRecipeView();
 }
 
 

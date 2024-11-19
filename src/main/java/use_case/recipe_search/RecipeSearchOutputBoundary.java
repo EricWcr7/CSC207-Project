@@ -16,5 +16,7 @@ public interface RecipeSearchOutputBoundary {
      * @param errorMessage the explanation of the failure
      */
     void prepareFailureView(String errorMessage);
+
+    void switchToFavoriteRecipeView();
 }
 

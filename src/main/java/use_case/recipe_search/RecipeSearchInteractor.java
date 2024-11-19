@@ -77,6 +77,11 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
             System.err.println("Failed to initialize recipe storage: " + e.getMessage());
         }
     }
+
+    @Override
+    public void switchToFavoriteRecipeView() {
+        recipeSearchPresenter.switchToFavoriteRecipeView();
+    }
 }
 
 

@@ -13,6 +13,7 @@ public class RecipeSearchController {
         this.recipeSearchInteractor = recipeSearchInteractor;
     }
 
+
     /**
      * Executes the Recipe Search Use Case.
      * @param searchKeyword the keyword user types to search for
@@ -25,6 +26,10 @@ public class RecipeSearchController {
         recipeSearchInteractor.execute(recipeSearchInputData);
 
         System.out.println("Search button clicked with keyword: " + searchKeyword);
+    }
+
+    public void switchToFavoriteRecipeView() {
+        recipeSearchInteractor.switchToFavoriteRecipeView();
     }
 }
 

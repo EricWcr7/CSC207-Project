@@ -3,6 +3,9 @@ package interface_adapter.recipe_search;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.choose_recipe.ChooseRecipeState;
 import interface_adapter.choose_recipe.ChooseRecipeViewModel;
+import interface_adapter.favorite_recipe.FavoriteRecipeState;
+import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
+import interface_adapter.signup.SignupState;
 import use_case.recipe_search.RecipeSearchOutputBoundary;
 import use_case.recipe_search.RecipeSearchOutputData;
 
@@ -12,25 +15,32 @@ import java.util.stream.Collectors;
 public class RecipeSearchPresenter implements RecipeSearchOutputBoundary {
     private final RecipeSearchViewModel recipeSearchViewModel;
     private final ChooseRecipeViewModel chooseRecipeViewModel;
+    private final FavoriteRecipeViewModel favoriteRecipeViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public RecipeSearchPresenter(ViewManagerModel viewManagerModel,
                                  ChooseRecipeViewModel chooseRecipeViewModel,
+                                 FavoriteRecipeViewModel favoriteRecipeViewModel,
                                  RecipeSearchViewModel recipeSearchViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.chooseRecipeViewModel = chooseRecipeViewModel;
         this.recipeSearchViewModel = recipeSearchViewModel;
+        this.favoriteRecipeViewModel = favoriteRecipeViewModel;
     }
 
     @Override
     public void prepareSuccessView(RecipeSearchOutputData outputData) {
         final ChooseRecipeState chooseRecipeState = chooseRecipeViewModel.getState();
         final RecipeSearchState recipeSearchState = recipeSearchViewModel.getState();
+        final FavoriteRecipeState favoriteRecipeState = favoriteRecipeViewModel.getState();
 
         // Clear any previous keyword or error message
         recipeSearchState.setSearchKeyWord("");
         recipeSearchState.setErrorMessage("");
         this.recipeSearchViewModel.firePropertyChanged();
+
+        this.favoriteRecipeViewModel.setState(favoriteRecipeState);
+        this.favoriteRecipeViewModel.firePropertyChanged();
 
         // Check if there are results
         List<String> recipeNames = outputData.getRecipes().stream()
@@ -63,6 +73,12 @@ public class RecipeSearchPresenter implements RecipeSearchOutputBoundary {
         // Notify the view model of the state change
         recipeSearchViewModel.firePropertyChanged();
 
+    }
+
+    @Override
+    public void switchToFavoriteRecipeView() {
+        viewManagerModel.setState(favoriteRecipeViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }
 

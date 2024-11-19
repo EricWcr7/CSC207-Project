@@ -22,6 +22,7 @@ public class Main {
                                             .addRecipeSearchView()
                                             .addChooseRecipeView()
                                             .addDisplayRecipeView()
+                                            .addFavoriteRecipeView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
@@ -29,6 +30,7 @@ public class Main {
                                             .addRecipeSearchUseCase()
                                             .addChooseRecipeUseCase()
                                             .addReturnToSearchMenuUseCase()
+                                            .addFavoriteRecipeUseCase()
                                             .build();
         application.pack();
         application.setSize(width, height);
