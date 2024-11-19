@@ -37,12 +37,12 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         JLabel nameLabel = new JLabel("Dish name:");
         JTextField nameField = new JTextField(20);
 
-        JLabel introLabel = new JLabel("Introduction:");
+        JLabel introLabel = new JLabel("Ingredients:");
         JTextArea introArea = new JTextArea(3, 20);
         introArea.setLineWrap(true);
         introArea.setWrapStyleWord(true);
 
-        JLabel cookLabel = new JLabel("How to cook:");
+        JLabel cookLabel = new JLabel("Instructions:");
         JTextArea cookArea = new JTextArea(3, 20);
         cookArea.setLineWrap(true);
         cookArea.setWrapStyleWord(true);
