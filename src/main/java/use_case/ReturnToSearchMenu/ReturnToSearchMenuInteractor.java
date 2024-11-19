@@ -11,4 +11,9 @@ public class ReturnToSearchMenuInteractor implements ReturnToSearchMenuInputBoun
     public void execute() {
         returnToSearchMenuPresenter.prepareSuccessView();
     }
+
+    @Override
+    public void fromFavoriteRecipeBackToSearchMenu() {
+        returnToSearchMenuPresenter.fromFavoriteRecipeBackToSearchMenu();
+    }
 }
