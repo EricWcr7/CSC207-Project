@@ -225,18 +225,17 @@ public class AppBuilder {
     public AppBuilder addReturnToSearchMenuUseCase() {
         final ReturnToSearchMenuOutputBoundary returnToSearchMenuOutputBoundary =
                 new ReturnToSearchMenuPresenter(viewManagerModel,
-                        recipeSearchViewModel, chooseRecipeViewModel, editViewModel);
+                        recipeSearchViewModel, chooseRecipeViewModel, displayRecipeViewModel, favoriteRecipeViewModel, editViewModel);
 
         final ReturnToSearchMenuInputBoundary returnToSearchMenuInteractor =
                 new ReturnToSearchMenuInteractor(returnToSearchMenuOutputBoundary);
 
         final ReturnToSearchMenuController returnToSearchMenuController = new ReturnToSearchMenuController(returnToSearchMenuInteractor);
         chooseRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
-        editView.setReturnToSearchMenuController(returnToSearchMenuController);
-        return this;
-    }
-
-    public AppBuilder addBackTOEditViewUsecase() {
+        displayRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
+        favoriteRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
+  
+     public AppBuilder addBackTOEditViewUsecase() {
         final BackToEditViewOutputBoundary backToEditViewOutputBoundary = new BackToEditViewPresenter(viewManagerModel,
                 editViewModel, createViewModel);
 

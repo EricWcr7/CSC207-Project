@@ -443,6 +443,25 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
         return result;
     }
 
+    // Method to search for a single recipe based on a keyword
+    public CommonRecipe getOneRecipe(String dishName) {
+        dishName = dishName.toLowerCase();  // Convert dishName to lowercase
+        System.out.println("Total cached recipes: " + cachedRecipes.size());
+
+        for (CommonRecipe recipe : cachedRecipes) {
+            String recipeName = recipe.getName().toLowerCase();  // Convert recipe name to lowercase
+            System.out.println("Checking recipe: " + recipe.getName() + " (Lowercase: " + recipeName + ")");
+
+            if (recipeName.equals(dishName)) {
+                System.out.println("Match found: " + recipe.getName());
+                return recipe;  // Return the matching recipe
+            }
+        }
+        System.out.println("No recipe found matching keyword: " + dishName);
+        return null;
+    }
+
+
 
 }
 

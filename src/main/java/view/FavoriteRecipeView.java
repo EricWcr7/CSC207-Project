@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.recipe_search.RecipeSearchController;
 import interface_adapter.recipe_search.RecipeSearchState;
@@ -20,6 +21,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     private final String viewName = "my favorite recipe";
     private final FavoriteRecipeViewModel favoriteRecipeViewModel;
     private FavoriteRecipeController favoriteRecipeController;
+    private ReturnToSearchMenuController returnToSearchMenuController;
     private final JButton back;
 
     public FavoriteRecipeView(FavoriteRecipeViewModel favoriteRecipeViewModel) {
@@ -36,6 +38,11 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         this.add(title);
         this.add(buttons);
 
+        back.addActionListener(evt -> {
+            if (evt.getSource().equals(back)) {
+                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu();
+            }
+        });
     }
 
     @Override
@@ -54,5 +61,9 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
 
     public void setFavoriteRecipeController(FavoriteRecipeController favoriteRecipeController) {
         this.favoriteRecipeController = favoriteRecipeController;
+    }
+
+    public void setReturnToSearchMenuController(ReturnToSearchMenuController returnToSearchMenuController) {
+        this.returnToSearchMenuController = returnToSearchMenuController;
     }
 }
