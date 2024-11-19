@@ -9,11 +9,18 @@ import data_access.InMemoryUserDataAccessObject;
 import data_access.RecipeDataAccessObject;
 import entity.*;
 import interface_adapter.*;
+import interface_adapter.BackToEditView.BackToEditViewController;
+import interface_adapter.BackToEditView.BackToEditViewPresenter;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuPresenter;
 import interface_adapter.change_password.*;
 import interface_adapter.choose_recipe.*;
+import interface_adapter.create.CreatePresenter;
+import interface_adapter.create.CreateViewModel;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
+import interface_adapter.edit.EditController;
+import interface_adapter.edit.EditPresenter;
+import interface_adapter.edit.EditViewModel;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
 import interface_adapter.login.*;
 import interface_adapter.logout.*;
@@ -21,6 +28,9 @@ import interface_adapter.recipe_search.*;
 import interface_adapter.signup.*;
 import interface_adapter.favorite_recipe.FavoriteRecipeController;
 import interface_adapter.favorite_recipe.FavoriteRecipePresenter;
+import use_case.BackToEditView.BackToEditViewInputBoundary;
+import use_case.BackToEditView.BackToEditViewInteractor;
+import use_case.BackToEditView.BackToEditViewOutputBoundary;
 import use_case.ReturnToSearchMenu.ReturnToSearchMenuInputBoundary;
 import use_case.ReturnToSearchMenu.ReturnToSearchMenuInteractor;
 import use_case.ReturnToSearchMenu.ReturnToSearchMenuOutputBoundary;
@@ -28,6 +38,10 @@ import use_case.change_password.*;
 import use_case.choose_recipe.ChooseRecipeInputBoundary;
 import use_case.choose_recipe.ChooseRecipeInteractor;
 import use_case.choose_recipe.ChooseRecipeOutputBoundary;
+import use_case.create.CreateOutputBoundary;
+import use_case.edit.EditInputBoundary;
+import use_case.edit.EditInteractor;
+import use_case.edit.EditOutputBoundary;
 import use_case.favorite_receipe.FavoriteRecipeInputBoundary;
 import use_case.favorite_receipe.FavoriteRecipeInteractor;
 import use_case.favorite_receipe.FavoriteRecipeOutputBoundary;
@@ -62,6 +76,10 @@ public class AppBuilder {
     private DisplayRecipeViewModel displayRecipeViewModel;
     private FavoriteRecipeView favoriteRecipeView;
     private FavoriteRecipeViewModel favoriteRecipeViewModel;
+    private EditView editView;
+    private EditViewModel editViewModel;
+    private CreateView createView;
+    private CreateViewModel createViewModel;
 
     private RecipeSearchInteractor recipeSearchInteractor;
 
@@ -141,6 +159,22 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addEditView() {
+        editViewModel = new EditViewModel();
+        editView = new EditView(editViewModel);
+        System.out.println("Adding Edit View with name: " + editView.getViewName());
+        cardPanel.add(editView, editView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addCreateView() {
+        createViewModel = new CreateViewModel();
+        createView = new CreateView(createViewModel);
+        System.out.println("Adding Create View with name: " + createView.getViewName());
+        cardPanel.add(createView, createView.getViewName());
+        return this;
+    }
+
     public AppBuilder addSignupUseCase() {
         final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
                 signupViewModel, loginViewModel);
@@ -191,7 +225,7 @@ public class AppBuilder {
     public AppBuilder addReturnToSearchMenuUseCase() {
         final ReturnToSearchMenuOutputBoundary returnToSearchMenuOutputBoundary =
                 new ReturnToSearchMenuPresenter(viewManagerModel,
-                        recipeSearchViewModel, chooseRecipeViewModel, displayRecipeViewModel, favoriteRecipeViewModel);
+                        recipeSearchViewModel, chooseRecipeViewModel, displayRecipeViewModel, favoriteRecipeViewModel, editViewModel);
 
         final ReturnToSearchMenuInputBoundary returnToSearchMenuInteractor =
                 new ReturnToSearchMenuInteractor(returnToSearchMenuOutputBoundary);
@@ -200,12 +234,22 @@ public class AppBuilder {
         chooseRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
         displayRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
         favoriteRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
+  
+     public AppBuilder addBackTOEditViewUsecase() {
+        final BackToEditViewOutputBoundary backToEditViewOutputBoundary = new BackToEditViewPresenter(viewManagerModel,
+                editViewModel, createViewModel);
+
+        final BackToEditViewInputBoundary backToEditViewInteractor =
+                new BackToEditViewInteractor(backToEditViewOutputBoundary);
+
+        final BackToEditViewController backToEditViewController = new BackToEditViewController(backToEditViewInteractor);
+        createView.setBackToEditViewConTroller(backToEditViewController);
         return this;
     }
 
     public AppBuilder addRecipeSearchUseCase() {
         final RecipeSearchOutputBoundary recipeSearchOutputBoundary = new RecipeSearchPresenter(
-                viewManagerModel, chooseRecipeViewModel, favoriteRecipeViewModel, recipeSearchViewModel);
+                viewManagerModel, chooseRecipeViewModel, favoriteRecipeViewModel, editViewModel, recipeSearchViewModel);
 
         recipeSearchInteractor = new RecipeSearchInteractor(recipeSearchOutputBoundary);
 
@@ -238,6 +282,16 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addEditUseCase() {
+        final EditOutputBoundary editOutputBoundary = new EditPresenter(viewManagerModel, createViewModel, editViewModel);
+
+        final EditInputBoundary editInteractor = new EditInteractor(editOutputBoundary);
+
+        final EditController editController = new EditController(editInteractor);
+        editView.setEditController(editController);
+        return this;
+    }
+
     public JFrame build() {
         final JFrame application = new JFrame("Mealmaster");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -253,6 +307,5 @@ public class AppBuilder {
         return application;
     }
 }
-
 
 

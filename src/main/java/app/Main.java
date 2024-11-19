@@ -16,22 +16,26 @@ public class Main {
         final AppBuilder appBuilder = new AppBuilder();
         // TODO: add the Logout Use Case to the app using the appBuilder
         final JFrame application = appBuilder
-                                            .addLoginView()
-                                            .addSignupView()
-                                            .addLoggedInView()
-                                            .addRecipeSearchView()
-                                            .addChooseRecipeView()
-                                            .addDisplayRecipeView()
-                                            .addFavoriteRecipeView()
-                                            .addSignupUseCase()
-                                            .addLoginUseCase()
-                                            .addChangePasswordUseCase()
-                                            .addLogoutUseCase()
-                                            .addRecipeSearchUseCase()
-                                            .addChooseRecipeUseCase()
-                                            .addReturnToSearchMenuUseCase()
-                                            .addFavoriteRecipeUseCase()
-                                            .build();
+                .addLoginView()
+                .addSignupView()
+                .addLoggedInView()
+                .addRecipeSearchView()
+                .addChooseRecipeView()
+                .addDisplayRecipeView()
+                .addFavoriteRecipeView()
+                .addEditView()
+                .addCreateView()
+                .addSignupUseCase()
+                .addLoginUseCase()
+                .addChangePasswordUseCase()
+                .addLogoutUseCase()
+                .addRecipeSearchUseCase()
+                .addChooseRecipeUseCase()
+                .addReturnToSearchMenuUseCase()
+                .addBackTOEditViewUsecase()
+                .addFavoriteRecipeUseCase()
+                .addEditUseCase()
+                .build();
         application.pack();
         application.setSize(width, height);
         application.setVisible(true);

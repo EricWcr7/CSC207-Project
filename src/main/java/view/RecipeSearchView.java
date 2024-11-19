@@ -123,6 +123,14 @@ public class RecipeSearchView extends JPanel implements ActionListener, Property
                 }
         );
 
+        edit.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(edit)) {
+                        recipeSearchController.switchToEditView();
+                    }
+                }
+        );
+
         favorite.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(favorite)) {
@@ -162,6 +170,9 @@ public class RecipeSearchView extends JPanel implements ActionListener, Property
         this.recipeSearchController = recipeSearchController;
     }
 }
+
+
+
 
 
 

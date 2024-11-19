@@ -3,6 +3,8 @@ package interface_adapter.recipe_search;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.choose_recipe.ChooseRecipeState;
 import interface_adapter.choose_recipe.ChooseRecipeViewModel;
+import interface_adapter.edit.EditState;
+import interface_adapter.edit.EditViewModel;
 import interface_adapter.favorite_recipe.FavoriteRecipeState;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
 import interface_adapter.signup.SignupState;
@@ -16,16 +18,19 @@ public class RecipeSearchPresenter implements RecipeSearchOutputBoundary {
     private final RecipeSearchViewModel recipeSearchViewModel;
     private final ChooseRecipeViewModel chooseRecipeViewModel;
     private final FavoriteRecipeViewModel favoriteRecipeViewModel;
+    private final EditViewModel editViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public RecipeSearchPresenter(ViewManagerModel viewManagerModel,
                                  ChooseRecipeViewModel chooseRecipeViewModel,
                                  FavoriteRecipeViewModel favoriteRecipeViewModel,
+                                 EditViewModel editViewModel,
                                  RecipeSearchViewModel recipeSearchViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.chooseRecipeViewModel = chooseRecipeViewModel;
         this.recipeSearchViewModel = recipeSearchViewModel;
         this.favoriteRecipeViewModel = favoriteRecipeViewModel;
+        this.editViewModel = editViewModel;
     }
 
     @Override
@@ -33,6 +38,7 @@ public class RecipeSearchPresenter implements RecipeSearchOutputBoundary {
         final ChooseRecipeState chooseRecipeState = chooseRecipeViewModel.getState();
         final RecipeSearchState recipeSearchState = recipeSearchViewModel.getState();
         final FavoriteRecipeState favoriteRecipeState = favoriteRecipeViewModel.getState();
+        final EditState editState = editViewModel.getState();
 
         // Clear any previous keyword or error message
         recipeSearchState.setSearchKeyWord("");
@@ -40,6 +46,7 @@ public class RecipeSearchPresenter implements RecipeSearchOutputBoundary {
         this.recipeSearchViewModel.firePropertyChanged();
 
         this.favoriteRecipeViewModel.setState(favoriteRecipeState);
+        this.editViewModel.setState(editState);
         this.favoriteRecipeViewModel.firePropertyChanged();
 
         // Check if there are results
@@ -80,6 +87,14 @@ public class RecipeSearchPresenter implements RecipeSearchOutputBoundary {
         viewManagerModel.setState(favoriteRecipeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
+
+    @Override
+    public void switchToEditView() {
+        viewManagerModel.setState(editViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+        System.out.println("RecipeSearchPresenter work");
+    }
+
 }
 
 
