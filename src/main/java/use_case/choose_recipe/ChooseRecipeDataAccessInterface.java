@@ -1,6 +1,7 @@
 package use_case.choose_recipe;
 
 import entity.CommonRecipe;
+import entity.Recipe;
 
 /**
  * DAO for the RecipeSearch Use Case.
@@ -14,7 +15,7 @@ public interface ChooseRecipeDataAccessInterface {
      * @param dishName the name of the dish to search
      * @return a recipe from the API
      */
-    CommonRecipe getOneRecipe(String dishName);
+    Recipe getOneRecipe(String dishName);
 
 }
 

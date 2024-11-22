@@ -1,13 +1,15 @@
 package use_case.recipe_search;
 
 import entity.CommonRecipe;
+import entity.Recipe;
+
 import java.util.List;
 
 public class RecipeSearchOutputData {
     private final String searchKeyword;
-    private final List<CommonRecipe> recipes;
+    private final List<Recipe> recipes;
 
-    public RecipeSearchOutputData(String searchKeyword, List<CommonRecipe> recipes) {
+    public RecipeSearchOutputData(String searchKeyword, List<Recipe> recipes) {
         this.searchKeyword = searchKeyword;
         this.recipes = recipes;
     }
@@ -16,7 +18,7 @@ public class RecipeSearchOutputData {
         return searchKeyword;
     }
 
-    public List<CommonRecipe> getRecipes() {
+    public List<Recipe> getRecipes() {
         return recipes;
     }
 }
