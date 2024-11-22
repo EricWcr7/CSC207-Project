@@ -213,7 +213,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
                     ingredientMeasureMap.put(ingredient, measure);
                 }
             }
-
+            // TODO: write likeNum, dislikeNum to file once downloading. Add another 2 arguments here.
             CommonRecipe recipe = new CommonRecipe(id, name, category, instructions, ingredientMeasureMap);
             recipes.add(recipe);
         }
@@ -444,6 +444,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     }
 
     // Method to search for a single recipe based on a keyword
+    // Will refactor this!
     public CommonRecipe getOneRecipe(String dishName) {
         dishName = dishName.toLowerCase();  // Convert dishName to lowercase
         System.out.println("Total cached recipes: " + cachedRecipes.size());

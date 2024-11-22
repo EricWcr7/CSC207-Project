@@ -1,7 +1,5 @@
 package use_case.choose_recipe;
 
-import use_case.choose_recipe.ChooseRecipeInteractor;
-
 /**
  * The output boundary for the Login Use Case.
  */

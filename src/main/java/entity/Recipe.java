@@ -35,4 +35,12 @@ public interface Recipe {
 
     String getIngredients();
 
+    int getLikeNumber();
+
+    int getDislikeNumber();
+
+    void incrementLikeNumber();
+
+    void incrementDislikeNumber();
+
 }

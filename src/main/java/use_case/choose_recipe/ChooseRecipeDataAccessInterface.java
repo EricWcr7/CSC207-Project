@@ -16,6 +16,7 @@ public interface ChooseRecipeDataAccessInterface {
      */
     CommonRecipe getOneRecipe(String dishName);
 
+    void loadRecipesFromCloud();
 }
 
 
