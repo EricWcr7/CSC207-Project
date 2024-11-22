@@ -2,6 +2,9 @@ package data_access;
 
 import com.google.gson.*;
 import entity.CommonRecipe;
+import entity.CommonRecipeFactory;
+import entity.Recipe;
+import entity.RecipeFactory;
 import use_case.choose_recipe.ChooseRecipeDataAccessInterface;
 import use_case.recipe_search.RecipeSearchDataAccessInterface;
 
@@ -33,7 +36,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     private static final String API_KEY = "35F52QF.ZQV4A4E-ASHMAQD-QSPTZ93-NHYCJT6";
     private static final int STATUS_CODE_OK = 200;
     // Holds the list of recipes loaded from the downloaded JSON
-    private List<CommonRecipe> cachedRecipes = new ArrayList<>();
+    private List<Recipe> cachedRecipes = new ArrayList<>();
 
     public RecipeDataAccessObject() {
         // Add a shutdown hook to delete the file from File.io when the application stops
@@ -43,7 +46,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     /**
      * Deletes the file from File.io using the file key.
      */
-    private void deleteFileFromFileIo() {
+    public void deleteFileFromFileIo() {
         if (FILE_KEY.isEmpty()) {
             System.err.println("File key is empty. Cannot delete file.");
             return;
@@ -79,13 +82,13 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
      * @return a list of all CommonRecipe objects
      */
     @Override
-    public List<CommonRecipe> fetchAllRecipes() {
+    public List<Recipe> fetchAllRecipes() {
         System.out.println("Starting to fetch all recipes from API...");
-        List<CommonRecipe> allRecipes = new ArrayList<>();
+        List<Recipe> allRecipes = new ArrayList<>();
 
         for (char keyword = 'a'; keyword <= 'z'; keyword++) {
             System.out.println("Fetching recipes for keyword: " + keyword);
-            List<CommonRecipe> recipes = fetchRecipesByKeyword(String.valueOf(keyword));
+            List<Recipe> recipes = fetchRecipesByKeyword(String.valueOf(keyword));
             allRecipes.addAll(recipes); // Add all recipes without checking for duplicates
             System.out.println("Added " + recipes.size() + " recipes for keyword: " + keyword);
         }
@@ -102,8 +105,8 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
      * @param keyword the keyword to search for recipes
      * @return a list of CommonRecipe objects matching the keyword
      */
-    public List<CommonRecipe> fetchRecipesByKeyword(String keyword) {
-        List<CommonRecipe> recipes = new ArrayList<>();
+    public List<Recipe> fetchRecipesByKeyword(String keyword) {
+        List<Recipe> recipes = new ArrayList<>();
 
         try {
             final String url = API_URL + URLEncoder.encode(keyword, StandardCharsets.UTF_8);
@@ -134,9 +137,9 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
      * @param responseBody the JSON response body from the API
      * @return a list of CommonRecipe objects parsed from the response
      */
-    private List<CommonRecipe> parseRecipes(String responseBody) {
+    private List<Recipe> parseRecipes(String responseBody) {
         System.out.println("Parsing recipes.");
-        List<CommonRecipe> recipes = new ArrayList<>();
+        List<Recipe> recipes = new ArrayList<>();
         JsonElement jsonElement = JsonParser.parseString(responseBody);
 
         // Check if the root element is an object
@@ -184,8 +187,8 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
      * @param mealsArray the JsonArray containing meal data
      * @return a list of CommonRecipe objects
      */
-    private List<CommonRecipe> processMealsArray(JsonArray mealsArray) {
-        List<CommonRecipe> recipes = new ArrayList<>();
+    private List<Recipe> processMealsArray(JsonArray mealsArray) {
+        List<Recipe> recipes = new ArrayList<>();
 
         for (int i = 0; i < mealsArray.size(); i++) {
             JsonObject mealObject = mealsArray.get(i).getAsJsonObject();
@@ -213,8 +216,9 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
                     ingredientMeasureMap.put(ingredient, measure);
                 }
             }
+            RecipeFactory recipeFactory = new CommonRecipeFactory();
+            Recipe recipe = recipeFactory.createRecipe(id, name, category, instructions, ingredientMeasureMap);
             // TODO: write likeNum, dislikeNum to file once downloading. Add another 2 arguments here.
-            CommonRecipe recipe = new CommonRecipe(id, name, category, instructions, ingredientMeasureMap);
             recipes.add(recipe);
         }
 
@@ -227,7 +231,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
      *
      * @param recipes the list of recipes to write to the file
      */
-    public void writeRecipesToFile(List<CommonRecipe> recipes) {
+    public void writeRecipesToFile(List<Recipe> recipes) {
         System.out.println("Writing all recipes to JSON file.");
         final File file = new File(FILE_PATH);
 
@@ -320,7 +324,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
                 String jsonContent = response.body();
 
                 // Parse the downloaded JSON content
-                List<CommonRecipe> processedRecipes = parseDownloadedRecipes(jsonContent);
+                List<Recipe> processedRecipes = parseDownloadedRecipes(jsonContent);
 
                 // Write parsed recipes back to the JSON file
                 writeRecipesToFile(processedRecipes);
@@ -338,9 +342,9 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     }
 
 
-    private List<CommonRecipe> parseDownloadedRecipes(String jsonContent) {
+    private List<Recipe> parseDownloadedRecipes(String jsonContent) {
         System.out.println("Parsing downloaded recipes JSON.");
-        List<CommonRecipe> processedRecipes = new ArrayList<>();
+        List<Recipe> processedRecipes = new ArrayList<>();
         JsonElement jsonElement = JsonParser.parseString(jsonContent);
 
         if (jsonElement.isJsonArray()) {
@@ -365,8 +369,8 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     }
 
 
-    private List<CommonRecipe> processRecipesArray(JsonArray recipesArray) {
-        List<CommonRecipe> processedRecipes = new ArrayList<>();
+    private List<Recipe> processRecipesArray(JsonArray recipesArray) {
+        List<Recipe> processedRecipes = new ArrayList<>();
         cachedRecipes.clear(); // Clear previous data if any
 
         for (int i = 0; i < recipesArray.size(); i++) {
@@ -414,7 +418,8 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
                 }
             }
 
-            CommonRecipe recipe = new CommonRecipe(idNum, mealName, category, instructions, ingredientMeasureMap);
+            RecipeFactory recipeFactory = new CommonRecipeFactory();
+            Recipe recipe = recipeFactory.createRecipe(idNum, mealName, category, instructions, ingredientMeasureMap);
             processedRecipes.add(recipe);
         }
 
@@ -424,12 +429,12 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     }
 
     // Method to search recipes based on a keyword from cached recipes
-    public List<CommonRecipe> searchRecipes(String keyword) {
-        List<CommonRecipe> result = new ArrayList<>();
+    public List<Recipe> searchRecipes(String keyword) {
+        List<Recipe> result = new ArrayList<>();
         keyword = keyword.toLowerCase();  // Convert keyword to lowercase
         System.out.println("Total cached recipes: " + cachedRecipes.size());
 
-        for (CommonRecipe recipe : cachedRecipes) {
+        for (Recipe recipe : cachedRecipes) {
             String recipeName = recipe.getName().toLowerCase();  // Convert recipe name to lowercase
             System.out.println("Checking recipe: " + recipe.getName() + " (Lowercase: " + recipeName + ")");
 
@@ -445,11 +450,11 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
 
     // Method to search for a single recipe based on a keyword
     // Will refactor this!
-    public CommonRecipe getOneRecipe(String dishName) {
+    public Recipe getOneRecipe(String dishName) {
         dishName = dishName.toLowerCase();  // Convert dishName to lowercase
         System.out.println("Total cached recipes: " + cachedRecipes.size());
 
-        for (CommonRecipe recipe : cachedRecipes) {
+        for (Recipe recipe : cachedRecipes) {
             String recipeName = recipe.getName().toLowerCase();  // Convert recipe name to lowercase
             System.out.println("Checking recipe: " + recipe.getName() + " (Lowercase: " + recipeName + ")");
 
@@ -461,8 +466,6 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
         System.out.println("No recipe found matching keyword: " + dishName);
         return null;
     }
-
-
 
 }
 
