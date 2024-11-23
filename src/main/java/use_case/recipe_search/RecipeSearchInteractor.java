@@ -17,11 +17,13 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
     /**
      * Constructor for RecipeSearchInteractor.
      *
+     * @param recipeDataAccessObject the Data Access interface of recipe search
      * @param recipeSearchPresenter the output boundary (presenter) to display results
      */
-    public RecipeSearchInteractor(RecipeSearchOutputBoundary recipeSearchPresenter) {
+    public RecipeSearchInteractor(RecipeSearchDataAccessInterface recipeDataAccessObject,
+                                  RecipeSearchOutputBoundary recipeSearchPresenter) {
         this.recipeSearchPresenter = recipeSearchPresenter;
-        this.recipeDataAccessObject = new RecipeDataAccessObject(); // Instantiate internally
+        this.recipeDataAccessObject = recipeDataAccessObject; // Instantiate internally
     }
 
     /**
@@ -60,10 +62,7 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
         }
     }
 
-    /**
-     * Fetches all recipes from the API and stores them to the shared file for global access.
-     * Should be called once to initialize the recipe storage.
-     */
+    @Override
     public void initializeRecipeStorage() {
         System.out.println("Initializing shared recipe storage...");
         try {

@@ -15,7 +15,6 @@ import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuPresenter;
 import interface_adapter.change_password.*;
 import interface_adapter.choose_recipe.*;
-import interface_adapter.create.CreatePresenter;
 import interface_adapter.create.CreateViewModel;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import interface_adapter.edit.EditController;
@@ -38,7 +37,6 @@ import use_case.change_password.*;
 import use_case.choose_recipe.ChooseRecipeInputBoundary;
 import use_case.choose_recipe.ChooseRecipeInteractor;
 import use_case.choose_recipe.ChooseRecipeOutputBoundary;
-import use_case.create.CreateOutputBoundary;
 import use_case.edit.EditInputBoundary;
 import use_case.edit.EditInteractor;
 import use_case.edit.EditOutputBoundary;
@@ -61,6 +59,7 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -81,7 +80,7 @@ public class AppBuilder {
     private CreateView createView;
     private CreateViewModel createViewModel;
 
-    private RecipeSearchInteractor recipeSearchInteractor;
+    private RecipeSearchInputBoundary recipeSearchInteractor;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -255,7 +254,7 @@ public class AppBuilder {
         final RecipeSearchOutputBoundary recipeSearchOutputBoundary = new RecipeSearchPresenter(
                 viewManagerModel, chooseRecipeViewModel, favoriteRecipeViewModel, editViewModel, recipeSearchViewModel);
 
-        recipeSearchInteractor = new RecipeSearchInteractor(recipeSearchOutputBoundary);
+        recipeSearchInteractor = new RecipeSearchInteractor(recipeDataAccessObject, recipeSearchOutputBoundary);
 
         final RecipeSearchController recipeSearchController = new RecipeSearchController(recipeSearchInteractor);
         recipeSearchView.setRecipeSearchController(recipeSearchController);
@@ -267,7 +266,7 @@ public class AppBuilder {
                 viewManagerModel, chooseRecipeViewModel, displayRecipeViewModel);
 
         final ChooseRecipeInputBoundary chooseRecipeInteractor = new ChooseRecipeInteractor(
-                chooseRecipeOutputBoundary);
+                recipeDataAccessObject, chooseRecipeOutputBoundary);
 
         final ChooseRecipeController chooseRecipeController = new ChooseRecipeController(chooseRecipeInteractor);
         chooseRecipeView.setChooseRecipeController(chooseRecipeController);
