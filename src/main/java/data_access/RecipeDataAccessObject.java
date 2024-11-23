@@ -38,10 +38,64 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     // Holds the list of recipes loaded from the downloaded JSON
     private List<Recipe> cachedRecipes = new ArrayList<>();
 
-    public RecipeDataAccessObject() {
+    //public RecipeDataAccessObject() {
         // Add a shutdown hook to delete the file from File.io when the application stops
-        Runtime.getRuntime().addShutdownHook(new Thread(this::deleteFileFromFileIo));
+       // Runtime.getRuntime().addShutdownHook(new Thread(this::deleteFileFromFileIo));
+    //}
+
+    @Override
+    public String findFileOnFileIo(String fileName) {
+        try {
+            // Properly format the search URL with the provided file name
+            String searchUrl = FILE_IO_API_URL + "/?search=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8);
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(searchUrl))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer " + API_KEY)
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == STATUS_CODE_OK) {
+                // Parse the response to find if the file exists
+                System.out.println("File.io search response: " + response.body()); // Debug log to see the response
+                JsonElement jsonResponse = JsonParser.parseString(response.body());
+                JsonObject responseObject = jsonResponse.getAsJsonObject();
+
+                // Correctly handle the response with "nodes" instead of "files"
+                if (responseObject.has("nodes") && responseObject.get("nodes").isJsonArray()) {
+                    JsonArray nodesArray = responseObject.getAsJsonArray("nodes");
+
+                    for (JsonElement nodeElement : nodesArray) {
+                        if (nodeElement.isJsonObject()) {
+                            JsonObject nodeObject = nodeElement.getAsJsonObject();
+
+                            if (nodeObject.has("name") && nodeObject.get("name").getAsString().equals(fileName)) {
+                                if (nodeObject.has("key")) {
+                                    // Correctly index to get the key
+                                    FILE_KEY = nodeObject.get("key").getAsString();
+                                    System.out.println("File '" + fileName + "' found on File.io with key: " + FILE_KEY);
+                                } else {
+                                    System.out.println("File object found, but no key present for file: " + fileName);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    System.out.println("No 'nodes' array found in the response. Response: " + response.body());
+                }
+            } else {
+                System.out.println("Failed to get file list from File.io. Status code: " + response.statusCode());
+            }
+        } catch (IOException | InterruptedException e) {
+            System.err.println("Error while searching for file on File.io: " + e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+        return FILE_KEY; // File not found
     }
+
 
     /**
      * Deletes the file from File.io using the file key.
@@ -308,7 +362,6 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     public void loadRecipesFromCloud() {
         if (FILE_KEY.isEmpty()) {
             System.err.println("File key is empty. Cannot download file.");
-            return;
         }
 
         System.out.println("Downloading file from File.io with key: " + FILE_KEY);

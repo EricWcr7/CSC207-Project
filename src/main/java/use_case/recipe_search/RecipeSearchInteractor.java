@@ -1,7 +1,5 @@
 package use_case.recipe_search;
 
-import data_access.RecipeDataAccessObject;
-import entity.CommonRecipe;
 import entity.Recipe;
 
 import java.util.List;
@@ -66,17 +64,25 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
     public void initializeRecipeStorage() {
         System.out.println("Initializing shared recipe storage...");
         try {
-            // Fetch all recipes (from 'a' to 'z') and cache them in RecipeDataAccessObject
-            List<Recipe> allRecipes = recipeDataAccessObject.fetchAllRecipes();
-            System.out.println("Total recipes fetched: " + allRecipes.size());
-
-            // Write all recipes to a shared JSON file and upload it
-            recipeDataAccessObject.writeRecipesToFile(allRecipes);
-            System.out.println("Shared recipe storage initialized successfully.");
-
-            // Load recipes from File.io
-            System.out.println("Loading recipes from File.io...");
-            recipeDataAccessObject.loadRecipesFromCloud();
+            // Step 1: Check if "all_recipes.json" exists on File.io using the DAO
+            String fileKey = recipeDataAccessObject.findFileOnFileIo("all_recipes.json");
+            System.out.println(fileKey);
+            if (fileKey != "") {
+                // Case 1: If the file exists, load it from File.io using the DAO
+                System.out.println("File 'all_recipes.json' found on File.io with ID: " + fileKey);
+                recipeDataAccessObject.loadRecipesFromCloud(); // Load recipes from the existing JSON file
+                System.out.println("Recipes loaded from 'all_recipes.json' successfully.");
+            }
+            else {
+                // Case 2: If the file does not exist, fetch all recipes from the API using the DAO
+                List<Recipe> allRecipes = recipeDataAccessObject.fetchAllRecipes();
+                System.out.println("Total recipes fetched: " + allRecipes.size());
+                // Write all recipes to a shared JSON file and upload it
+                recipeDataAccessObject.writeRecipesToFile(allRecipes);
+                System.out.println("Shared recipe storage initialized successfully.");
+                System.out.println("Loading recipes from File.io...");
+                recipeDataAccessObject.loadRecipesFromCloud();
+            }
         } catch (Exception e) {
             System.err.println("Failed to initialize recipe storage: " + e.getMessage());
         }
