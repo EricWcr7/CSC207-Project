@@ -31,9 +31,9 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private final JPasswordField passwordInputField = new JPasswordField(15);
     private final JPasswordField repeatPasswordInputField = new JPasswordField(15);
     private SignupController signupController;
-
+    private JLabel userNameErrorField = new JLabel();
+    private JLabel passwordErrorField = new JLabel();
     private final JButton signUp;
-    private final JButton cancel;
     private final JButton toLogin;
 
     public SignupView(SignupViewModel signupViewModel) {
@@ -55,8 +55,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         buttons.add(toLogin);
         signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
         buttons.add(signUp);
-        cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
-        buttons.add(cancel);
 
         signUp.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
@@ -78,12 +76,11 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         toLogin.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
+
                         signupController.switchToLoginView();
                     }
                 }
         );
-
-        cancel.addActionListener(this);
 
         addUsernameListener();
         addPasswordListener();
@@ -92,9 +89,11 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(title);
+        this.add(userNameErrorField);
         this.add(usernameInfo);
         this.add(passwordInfo);
         this.add(repeatPasswordInfo);
+        this.add(passwordErrorField);
         this.add(buttons);
     }
 
@@ -183,14 +182,35 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        final String propertyName = evt.getPropertyName();
         final SignupState state = (SignupState) evt.getNewValue();
-        setFields(state);
-    }
+        switch (propertyName) {
+            case "sign up successfully":
+                // Update UI for dish name error
+                System.out.println("successfully signup, switch to log in view");
+                usernameInputField.setText("");
+                passwordInputField.setText("");
+                repeatPasswordInputField.setText("");
+                userNameErrorField.setText("");
+                passwordErrorField.setText("");
+                break;
 
-    private void setFields(SignupState state) {
-        usernameInputField.setText(state.getUsername());
-        passwordInputField.setText(state.getPassword());
-        repeatPasswordInputField.setText(state.getPassword());
+            case "User already exists":
+                System.out.println("username error");
+                userNameErrorField.setText(state.getUsernameError());
+                break;
+
+            case "Passwords don't match":
+                System.out.println("Passwords don't match");
+                passwordErrorField.setText(state.getPasswordError());
+                break;
+
+            default:
+                System.out.println("Unhandled property");
+                break;
+        }
+        this.revalidate();
+        this.repaint();
     }
 
     public String getViewName() {

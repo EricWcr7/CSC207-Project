@@ -46,6 +46,12 @@ public interface RecipeSearchDataAccessInterface {
      */
     List<Recipe> searchRecipes(String searchKeyword);
 
+    /**
+     * Return the file key if the file we search exists on File.IO.
+     * @param fileName the file name needs to be searched.
+     * @return the file key corresponds to the file name if exists.
+     */
+    String findFileOnFileIo(String fileName);
 }
 
 

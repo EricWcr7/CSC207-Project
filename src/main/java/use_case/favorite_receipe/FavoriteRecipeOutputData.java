@@ -1,9 +1,8 @@
 package use_case.favorite_receipe;
 
-import entity.CommonRecipe;
-
-import java.util.List;
-
+/**
+ * Output Data for the FavoriteRecipe Use Case.
+ */
 public class FavoriteRecipeOutputData {
 
     public FavoriteRecipeOutputData() {

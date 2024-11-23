@@ -17,4 +17,10 @@ public interface User {
      */
     String getPassword();
 
+    /**
+     * Add created Recipe.
+     * @param recipe the created recipe
+     */
+    void addCreatedRecipe(Recipe recipe);
+
 }

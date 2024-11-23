@@ -6,6 +6,9 @@ import interface_adapter.create.CreateViewModel;
 import interface_adapter.edit.EditViewModel;
 import use_case.BackToEditView.BackToEditViewOutputBoundary;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BackToEditViewPresenter implements BackToEditViewOutputBoundary {
 
     private ViewManagerModel viewManagerModel;
@@ -21,11 +24,14 @@ public class BackToEditViewPresenter implements BackToEditViewOutputBoundary {
     }
 
     @Override
-    public void backToEditRecipeView(){
-        final CreateState createrecipestate = createViewModel.getState();
-
-        this.createViewModel.setState(createrecipestate);
-        this.createViewModel.firePropertyChanged();
+    public void backToEditRecipeView() {
+        final CreateState currentState = createViewModel.getState();
+        currentState.setDishNameError("");
+        currentState.setDishName("");
+        currentState.setInstructions("");
+        currentState.setIngredients(new HashMap<String, String>());
+        this.createViewModel.setState(currentState);
+        this.createViewModel.firePropertyChanged("Back to search");
 
         this.viewManagerModel.setState(editViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
