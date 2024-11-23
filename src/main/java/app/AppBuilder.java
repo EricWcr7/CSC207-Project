@@ -15,6 +15,8 @@ import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuPresenter;
 import interface_adapter.change_password.*;
 import interface_adapter.choose_recipe.*;
+import interface_adapter.create.CreateController;
+import interface_adapter.create.CreatePresenter;
 import interface_adapter.create.CreateViewModel;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import interface_adapter.edit.EditController;
@@ -37,6 +39,9 @@ import use_case.change_password.*;
 import use_case.choose_recipe.ChooseRecipeInputBoundary;
 import use_case.choose_recipe.ChooseRecipeInteractor;
 import use_case.choose_recipe.ChooseRecipeOutputBoundary;
+import use_case.create.CreateInputBoundary;
+import use_case.create.CreateInteractor;
+import use_case.create.CreateOutputBoundary;
 import use_case.edit.EditInputBoundary;
 import use_case.edit.EditInteractor;
 import use_case.edit.EditOutputBoundary;
@@ -290,14 +295,23 @@ public class AppBuilder {
 
         final EditInputBoundary editInteractor = new EditInteractor(editOutputBoundary);
 
-        final EditController editController = new EditController(editInteractor);
-        editView.setEditController(editController);
-        return this;
-    }
+            final EditController editController = new EditController(editInteractor);
+            editView.setEditController(editController);
+            return this;
+        }
 
-    public JFrame build () {
-        final JFrame application = new JFrame("Mealmaster");
-        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        public AppBuilder addCreateUseCase () {
+            final CreateOutputBoundary createOutputBoundary = new CreatePresenter(viewManagerModel, recipeSearchViewModel,createViewModel);
+            final CreateInputBoundary createInteractor = new CreateInteractor(createOutputBoundary, recipeFactory);
+
+            final CreateController createController = new CreateController(createInteractor);
+            createView.setCreateController(createController);
+            return this;
+        }
+
+        public JFrame build() {
+            final JFrame application = new JFrame("Mealmaster");
+            application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         initializeSharedRecipeStorage();
 

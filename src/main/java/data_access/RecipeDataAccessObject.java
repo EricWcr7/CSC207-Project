@@ -2,6 +2,7 @@ package data_access;
 
 import com.google.gson.*;
 import entity.CommonRecipe;
+import entity.Recipe;
 import entity.CommonRecipeFactory;
 import entity.Recipe;
 import entity.RecipeFactory;
@@ -534,7 +535,36 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
         System.out.println("No recipe found matching keyword: " + dishName);
         return null;
     }
+    // might cause error when merge, need to fix commonrecipe data type(change it to recipe)
+    public String getMaxId() {
+        String maxId = cachedRecipes.get(0).getId();
 
+        for (Recipe recipe : cachedRecipes) {
+            final String currentId = recipe.getId();
+
+            if (currentId.compareTo(maxId) > 0) {
+                maxId = currentId;
+            }
+        }
+        return maxId;
+    }
+
+    public boolean isNameInRecipes(String nameToCheck) {
+        for (Recipe recipe : cachedRecipes) {
+            if (recipe.getName().equalsIgnoreCase(nameToCheck)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Recipe> getCachedRecipes() {
+        return cachedRecipes;
+    }
+
+    public void saveRecipe(Recipe recipe) {
+        this.cachedRecipes.add(recipe);
+    }
 }
 
 

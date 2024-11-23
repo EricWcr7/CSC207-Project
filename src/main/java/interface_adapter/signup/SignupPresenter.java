@@ -30,9 +30,11 @@ public class SignupPresenter implements SignupOutputBoundary {
         signupState.setUsername("");
         signupState.setPassword("");
         signupState.setRepeatPassword("");
+        signupState.setUsernameError("");
+        signupState.setPasswordError("");
 
         this.signupViewModel.setState(signupState);
-        this.signupViewModel.firePropertyChanged();
+        this.signupViewModel.firePropertyChanged("sign up successfully");
 
         final LoginState loginState = loginViewModel.getState();
         loginState.setUsername(response.getUsername());
@@ -46,8 +48,23 @@ public class SignupPresenter implements SignupOutputBoundary {
     @Override
     public void prepareFailView(String error) {
         final SignupState signupState = signupViewModel.getState();
-        signupState.setUsernameError(error);
-        signupViewModel.firePropertyChanged();
+        switch (error) {
+            case "User already exists":
+                signupState.setUsernameError("User already exists");
+                signupViewModel.setState(signupState);
+                signupViewModel.firePropertyChanged("User already exists");
+                break;
+
+            case "Passwords don't match":
+                signupState.setPasswordError("Passwords don't match");
+                signupViewModel.setState(signupState);
+                signupViewModel.firePropertyChanged("Passwords don't match");
+                break;
+
+            default:
+                System.out.println("Unhandled property");
+                break;
+        }
     }
 
     @Override
