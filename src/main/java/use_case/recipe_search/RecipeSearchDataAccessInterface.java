@@ -26,6 +26,10 @@ public interface RecipeSearchDataAccessInterface {
      * @param recipes the list of recipes to write to the file
      */
     void writeRecipesToFile(List<Recipe> recipes);
+
+    void loadRecipesFromCloud();
+
+    List<Recipe> searchRecipes(String searchKeyword);
 }
 
 

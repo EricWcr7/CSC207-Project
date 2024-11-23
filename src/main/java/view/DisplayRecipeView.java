@@ -18,9 +18,12 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
     private LikeRecipeController likeRecipeController;
 
     // Example: Dynamic data loaded into variables
-    private String dishname;
+    private String dishName;
     private String ingredients;
     private String instructions;
+
+    private int likeNumber = 0;
+    private int dislikeNumber = 0;
 
     private final JTextArea ingredientsArea;
     private final JTextArea instructionArea;
@@ -34,15 +37,15 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
     private final JLabel dislikeCount;
 
 
-    public DisplayRecipeView(DisplayRecipeViewModel displayRecipeViewmodel) {
-        this.displayRecipeViewmodel = displayRecipeViewmodel;
+    public DisplayRecipeView(DisplayRecipeViewModel displayRecipeViewModel) {
+        this.displayRecipeViewmodel = displayRecipeViewModel;
         this.displayRecipeViewmodel.addPropertyChangeListener(this);
 
-//        dishname = displayRecipeViewmodel.getDishName(); // null???
-//        ingredients = displayRecipeViewmodel.getIngredients(); // empty???
-//        introduction = displayRecipeViewmodel.getInstructions(); // empty???
+//        dishname = displayRecipeViewModel.getDishName(); // null???
+//        ingredients = displayRecipeViewModel.getIngredients(); // empty???
+//        introduction = displayRecipeViewModel.getInstructions(); // empty???
 
-        System.out.println("At DisplayRecipeView, the dishname is: " + dishname);
+        System.out.println("At DisplayRecipeView, the dishname is: " + dishName);
 
         ingredientsArea = new JTextArea(ingredients);
         ingredientsArea.setEditable(false);
@@ -54,10 +57,10 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
         returnToSearchMenu = new JButton("Return to Search View ");
 
         likeButton = new JButton("Like");
-        likeCount = new JLabel("0别忘了改");
+        likeCount = new JLabel(String.valueOf(likeNumber));
 
         dislikeButton = new JButton("Dislike");
-        dislikeCount = new JLabel("0别忘了改");
+        dislikeCount = new JLabel(String.valueOf(dislikeNumber));
 
         favoriteButton = new JButton("Favorite");
 
@@ -74,7 +77,7 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
         dishNameLabel.setFont(new Font("Arial", Font.BOLD, 14));
         recipePanel.add(dishNameLabel);
 
-        JLabel dishNameValue = new JLabel(dishname);
+        JLabel dishNameValue = new JLabel(dishName);
         recipePanel.add(dishNameValue);
 
         // Ingredients
@@ -101,7 +104,6 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
         add(recipePanel);
         add(buttonsPanel);
 
-
         returnToSearchMenu.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
@@ -111,14 +113,15 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                 }
         );
 
-//        like.addActionListener(
-//                // This creates an anonymous subclass of ActionListener and instantiates it.
-//                evt -> {
-//                    if (evt.getSource().equals(like)) {
-//                        this.likeRecipeController.execute();
-//                    }
-//                }
-//        )
+        likeButton.addActionListener(
+                // This creates an anonymous subclass of ActionListener and instantiates it.
+                evt -> {
+                    if (evt.getSource().equals(likeButton)) {
+                        final DisplayRecipeState state = displayRecipeViewModel.getState();
+                        this.likeRecipeController.execute(state.getDishName(), state.getLikeNumber());
+                    }
+                }
+        );
     }
 
     public String getViewName() {
@@ -140,13 +143,13 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
         final DisplayRecipeState displayRecipeState = (DisplayRecipeState) evt.getNewValue();
 
         // Update UI components with the new state values
-        dishname = displayRecipeState.getDishName();
+        dishName = displayRecipeState.getDishName();
         ingredients = displayRecipeState.getIngredients();
         instructions = displayRecipeState.getInstructions();
         final String formattedInstructions = formatInstructions(instructions);
 
         // Update the labels and text areas with the new values
-        ((JLabel) ((JPanel) this.getComponent(0)).getComponent(0)).setText("Dish Name: " + dishname);
+        ((JLabel) ((JPanel) this.getComponent(0)).getComponent(0)).setText("Dish Name: " + dishName);
         ingredientsArea.setText(ingredients);
         instructionArea.setText(formattedInstructions);
 

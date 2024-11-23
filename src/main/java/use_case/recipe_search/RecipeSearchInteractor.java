@@ -10,18 +10,20 @@ import java.util.List;
  * The Recipe Search Interactor.
  */
 public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
+    // DONE: RecipeDataAccessObject should be RecipeSearchDataAccessInterface？ (before, violated CA and Dependency Inversion Principle, DIP)
     private final RecipeSearchOutputBoundary recipeSearchPresenter;
-    private final RecipeDataAccessObject recipeDataAccessObject;
+    private final RecipeSearchDataAccessInterface recipeDataAccessObject;
     private boolean recipesLoaded = false;  // Flag to ensure loading from cloud only once
 
     /**
      * Constructor for RecipeSearchInteractor.
-     *
-     * @param recipeSearchPresenter the output boundary (presenter) to display results
+     * @param recipeSearchDataAccessInterface
+     * @param recipeSearchOutputBoundary the output boundary (presenter) to display results
      */
-    public RecipeSearchInteractor(RecipeSearchOutputBoundary recipeSearchPresenter) {
-        this.recipeSearchPresenter = recipeSearchPresenter;
-        this.recipeDataAccessObject = new RecipeDataAccessObject(); // Instantiate internally
+    public RecipeSearchInteractor(RecipeSearchDataAccessInterface recipeSearchDataAccessInterface,
+            RecipeSearchOutputBoundary recipeSearchOutputBoundary) {
+        this.recipeSearchPresenter = recipeSearchOutputBoundary;
+        this.recipeDataAccessObject = recipeSearchDataAccessInterface; // Can not Instantiate internally
     }
 
     /**

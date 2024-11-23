@@ -217,7 +217,9 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
                 }
             }
             RecipeFactory recipeFactory = new CommonRecipeFactory();
-            Recipe recipe = recipeFactory.createRecipe(id, name, category, instructions, ingredientMeasureMap);
+            Recipe recipe = recipeFactory.createRecipe(id, name, category, instructions, ingredientMeasureMap,
+                    0, 0);
+            // TODO: write likeNum, dislikeNum to file once downloading. Add another 2 arguments here.
             recipes.add(recipe);
         }
 
@@ -418,7 +420,8 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
             }
 
             RecipeFactory recipeFactory = new CommonRecipeFactory();
-            Recipe recipe = recipeFactory.createRecipe(idNum, mealName, category, instructions, ingredientMeasureMap);
+            Recipe recipe = recipeFactory.createRecipe(idNum, mealName, category, instructions, ingredientMeasureMap,
+                    0, 0);
             processedRecipes.add(recipe);
         }
 
@@ -448,6 +451,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     }
 
     // Method to search for a single recipe based on a keyword
+    // Will refactor this!
     public Recipe getOneRecipe(String dishName) {
         dishName = dishName.toLowerCase();  // Convert dishName to lowercase
         System.out.println("Total cached recipes: " + cachedRecipes.size());
