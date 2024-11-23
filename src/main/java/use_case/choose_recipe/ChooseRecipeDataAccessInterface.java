@@ -1,6 +1,5 @@
 package use_case.choose_recipe;
 
-import entity.CommonRecipe;
 import entity.Recipe;
 
 /**

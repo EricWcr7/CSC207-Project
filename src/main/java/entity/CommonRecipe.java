@@ -21,6 +21,8 @@ public class CommonRecipe implements Recipe {
      * @param name the name of the recipe
      * @param category the category of the recipe
      * @param instructions the cooking instructions
+     * @param likeNumber the current likes of this recipe
+     * @param dislikeNumber the current dislikes of this recipe
      * @param ingredientMeasureMap the ingredient and measurement of the recipe
      */
     public CommonRecipe(String id, String name, String category, String instructions,

@@ -224,6 +224,18 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addRecipeSearchUseCase() {
+        final RecipeSearchOutputBoundary recipeSearchOutputBoundary = new RecipeSearchPresenter(
+                viewManagerModel, chooseRecipeViewModel, favoriteRecipeViewModel, editViewModel, recipeSearchViewModel);
+
+        final RecipeSearchInputBoundary recipeSearchInteractor = new RecipeSearchInteractor(
+                recipeDataAccessObject, recipeSearchOutputBoundary);
+
+        final RecipeSearchController recipeSearchController = new RecipeSearchController(recipeSearchInteractor);
+        recipeSearchView.setRecipeSearchController(recipeSearchController);
+        return this;
+    }
+
     public AppBuilder addReturnToSearchMenuUseCase() {
         final ReturnToSearchMenuOutputBoundary returnToSearchMenuOutputBoundary =
                 new ReturnToSearchMenuPresenter(viewManagerModel,
@@ -249,18 +261,6 @@ public class AppBuilder {
 
         final BackToEditViewController backToEditViewController = new BackToEditViewController(backToEditViewInteractor);
         createView.setBackToEditViewConTroller(backToEditViewController);
-        return this;
-    }
-
-    public AppBuilder addRecipeSearchUseCase() {
-        final RecipeSearchOutputBoundary recipeSearchOutputBoundary = new RecipeSearchPresenter(
-                viewManagerModel, chooseRecipeViewModel, favoriteRecipeViewModel, editViewModel, recipeSearchViewModel);
-
-        final RecipeSearchInputBoundary recipeSearchInteractor = new RecipeSearchInteractor(
-                recipeDataAccessObject, recipeSearchOutputBoundary);
-
-        final RecipeSearchController recipeSearchController = new RecipeSearchController(recipeSearchInteractor);
-        recipeSearchView.setRecipeSearchController(recipeSearchController);
         return this;
     }
 

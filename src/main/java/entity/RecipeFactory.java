@@ -15,8 +15,11 @@ public interface RecipeFactory {
      * @param category the category of the recipe
      * @param instructions the cooking instructions
      * @param ingredientMeasureMap the ingredient and measurement of the recipe
+     * @param likeNumber the current likes of this recipe
+     * @param dislikeNumber the current dislikes of this recipe
      * @return a Recipe instance with the specified details
      */
     Recipe createRecipe(String id, String name, String category,
-                        String instructions, Map<String, String> ingredientMeasureMap);
+                        String instructions, Map<String, String> ingredientMeasureMap, int likeNumber,
+                        int dislikeNumber);
 }
