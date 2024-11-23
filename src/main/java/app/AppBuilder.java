@@ -21,6 +21,8 @@ import interface_adapter.edit.EditController;
 import interface_adapter.edit.EditPresenter;
 import interface_adapter.edit.EditViewModel;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
+import interface_adapter.like_a_recipe.LikeRecipeController;
+import interface_adapter.like_a_recipe.LikeRecipePresenter;
 import interface_adapter.login.*;
 import interface_adapter.logout.*;
 import interface_adapter.recipe_search.*;
@@ -43,6 +45,9 @@ import use_case.edit.EditOutputBoundary;
 import use_case.favorite_receipe.FavoriteRecipeInputBoundary;
 import use_case.favorite_receipe.FavoriteRecipeInteractor;
 import use_case.favorite_receipe.FavoriteRecipeOutputBoundary;
+import use_case.like_a_recipe.LikeRecipeInputBoundary;
+import use_case.like_a_recipe.LikeRecipeInteractor;
+import use_case.like_a_recipe.LikeRecipeOutputBoundary;
 import use_case.login.*;
 import use_case.logout.*;
 import use_case.recipe_search.*;
@@ -295,7 +300,19 @@ public class AppBuilder {
         return this;
     }
 
-    public JFrame build () {
+    public AppBuilder addLikeRecipeUseCase() {
+        final LikeRecipeOutputBoundary likeRecipeOutputBoundary = new LikeRecipePresenter(
+                viewManagerModel, displayRecipeViewModel);
+
+        final LikeRecipeInputBoundary likeRecipeInteractor = new LikeRecipeInteractor(
+                recipeDataAccessObject, likeRecipeOutputBoundary);
+
+        final LikeRecipeController likeRecipeController = new LikeRecipeController(likeRecipeInteractor);
+        displayRecipeView.setLikeRecipeController(likeRecipeController);
+        return this;
+    }
+
+    public JFrame build() {
         final JFrame application = new JFrame("Mealmaster");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

@@ -1,6 +1,8 @@
 package use_case.like_a_recipe;
 
 import data_access.RecipeDataAccessObject;
+import entity.Recipe;
+import use_case.login.LoginOutputData;
 
 /**
  * The Like Recipe Interactor.
@@ -11,14 +13,26 @@ import data_access.RecipeDataAccessObject;
  */
 
 public class LikeRecipeInteractor implements LikeRecipeInputBoundary {
-    private final LikeRecipeInputBoundary likeRecipePresenter;
-    // private final RecipeDataAccessObject recipeDataAccessObject;
+    private final LikeRecipeOutputBoundary likeRecipePresenter;
+    private final LikeRecipeDataAccessInterface recipeDataAccessObject;
 
-    public LikeRecipeInteractor(LikeRecipeInputBoundary likeRecipePresenter) {
+    public LikeRecipeInteractor(LikeRecipeDataAccessInterface likeRecipeDataAccessInterface,
+                                LikeRecipeOutputBoundary likeRecipePresenter) {
         this.likeRecipePresenter = likeRecipePresenter;
+        this.recipeDataAccessObject = likeRecipeDataAccessInterface;
     }
 
     @Override
-    public void execute(LikeRecipeInputData likeRecipeInputData) { }
+    public void execute(LikeRecipeInputData likeRecipeInputData) {
+
+        final String recipeName = likeRecipeInputData.getDishName();
+        final Recipe theRecipe = recipeDataAccessObject.getOneRecipe(recipeName);
+        theRecipe.incrementLikeNumber();
+        // Update the recipe in the database
+        // recipeDataAccessObject.updateRecipe(theRecipe);
+        final int updatedLikeNumber = theRecipe.getLikeNumber();
+        final LikeRecipeOutputData likeRecipeOutputData = new LikeRecipeOutputData(updatedLikeNumber);
+        likeRecipePresenter.prepareSuccessView(likeRecipeOutputData);
+    }
 
 }

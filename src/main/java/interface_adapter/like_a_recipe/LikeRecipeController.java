@@ -1,22 +1,22 @@
 package interface_adapter.like_a_recipe;
 
 
+import use_case.like_a_recipe.LikeRecipeInputBoundary;
 import use_case.like_a_recipe.LikeRecipeInputData;
-import use_case.like_a_recipe.LikeRecipeInteractor;
 
 public class LikeRecipeController {
 
-    private final LikeRecipeInteractor likeRecipeInteractor;
+    private final LikeRecipeInputBoundary likeRecipeInteractor;
 
-    public LikeRecipeController(LikeRecipeInteractor likeRecipeInteractor) {
+    public LikeRecipeController(LikeRecipeInputBoundary likeRecipeInteractor) {
         this.likeRecipeInteractor = likeRecipeInteractor;
     }
 
-    public void execute(String dishName, int likeNumber) {
+    public void execute(String dishName) {
 
-        final LikeRecipeInputData likeData = new LikeRecipeInputData(dishName, likeNumber);
+        final LikeRecipeInputData likeData = new LikeRecipeInputData(dishName);
         likeRecipeInteractor.execute(likeData);
 
-        System.out.println("Like dish: " + dishName + ", before like number: " + likeNumber);
+        System.out.println("Like Recipe Controller, Like dish: " + dishName);
     }
 }
