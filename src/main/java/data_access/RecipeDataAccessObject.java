@@ -539,7 +539,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     public String getMaxId() {
         String maxId = cachedRecipes.get(0).getId();
 
-        for (CommonRecipe recipe : cachedRecipes) {
+        for (Recipe recipe : cachedRecipes) {
             final String currentId = recipe.getId();
 
             if (currentId.compareTo(maxId) > 0) {
@@ -550,7 +550,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     }
 
     public boolean isNameInRecipes(String nameToCheck) {
-        for (CommonRecipe recipe : cachedRecipes) {
+        for (Recipe recipe : cachedRecipes) {
             if (recipe.getName().equalsIgnoreCase(nameToCheck)) {
                 return true;
             }
@@ -558,11 +558,11 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
         return false;
     }
 
-    public List<CommonRecipe> getCachedRecipes() {
+    public List<Recipe> getCachedRecipes() {
         return cachedRecipes;
     }
 
-    public void saveRecipe(CommonRecipe recipe) {
+    public void saveRecipe(Recipe recipe) {
         this.cachedRecipes.add(recipe);
     }
 }

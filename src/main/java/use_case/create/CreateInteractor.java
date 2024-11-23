@@ -30,11 +30,10 @@ public class CreateInteractor implements CreateInputBoundary {
         final String id = recipeDataAccessObject.getMaxId() + 1;
         final String category = "created by user";
         if (!recipeDataAccessObject.isNameInRecipes(createInputData.getDishname())) {
-            final Recipe recipeCreated = recipeFactory.createRecipe(id, category, createInputData.getDishname(),
-                    createInputData.getInstruction(), createInputData.getIngredient());
-            final CommonRecipe recipeCreatedfix = (CommonRecipe) recipeCreated;
-            recipeDataAccessObject.saveRecipe(recipeCreatedfix);
-            final List<CommonRecipe> updatedRecipe = recipeDataAccessObject.getCachedRecipes();
+            final Recipe recipeCreated = recipeFactory.createRecipe(id, createInputData.getDishname(), category,
+                    createInputData.getInstruction(), createInputData.getIngredient(),0,0);
+            recipeDataAccessObject.saveRecipe(recipeCreated);
+            final List<Recipe> updatedRecipe = recipeDataAccessObject.getCachedRecipes();
             recipeDataAccessObject.writeRecipesToFile(updatedRecipe);
             recipeDataAccessObject.deleteFileFromFileIo();
             recipeDataAccessObject.uploadFileToFileIo();
