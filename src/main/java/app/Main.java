@@ -35,6 +35,7 @@ public class Main {
                 .addBackTOEditViewUsecase()
                 .addFavoriteRecipeUseCase()
                 .addEditUseCase()
+                .addCreateUseCase()
                 .build();
         application.pack();
         application.setSize(width, height);

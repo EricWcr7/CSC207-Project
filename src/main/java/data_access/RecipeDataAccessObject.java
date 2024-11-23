@@ -2,6 +2,7 @@ package data_access;
 
 import com.google.gson.*;
 import entity.CommonRecipe;
+import entity.Recipe;
 import use_case.choose_recipe.ChooseRecipeDataAccessInterface;
 import use_case.recipe_search.RecipeSearchDataAccessInterface;
 
@@ -43,7 +44,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     /**
      * Deletes the file from File.io using the file key.
      */
-    private void deleteFileFromFileIo() {
+    public void deleteFileFromFileIo() {
         if (FILE_KEY.isEmpty()) {
             System.err.println("File key is empty. Cannot delete file.");
             return;
@@ -245,7 +246,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     /**
      * Uploads the generated file to File.io API.
      */
-    private void uploadFileToFileIo() {
+    public void uploadFileToFileIo() {
         System.out.println("Uploading file to File.io with Bearer Auth.");
         try {
             final HttpClient client = HttpClient.newHttpClient();
@@ -460,9 +461,36 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
         System.out.println("No recipe found matching keyword: " + dishName);
         return null;
     }
+    // might cause error when merge, need to fix commonrecipe data type(change it to recipe)
+    public String getMaxId() {
+        String maxId = cachedRecipes.get(0).getId();
 
+        for (CommonRecipe recipe : cachedRecipes) {
+            final String currentId = recipe.getId();
 
+            if (currentId.compareTo(maxId) > 0) {
+                maxId = currentId;
+            }
+        }
+        return maxId;
+    }
 
+    public boolean isNameInRecipes(String nameToCheck) {
+        for (CommonRecipe recipe : cachedRecipes) {
+            if (recipe.getName().equalsIgnoreCase(nameToCheck)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<CommonRecipe> getCachedRecipes() {
+        return cachedRecipes;
+    }
+
+    public void saveRecipe(CommonRecipe recipe) {
+        this.cachedRecipes.add(recipe);
+    }
 }
 
 
