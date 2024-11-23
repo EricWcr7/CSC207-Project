@@ -1,7 +1,6 @@
 package use_case.recipe_search;
 
-import data_access.RecipeDataAccessObject;
-import entity.CommonRecipe;
+import entity.Recipe;
 
 import java.util.List;
 
@@ -10,17 +9,19 @@ import java.util.List;
  */
 public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
     private final RecipeSearchOutputBoundary recipeSearchPresenter;
-    private final RecipeDataAccessObject recipeDataAccessObject;
+    private final RecipeSearchDataAccessInterface recipeDataAccessObject;
     private boolean recipesLoaded = false;  // Flag to ensure loading from cloud only once
 
     /**
      * Constructor for RecipeSearchInteractor.
      *
+     * @param recipeDataAccessObject the Data Access interface of recipe search
      * @param recipeSearchPresenter the output boundary (presenter) to display results
      */
-    public RecipeSearchInteractor(RecipeSearchOutputBoundary recipeSearchPresenter) {
+    public RecipeSearchInteractor(RecipeSearchDataAccessInterface recipeDataAccessObject,
+                                  RecipeSearchOutputBoundary recipeSearchPresenter) {
         this.recipeSearchPresenter = recipeSearchPresenter;
-        this.recipeDataAccessObject = new RecipeDataAccessObject(); // Instantiate internally
+        this.recipeDataAccessObject = recipeDataAccessObject; // Instantiate internally
     }
 
     /**
@@ -42,7 +43,7 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
 
         try {
             // Use cached recipes to search for the keyword
-            List<CommonRecipe> recipes = recipeDataAccessObject.searchRecipes(searchKeyword);
+            List<Recipe> recipes = recipeDataAccessObject.searchRecipes(searchKeyword);
 
             // Check if any recipes were found
             if (recipes.isEmpty()) {
@@ -59,20 +60,29 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
         }
     }
 
-    /**
-     * Fetches all recipes from the API and stores them to the shared file for global access.
-     * Should be called once to initialize the recipe storage.
-     */
+    @Override
     public void initializeRecipeStorage() {
         System.out.println("Initializing shared recipe storage...");
         try {
-            // Fetch all recipes (from 'a' to 'z') and cache them in RecipeDataAccessObject
-            List<CommonRecipe> allRecipes = recipeDataAccessObject.fetchAllRecipes();
-            System.out.println("Total recipes fetched: " + allRecipes.size());
-
-            // Write all recipes to a shared JSON file and upload it
-            recipeDataAccessObject.writeRecipesToFile(allRecipes);
-            System.out.println("Shared recipe storage initialized successfully.");
+            // Step 1: Check if "all_recipes.json" exists on File.io using the DAO
+            String fileKey = recipeDataAccessObject.findFileOnFileIo("all_recipes.json");
+            System.out.println(fileKey);
+            if (fileKey != "") {
+                // Case 1: If the file exists, load it from File.io using the DAO
+                System.out.println("File 'all_recipes.json' found on File.io with ID: " + fileKey);
+                recipeDataAccessObject.loadRecipesFromCloud(); // Load recipes from the existing JSON file
+                System.out.println("Recipes loaded from 'all_recipes.json' successfully.");
+            }
+            else {
+                // Case 2: If the file does not exist, fetch all recipes from the API using the DAO
+                List<Recipe> allRecipes = recipeDataAccessObject.fetchAllRecipes();
+                System.out.println("Total recipes fetched: " + allRecipes.size());
+                // Write all recipes to a shared JSON file and upload it
+                recipeDataAccessObject.writeRecipesToFile(allRecipes);
+                System.out.println("Shared recipe storage initialized successfully.");
+                System.out.println("Loading recipes from File.io...");
+                recipeDataAccessObject.loadRecipesFromCloud();
+            }
         } catch (Exception e) {
             System.err.println("Failed to initialize recipe storage: " + e.getMessage());
         }
@@ -88,7 +98,6 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
         recipeSearchPresenter.switchToEditView();
     }
 }
-
 
 
 

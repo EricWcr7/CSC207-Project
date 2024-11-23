@@ -14,6 +14,12 @@ public interface RecipeSearchInputBoundary {
     void switchToFavoriteRecipeView();
 
     void switchToEditView();
+
+    /**
+     * Fetches all recipes from the API and stores them to the shared file for global access.
+     * Should be called once to initialize the recipe storage.
+     */
+    void initializeRecipeStorage();
 }
 
 

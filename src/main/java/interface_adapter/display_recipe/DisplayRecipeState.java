@@ -4,6 +4,7 @@ public class DisplayRecipeState {
     private String dishName;
     private String ingredients;
     private String instructions;
+    private int likeNumber;
 
     public void setDishName(String dishName) {
         this.dishName = dishName;
@@ -28,4 +29,13 @@ public class DisplayRecipeState {
     public String getInstructions() {
         return instructions;
     }
+
+    public int getLikeNumber() {
+        return likeNumber;
+    }
+
+    public void setLikeNumber(int likeNumber) {
+        this.likeNumber = likeNumber;
+    }
+
 }

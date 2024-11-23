@@ -64,6 +64,7 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -84,7 +85,7 @@ public class AppBuilder {
     private CreateView createView;
     private CreateViewModel createViewModel;
 
-    private RecipeSearchInteractor recipeSearchInteractor;
+    private RecipeSearchInputBoundary recipeSearchInteractor;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -242,57 +243,57 @@ public class AppBuilder {
         return this;
     }
 
-        public AppBuilder addBackTOEditViewUsecase() {
-            final BackToEditViewOutputBoundary backToEditViewOutputBoundary = new BackToEditViewPresenter(viewManagerModel,
-                    editViewModel, createViewModel);
+    public AppBuilder addBackTOEditViewUsecase() {
+        final BackToEditViewOutputBoundary backToEditViewOutputBoundary = new BackToEditViewPresenter(viewManagerModel,
+                editViewModel, createViewModel);
 
-            final BackToEditViewInputBoundary backToEditViewInteractor =
-                    new BackToEditViewInteractor(backToEditViewOutputBoundary);
+        final BackToEditViewInputBoundary backToEditViewInteractor =
+                new BackToEditViewInteractor(backToEditViewOutputBoundary);
 
-            final BackToEditViewController backToEditViewController = new BackToEditViewController(backToEditViewInteractor);
-            createView.setBackToEditViewConTroller(backToEditViewController);
-            return this;
-        }
+        final BackToEditViewController backToEditViewController = new BackToEditViewController(backToEditViewInteractor);
+        createView.setBackToEditViewConTroller(backToEditViewController);
+        return this;
+    }
 
-        public AppBuilder addRecipeSearchUseCase() {
-            final RecipeSearchOutputBoundary recipeSearchOutputBoundary = new RecipeSearchPresenter(
-                    viewManagerModel, chooseRecipeViewModel, favoriteRecipeViewModel, editViewModel, recipeSearchViewModel);
+    public AppBuilder addRecipeSearchUseCase() {
+        final RecipeSearchOutputBoundary recipeSearchOutputBoundary = new RecipeSearchPresenter(
+                viewManagerModel, chooseRecipeViewModel, favoriteRecipeViewModel, editViewModel, recipeSearchViewModel);
 
-            recipeSearchInteractor = new RecipeSearchInteractor(recipeSearchOutputBoundary);
+        recipeSearchInteractor = new RecipeSearchInteractor(recipeDataAccessObject, recipeSearchOutputBoundary);
 
-            final RecipeSearchController recipeSearchController = new RecipeSearchController(recipeSearchInteractor);
-            recipeSearchView.setRecipeSearchController(recipeSearchController);
-            return this;
-        }
+        final RecipeSearchController recipeSearchController = new RecipeSearchController(recipeSearchInteractor);
+        recipeSearchView.setRecipeSearchController(recipeSearchController);
+        return this;
+    }
 
-        public AppBuilder addChooseRecipeUseCase() {
-            final ChooseRecipeOutputBoundary chooseRecipeOutputBoundary = new ChooseRecipePresenter(
-                    viewManagerModel, chooseRecipeViewModel, displayRecipeViewModel);
+    public AppBuilder addChooseRecipeUseCase() {
+        final ChooseRecipeOutputBoundary chooseRecipeOutputBoundary = new ChooseRecipePresenter(
+                viewManagerModel, chooseRecipeViewModel, displayRecipeViewModel);
 
-            final ChooseRecipeInputBoundary chooseRecipeInteractor = new ChooseRecipeInteractor(
-                    chooseRecipeOutputBoundary);
+        final ChooseRecipeInputBoundary chooseRecipeInteractor = new ChooseRecipeInteractor(
+                recipeDataAccessObject, chooseRecipeOutputBoundary);
 
-            final ChooseRecipeController chooseRecipeController = new ChooseRecipeController(chooseRecipeInteractor);
-            chooseRecipeView.setChooseRecipeController(chooseRecipeController);
-            return this;
-        }
+        final ChooseRecipeController chooseRecipeController = new ChooseRecipeController(chooseRecipeInteractor);
+        chooseRecipeView.setChooseRecipeController(chooseRecipeController);
+        return this;
+    }
 
-        public AppBuilder addFavoriteRecipeUseCase () {
-            final FavoriteRecipeOutputBoundary favoriteRecipeOutputBoundary = new FavoriteRecipePresenter(
-                    viewManagerModel, favoriteRecipeViewModel);
+    public AppBuilder addFavoriteRecipeUseCase () {
+        final FavoriteRecipeOutputBoundary favoriteRecipeOutputBoundary = new FavoriteRecipePresenter(
+                viewManagerModel, favoriteRecipeViewModel);
 
-            final FavoriteRecipeInputBoundary favoriteRecipeInteractor = new FavoriteRecipeInteractor(
-                    favoriteRecipeOutputBoundary);
+        final FavoriteRecipeInputBoundary favoriteRecipeInteractor = new FavoriteRecipeInteractor(
+                favoriteRecipeOutputBoundary);
 
-            final FavoriteRecipeController favoriteRecipeController = new FavoriteRecipeController(favoriteRecipeInteractor);
-            favoriteRecipeView.setFavoriteRecipeController(favoriteRecipeController);
-            return this;
-        }
+        final FavoriteRecipeController favoriteRecipeController = new FavoriteRecipeController(favoriteRecipeInteractor);
+        favoriteRecipeView.setFavoriteRecipeController(favoriteRecipeController);
+        return this;
+    }
 
-        public AppBuilder addEditUseCase () {
-            final EditOutputBoundary editOutputBoundary = new EditPresenter(viewManagerModel, createViewModel, editViewModel);
+    public AppBuilder addEditUseCase () {
+        final EditOutputBoundary editOutputBoundary = new EditPresenter(viewManagerModel, createViewModel, editViewModel);
 
-            final EditInputBoundary editInteractor = new EditInteractor(editOutputBoundary);
+        final EditInputBoundary editInteractor = new EditInteractor(editOutputBoundary);
 
             final EditController editController = new EditController(editInteractor);
             editView.setEditController(editController);
@@ -312,17 +313,17 @@ public class AppBuilder {
             final JFrame application = new JFrame("Mealmaster");
             application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-            initializeSharedRecipeStorage();
+        initializeSharedRecipeStorage();
 
-            application.add(cardPanel);
+        application.add(cardPanel);
 
-            System.out.println("Setting initial view state to: " + loginView.getViewName());
-            viewManagerModel.setState(loginView.getViewName());
-            viewManagerModel.firePropertyChanged();
+        System.out.println("Setting initial view state to: " + loginView.getViewName());
+        viewManagerModel.setState(loginView.getViewName());
+        viewManagerModel.firePropertyChanged();
 
-            return application;
-        }
+        return application;
     }
+}
 
 
 

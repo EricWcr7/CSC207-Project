@@ -11,6 +11,8 @@ public class CommonRecipe implements Recipe {
     private final String category;
     private final String instructions;
     private final Map<String, String> ingredientMeasureMap;
+    private int likeNumber;
+    private int dislikeNumber;
 
     /**
      * Constructs a CommonRecipe object with specified details.
@@ -20,14 +22,18 @@ public class CommonRecipe implements Recipe {
      * @param category the category of the recipe
      * @param instructions the cooking instructions
      * @param ingredientMeasureMap the ingredient and measurement of the recipe
+     * @param likeNumber the number of likes of the recipe
+     * @param dislikeNumber the number of dislikes of the recipe
      */
     public CommonRecipe(String id, String name, String category, String instructions,
-                        Map<String, String> ingredientMeasureMap) {
+                        Map<String, String> ingredientMeasureMap, int likeNumber, int dislikeNumber) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.instructions = instructions;
         this.ingredientMeasureMap = ingredientMeasureMap;
+        this.likeNumber = likeNumber;
+        this.dislikeNumber = dislikeNumber;
     }
 
     @Override
@@ -62,6 +68,26 @@ public class CommonRecipe implements Recipe {
         }
 
         return ingredientsList.toString().trim(); // Remove the last newline.
+    }
+
+    @Override
+    public int getLikeNumber() {
+        return likeNumber;
+    }
+
+    @Override
+    public void incrementLikeNumber() {
+        likeNumber++;
+    }
+
+    @Override
+    public int getDislikeNumber() {
+        return dislikeNumber;
+    }
+
+    @Override
+    public void incrementDislikeNumber() {
+        dislikeNumber++;
     }
 
 }
