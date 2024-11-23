@@ -8,8 +8,6 @@ import entity.Recipe;
  */
 public interface ChooseRecipeDataAccessInterface {
 
-//    List<CommonRecipe> searchRecipes(String keyword);
-
     /**
      * Fetches the unique recipe from the API and returns it.
      * @param dishName the name of the dish to search
@@ -17,6 +15,9 @@ public interface ChooseRecipeDataAccessInterface {
      */
     Recipe getOneRecipe(String dishName);
 
+    /**
+     * Download the json database from File.IO and Upload it again immediately due to auto delete.
+     */
     void loadRecipesFromCloud();
 }
 

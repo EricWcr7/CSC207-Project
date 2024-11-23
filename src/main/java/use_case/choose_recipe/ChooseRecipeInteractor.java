@@ -12,15 +12,13 @@ import entity.Recipe;
  */
 
 public class ChooseRecipeInteractor implements ChooseRecipeInputBoundary {
-    // DONE: Now use ChooseRecipeDataAccessInterface, follow CA and DIP
     private final ChooseRecipeOutputBoundary chooseRecipePresenter;
     private final ChooseRecipeDataAccessInterface recipeDataAccessObject;
     private boolean recipesLoaded = false;  // Flag to ensure loading from cloud only once
 
-    public ChooseRecipeInteractor(ChooseRecipeDataAccessInterface recipeDataAccessInterface,
-                                  ChooseRecipeOutputBoundary chooseRecipePresenter) {
+    public ChooseRecipeInteractor(ChooseRecipeOutputBoundary chooseRecipePresenter) {
         this.chooseRecipePresenter = chooseRecipePresenter;
-        this.recipeDataAccessObject = recipeDataAccessInterface;
+        this.recipeDataAccessObject = new RecipeDataAccessObject();
     }
 
     @Override

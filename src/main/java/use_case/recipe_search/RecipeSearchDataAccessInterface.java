@@ -21,15 +21,31 @@ public interface RecipeSearchDataAccessInterface {
     List<Recipe> fetchRecipesByKeyword(String searchKeyword) throws Exception;
 
     /**
-     * Writes a list of recipes to a file and uploads the file to shared storage.
+     * Writes a list of recipes to a json file.
      *
      * @param recipes the list of recipes to write to the file
      */
     void writeRecipesToFile(List<Recipe> recipes);
 
+    /**
+     * Upload the written json database to the cloud storage File.IO.
+     */
+    void uploadFileToFileIo();
+
+    /**
+     * Download the json database from File.IO and Upload it again immediately due to auto delete.
+     */
     void loadRecipesFromCloud();
 
+
+    /**
+     * Return the list of recipes that contains the searchKeyword (not case sensitive).
+     *
+     * @param searchKeyword the string we type in the search dialog.
+     * @return
+     */
     List<Recipe> searchRecipes(String searchKeyword);
+
 }
 
 
