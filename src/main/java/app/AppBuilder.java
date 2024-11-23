@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import data_access.InMemoryUserDataAccessObject;
+import data_access.InMemoryUserLikesDataAccessObject;
 import data_access.RecipeDataAccessObject;
 import entity.*;
 import interface_adapter.*;
@@ -48,6 +49,7 @@ import use_case.favorite_receipe.FavoriteRecipeOutputBoundary;
 import use_case.like_a_recipe.LikeRecipeInputBoundary;
 import use_case.like_a_recipe.LikeRecipeInteractor;
 import use_case.like_a_recipe.LikeRecipeOutputBoundary;
+import use_case.like_a_recipe.UserLikesDataAccessInterface;
 import use_case.login.*;
 import use_case.logout.*;
 import use_case.recipe_search.*;
@@ -65,6 +67,7 @@ public class AppBuilder {
 
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
+    private final UserLikesDataAccessInterface userLikesDataAccessObject = new InMemoryUserLikesDataAccessObject();
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -305,7 +308,7 @@ public class AppBuilder {
                 viewManagerModel, displayRecipeViewModel);
 
         final LikeRecipeInputBoundary likeRecipeInteractor = new LikeRecipeInteractor(
-                recipeDataAccessObject, likeRecipeOutputBoundary);
+                recipeDataAccessObject, userLikesDataAccessObject, userDataAccessObject, likeRecipeOutputBoundary);
 
         final LikeRecipeController likeRecipeController = new LikeRecipeController(likeRecipeInteractor);
         displayRecipeView.setLikeRecipeController(likeRecipeController);
