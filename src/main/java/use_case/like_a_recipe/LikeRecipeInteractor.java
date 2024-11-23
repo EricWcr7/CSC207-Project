@@ -31,7 +31,7 @@ public class LikeRecipeInteractor implements LikeRecipeInputBoundary {
         // Update the recipe in the database
         // recipeDataAccessObject.updateRecipe(theRecipe);
         final int updatedLikeNumber = theRecipe.getLikeNumber();
-        final LikeRecipeOutputData likeRecipeOutputData = new LikeRecipeOutputData(updatedLikeNumber);
+        final LikeRecipeOutputData likeRecipeOutputData = new LikeRecipeOutputData(recipeName, updatedLikeNumber);
         likeRecipePresenter.prepareSuccessView(likeRecipeOutputData);
     }
 

@@ -20,7 +20,7 @@ public class LikeRecipePresenter implements LikeRecipeOutputBoundary {
     @Override
     public void prepareSuccessView(LikeRecipeOutputData outputData) {
         final DisplayRecipeState state = displayRecipeViewModel.getState();
-        state.setLikeNumber(outputData.getLikeNumber());
+        state.setLikeNumber(outputData.getRecipeName(), outputData.getLikeNumber());
         this.displayRecipeViewModel.setState(state);
         this.displayRecipeViewModel.firePropertyChanged();
 
