@@ -61,7 +61,6 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
-    private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -256,8 +255,7 @@ public class AppBuilder {
         final RecipeSearchOutputBoundary recipeSearchOutputBoundary = new RecipeSearchPresenter(
                 viewManagerModel, chooseRecipeViewModel, favoriteRecipeViewModel, editViewModel, recipeSearchViewModel);
 
-        final RecipeSearchInputBoundary recipeSearchInteractor = new RecipeSearchInteractor(
-                recipeDataAccessObject, recipeSearchOutputBoundary);
+        recipeSearchInteractor = new RecipeSearchInteractor(recipeSearchOutputBoundary);
 
         final RecipeSearchController recipeSearchController = new RecipeSearchController(recipeSearchInteractor);
         recipeSearchView.setRecipeSearchController(recipeSearchController);
@@ -269,14 +267,14 @@ public class AppBuilder {
                 viewManagerModel, chooseRecipeViewModel, displayRecipeViewModel);
 
         final ChooseRecipeInputBoundary chooseRecipeInteractor = new ChooseRecipeInteractor(
-                recipeDataAccessObject, chooseRecipeOutputBoundary);
+                chooseRecipeOutputBoundary);
 
         final ChooseRecipeController chooseRecipeController = new ChooseRecipeController(chooseRecipeInteractor);
         chooseRecipeView.setChooseRecipeController(chooseRecipeController);
         return this;
     }
 
-    public AppBuilder addFavoriteRecipeUseCase() {
+    public AppBuilder addFavoriteRecipeUseCase () {
         final FavoriteRecipeOutputBoundary favoriteRecipeOutputBoundary = new FavoriteRecipePresenter(
                 viewManagerModel, favoriteRecipeViewModel);
 
@@ -288,7 +286,7 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addEditUseCase() {
+    public AppBuilder addEditUseCase () {
         final EditOutputBoundary editOutputBoundary = new EditPresenter(viewManagerModel, createViewModel, editViewModel);
 
         final EditInputBoundary editInteractor = new EditInteractor(editOutputBoundary);
@@ -298,7 +296,7 @@ public class AppBuilder {
         return this;
     }
 
-    public JFrame build() {
+    public JFrame build () {
         final JFrame application = new JFrame("Mealmaster");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

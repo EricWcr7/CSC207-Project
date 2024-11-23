@@ -105,6 +105,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
      * @param keyword the keyword to search for recipes
      * @return a list of CommonRecipe objects matching the keyword
      */
+    @Override
     public List<Recipe> fetchRecipesByKeyword(String keyword) {
         List<Recipe> recipes = new ArrayList<>();
 
@@ -232,6 +233,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
      *
      * @param recipes the list of recipes to write to the file
      */
+    @Override
     public void writeRecipesToFile(List<Recipe> recipes) {
         System.out.println("Writing all recipes to JSON file.");
         final File file = new File(FILE_PATH);
@@ -250,7 +252,8 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     /**
      * Uploads the generated file to File.io API.
      */
-    private void uploadFileToFileIo() {
+    @Override
+    public void uploadFileToFileIo() {
         System.out.println("Uploading file to File.io with Bearer Auth.");
         try {
             final HttpClient client = HttpClient.newHttpClient();
@@ -301,6 +304,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
         return HttpRequest.BodyPublishers.ofByteArrays(byteArrays);
     }
 
+    @Override
     public void loadRecipesFromCloud() {
         if (FILE_KEY.isEmpty()) {
             System.err.println("File key is empty. Cannot download file.");
@@ -419,9 +423,17 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
                 }
             }
 
+            // Parse likeNumber
+            int likeNumber = mealObject.has("likeNumber") && !mealObject.get("likeNumber").isJsonNull()
+                    ? mealObject.get("likeNumber").getAsInt() : 0;
+
+            // Parse dislikeNumber
+            int dislikeNumber = mealObject.has("dislikeNumber") && !mealObject.get("dislikeNumber").isJsonNull()
+                    ? mealObject.get("dislikeNumber").getAsInt() : 0;
+
             RecipeFactory recipeFactory = new CommonRecipeFactory();
             Recipe recipe = recipeFactory.createRecipe(idNum, mealName, category, instructions, ingredientMeasureMap,
-                    0, 0);
+                    likeNumber, dislikeNumber);
             processedRecipes.add(recipe);
         }
 
@@ -430,6 +442,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
         return processedRecipes;
     }
 
+    @Override
     // Method to search recipes based on a keyword from cached recipes
     public List<Recipe> searchRecipes(String keyword) {
         List<Recipe> result = new ArrayList<>();
