@@ -1,8 +1,10 @@
 package interface_adapter.favorite_recipe;
 
 import interface_adapter.ViewModel;
-import interface_adapter.recipe_search.RecipeSearchState;
 
+/**
+ * The View Model for the FavoriteRecipe View.
+ */
 public class FavoriteRecipeViewModel extends ViewModel<FavoriteRecipeState> {
 
     public FavoriteRecipeViewModel() {
