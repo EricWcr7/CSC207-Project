@@ -1,16 +1,18 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Map;
 
 /**
  * Implementation of the Recipe interface representing a common recipe.
  */
 public class CommonRecipe implements Recipe {
-    private final String id;
-    private final String name;
-    private final String category;
-    private final String instructions;
-    private final Map<String, String> ingredientMeasureMap;
+    private String id;
+    private String name;
+    private String category;
+    private String instructions;
+    private Map<String, String> ingredientMeasureMap;
     private int likeNumber;
     private int dislikeNumber;
 
@@ -36,6 +38,10 @@ public class CommonRecipe implements Recipe {
         this.dislikeNumber = dislikeNumber;
     }
 
+    // No-argument constructor for Jackson
+    public CommonRecipe() {
+    }
+
     @Override
     public String getId() {
         return id;
@@ -57,11 +63,12 @@ public class CommonRecipe implements Recipe {
     }
 
     @Override
+    @JsonIgnore
     // Format the ingredients to a string
     public String getIngredients() {
         StringBuilder ingredientsList = new StringBuilder();
 
-        for (Map.Entry<String, String> entry : ingredientMeasureMap.entrySet()) {
+        for (Map.Entry<String, String> entry : getIngredientMeasureMap().entrySet()) {
             String ingredient = entry.getKey();
             String measurement = entry.getValue();
             ingredientsList.append(ingredient).append(": ").append(measurement).append("\n");
@@ -88,6 +95,11 @@ public class CommonRecipe implements Recipe {
     @Override
     public void incrementDislikeNumber() {
         dislikeNumber++;
+    }
+
+    @Override
+    public Map<String, String> getIngredientMeasureMap() {
+        return ingredientMeasureMap;
     }
 
 }

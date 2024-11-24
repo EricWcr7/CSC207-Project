@@ -2,6 +2,8 @@ package use_case.like_a_recipe;
 
 import entity.Recipe;
 
+import java.io.IOException;
+
 /**
  * The Like Recipe Interactor.
  * 从controller那准备好的input data知道哪个菜的名字
@@ -27,7 +29,7 @@ public class LikeRecipeInteractor implements LikeRecipeInputBoundary {
     }
 
     @Override
-    public void execute(LikeRecipeInputData likeRecipeInputData) {
+    public void execute(LikeRecipeInputData likeRecipeInputData) throws IOException {
 
         final String recipeName = likeRecipeInputData.getDishName();
         final Recipe theRecipe = recipeDataAccessObject.getOneRecipe(recipeName);
@@ -44,7 +46,10 @@ public class LikeRecipeInteractor implements LikeRecipeInputBoundary {
 
         // Increment like count and persist
         theRecipe.incrementLikeNumber();
-        //recipeDataAccessObject.updateRecipe(theRecipe);
+        String recipeId = theRecipe.getId();
+
+        recipeDataAccessObject.deleteFileFromFileIo();
+        recipeDataAccessObject.updateRecipeField(recipeId, "likeNumber");
 
         // Add the like to user data
         userLikesDataAccessObject.addUserLike(userName, recipeName);

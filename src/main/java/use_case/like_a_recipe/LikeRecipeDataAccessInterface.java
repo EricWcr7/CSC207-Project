@@ -1,44 +1,29 @@
 package use_case.like_a_recipe;
 
 import entity.Recipe;
-import entity.User;
+import java.io.IOException;
 
 /**
- * DAO for the Login Use Case.
+ * DAO for the Like a Recipe Case, accessing and updating recipe data with "like" functionality.
  */
 public interface LikeRecipeDataAccessInterface {
 
-//    /**
-//     * Checks if the given username exists.
-//     * @param username the username to look for
-//     * @return true if a user with the given username exists; false otherwise
-//     */
-//    boolean existsByName(String username);
-//
-//    /**
-//     * Saves the user.
-//     * @param user the user to save
-//     */
-//    void save(User user);
-//
-//    /**
-//     * Returns the user with the given username.
-//     * @param username the username to look up
-//     * @return the user with the given username
-//     */
-//    User get(String username);
-//
-//    /**
-//     * Returns the username of the curren user of the application.
-//     * @return the username of the current user; null indicates that no one is logged into the application.
-//     */
-//    String getCurrentUsername();
-//
-//    /**
-//     * Sets the username indicating who is the current user of the application.
-//     * @param username the new current username; null to indicate that no one is currently logged into the application.
-//     */
-//    void setCurrentUsername(String username);
-
+    /**
+     * Retrieves a single recipe by its name.
+     *
+     * @param recipeName the name of the recipe to retrieve.
+     * @return the {@link Recipe} object corresponding to the specified recipe name.
+     */
     Recipe getOneRecipe(String recipeName);
+
+    /**
+     * Updates a specific field of a recipe, such as the number of likes.
+     *
+     * @param id the unique identifier of the recipe to update.
+     * @param likeNumber the new value for the "like" field of the recipe.
+     * @throws IOException if an I/O error occurs during the update process.
+     */
+    void updateRecipeField(String id, String likeNumber) throws IOException;
+
+    void deleteFileFromFileIo();
 }

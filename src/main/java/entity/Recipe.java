@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Map;
+
 /**
  * The representation of a recipe in the program.
  */
@@ -34,6 +36,8 @@ public interface Recipe {
     String getInstructions();
 
     String getIngredients();
+
+    Map<String, String> getIngredientMeasureMap();
 
     int getLikeNumber();
 

@@ -1,5 +1,6 @@
 package data_access;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.gson.*;
 import entity.CommonRecipe;
 import entity.Recipe;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 /**
  * DAO for the RecipeSearch Use Case.
@@ -39,10 +42,11 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     private static final int STATUS_CODE_OK = 200;
     // Holds the list of recipes loaded from the downloaded JSON
     private List<Recipe> cachedRecipes = new ArrayList<>();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     //public RecipeDataAccessObject() {
-        // Add a shutdown hook to delete the file from File.io when the application stops
-       // Runtime.getRuntime().addShutdownHook(new Thread(this::deleteFileFromFileIo));
+    // Add a shutdown hook to delete the file from File.io when the application stops
+    // Runtime.getRuntime().addShutdownHook(new Thread(this::deleteFileFromFileIo));
     //}
 
     @Override
@@ -276,7 +280,6 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
             RecipeFactory recipeFactory = new CommonRecipeFactory();
             Recipe recipe = recipeFactory.createRecipe(id, name, category, instructions, ingredientMeasureMap,
                     0, 0);
-            // TODO: write likeNum, dislikeNum to file once downloading. Add another 2 arguments here.
             recipes.add(recipe);
         }
 
@@ -536,6 +539,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
         System.out.println("No recipe found matching keyword: " + dishName);
         return null;
     }
+
     // might cause error when merge, need to fix commonrecipe data type(change it to recipe)
     public String getMaxId() {
         String maxId = cachedRecipes.get(0).getId();
@@ -566,6 +570,50 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     public void saveRecipe(Recipe recipe) {
         this.cachedRecipes.add(recipe);
     }
+
+    // Method to update a recipe
+    @Override
+    public void updateRecipeField(String recipeId, String field) throws IOException {
+        // Use CommonRecipe instead of Recipe for deserialization
+        final List<CommonRecipe> recipes = objectMapper.readValue(
+                new File(FILE_PATH),
+                new TypeReference<List<CommonRecipe>>() {}
+        );
+
+        boolean updated = false;
+        for (Recipe recipe : recipes) {
+            if (recipe.getId().equals(recipeId)) {
+                switch (field) {
+                    case "likeNumber":
+                        recipe.incrementLikeNumber();
+                        break;
+                    case "dislikeNumber":
+                        recipe.incrementDislikeNumber();
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Field " + field + " is not supported.");
+                }
+                updated = true;
+
+//                // 使用 ObjectMapper.readerForUpdating() 更新对象（如果有外部 JSON 数据,这里没有）
+//                String partialJson = objectMapper.writeValueAsString(recipe); // 生成部分 JSON
+//                objectMapper.readerForUpdating(recipe).readValue(partialJson);
+
+                break;
+            }
+        }
+
+        if (!updated) {
+            throw new IllegalArgumentException("Recipe with ID " + recipeId + " not found.");
+        }
+
+        // Save updated recipes back to the file
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(FILE_PATH), recipes);
+        // Save updated recipes back to the file API server
+        // 现在点一次赞就上传一个新的文件
+        uploadFileToFileIo();
+    }
+
 }
 
 

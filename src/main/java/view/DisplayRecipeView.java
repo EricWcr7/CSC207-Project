@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 
 public class DisplayRecipeView extends JPanel implements PropertyChangeListener {
     private final String viewName = "display the recipe";
@@ -118,7 +119,11 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                 evt -> {
                     if (evt.getSource().equals(likeButton)) {
                         final DisplayRecipeState state = displayRecipeViewModel.getState();
-                        this.likeRecipeController.execute(state.getDishName());
+                        try {
+                            this.likeRecipeController.execute(state.getDishName());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
         );
