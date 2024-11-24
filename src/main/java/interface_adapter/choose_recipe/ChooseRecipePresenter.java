@@ -33,9 +33,11 @@ public class ChooseRecipePresenter implements ChooseRecipeOutputBoundary {
 //        System.out.println("Instructions: " + outputData.getDishInstructions());
 
         // Update the display state
+        final String dishName = outputData.getDishName();
         displayState.setDishName(outputData.getDishName());
         displayState.setIngredients(outputData.getDishIngredients());
         displayState.setInstructions(outputData.getDishInstructions());
+        displayState.setLikeNumber(dishName, outputData.getLikeNumber());
 
         // Notify that the state has changed
         this.displayRecipeViewModel.setState(displayState);

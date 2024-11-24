@@ -35,7 +35,7 @@ public class ChooseRecipeInteractor implements ChooseRecipeInputBoundary {
 
         final Recipe recipe = recipeDataAccessObject.getOneRecipe(searchDishName);
 
-        final ChooseRecipeOutputData chooseRecipeOutputData = new ChooseRecipeOutputData(recipe.getName(), recipe.getIngredients(), recipe.getInstructions());
+        final ChooseRecipeOutputData chooseRecipeOutputData = new ChooseRecipeOutputData(recipe.getName(), recipe.getIngredients(), recipe.getInstructions(), recipe.getLikeNumber());
         chooseRecipePresenter.prepareSuccessView(chooseRecipeOutputData);
     }
 }
