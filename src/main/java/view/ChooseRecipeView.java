@@ -46,7 +46,9 @@ public class ChooseRecipeView extends JPanel implements PropertyChangeListener {
         // Set up listener for the "Return to Search View" button
         returnToSearchMenu.addActionListener(evt -> {
             if (evt.getSource().equals(returnToSearchMenu)) {
-                this.returnToSearchMenuController.execute();
+                final ChooseRecipeState currentState = chooseRecipeViewModel.getState();
+                this.returnToSearchMenuController.execute(
+                        "", currentState.getUsername(), currentState.getFavoriteRecipes());
             }
         });
 

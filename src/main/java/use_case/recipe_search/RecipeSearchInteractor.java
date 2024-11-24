@@ -1,9 +1,9 @@
 package use_case.recipe_search;
 
 import entity.Recipe;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * The Recipe Search Interactor.
@@ -95,8 +95,15 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
     }
 
     @Override
-    public void switchToFavoriteRecipeView() {
-        recipeSearchPresenter.switchToFavoriteRecipeView();
+    public void switchToFavoriteRecipeView(RecipeSearchInputData recipeSearchInputData) {
+        final String username = recipeSearchInputData.getUsername();
+        final String[] favoriteRecipes = recipeSearchInputData.getFavoriteRecipes();
+        System.out.println("Current logged in account: " + username);
+        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
+        final List<Recipe> recipes = new ArrayList<>();
+        final RecipeSearchOutputData recipeSearchOutputData = new RecipeSearchOutputData(
+                "", recipes, username, favoriteRecipes);
+        recipeSearchPresenter.switchToFavoriteRecipeView(recipeSearchOutputData);
     }
 
     @Override

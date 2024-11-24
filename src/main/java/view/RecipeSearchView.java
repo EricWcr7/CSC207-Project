@@ -136,7 +136,10 @@ public class RecipeSearchView extends JPanel implements ActionListener, Property
         favorite.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(favorite)) {
-                        recipeSearchController.switchToFavoriteRecipeView();
+                        final RecipeSearchState currentState = recipeSearchViewModel.getState();
+                        recipeSearchController.switchToFavoriteRecipeView(
+                                currentState.getUsername(), currentState.getFavoriteRecipes()
+                        );
                     }
                 }
         );

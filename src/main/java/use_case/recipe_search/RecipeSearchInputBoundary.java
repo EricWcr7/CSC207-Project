@@ -11,7 +11,7 @@ public interface RecipeSearchInputBoundary {
      */
     void execute(RecipeSearchInputData recipeSearchInputData);
 
-    void switchToFavoriteRecipeView();
+    void switchToFavoriteRecipeView(RecipeSearchInputData recipeSearchInputData);
 
     void switchToEditView();
 
