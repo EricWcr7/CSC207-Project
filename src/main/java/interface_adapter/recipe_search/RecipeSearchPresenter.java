@@ -65,6 +65,10 @@ public class RecipeSearchPresenter implements RecipeSearchOutputBoundary {
             // Notify changes in ChooseRecipeState and switch view
         this.chooseRecipeViewModel.setState(chooseRecipeState);
         this.chooseRecipeViewModel.firePropertyChanged();
+        ChooseRecipeState currentState = chooseRecipeViewModel.getState();
+        currentState.setUsername(outputData.getUsername());
+        currentState.setFavoriteRecipes(outputData.getFavoriteRecipes());
+        chooseRecipeViewModel.setState(currentState);
         this.viewManagerModel.setState(chooseRecipeViewModel.getViewName());
 //        }
         this.viewManagerModel.firePropertyChanged();

@@ -10,11 +10,14 @@ public class CommonUser implements User {
     private final String name;
     private final String password;
     private final ArrayList<Recipe> recipeCreated;
+    private String[] favoriteRecipes;
+    private final int six = 6;
 
     public CommonUser(String name, String password) {
         this.name = name;
         this.password = password;
         this.recipeCreated = new ArrayList<>();
+        this.favoriteRecipes = new String[six];
     }
 
     @Override
@@ -32,4 +35,13 @@ public class CommonUser implements User {
         recipeCreated.add(recipe);
     }
 
+    @Override
+    public String[] getFavoriteRecipes() {
+        return favoriteRecipes;
+    }
+
+    @Override
+    public void setFavoriteRecipes(String[] favoriteRecipes) {
+        this.favoriteRecipes = favoriteRecipes;
+    }
 }

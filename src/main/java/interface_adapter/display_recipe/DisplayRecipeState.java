@@ -4,6 +4,8 @@ public class DisplayRecipeState {
     private String dishName;
     private String ingredients;
     private String instructions;
+    private String username;
+    private String[] favoriteRecipes;
     private int likeNumber;
 
     public void setDishName(String dishName) {
@@ -38,4 +40,19 @@ public class DisplayRecipeState {
         this.likeNumber = likeNumber;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String[] getFavoriteRecipes() {
+        return favoriteRecipes;
+    }
+
+    public void setFavoriteRecipes(String[] favoriteRecipes) {
+        this.favoriteRecipes = favoriteRecipes;
+    }
 }

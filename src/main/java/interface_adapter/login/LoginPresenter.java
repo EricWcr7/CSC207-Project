@@ -30,6 +30,10 @@ public class LoginPresenter implements LoginOutputBoundary {
     @Override
     public void prepareSuccessView(LoginOutputData response) {
         // On success, switch to the logged in view.
+        final RecipeSearchState currentState = recipeSearchViewModel.getState();
+        currentState.setUsername(response.getUsername());
+        currentState.setFavoriteRecipes(response.getFavoriteRecipes());
+        recipeSearchViewModel.setState(currentState);
         this.viewManagerModel.setState(recipeSearchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }

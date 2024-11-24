@@ -58,7 +58,9 @@ public class ChooseRecipeView extends JPanel implements PropertyChangeListener {
                     String selectedRecipe = (String) recipeComboBox.getSelectedItem();
                     System.out.println("Selected recipe: " + selectedRecipe);
                     // Future: Add logic here to display recipe details or trigger other actions
-                    chooseRecipeController.execute(selectedRecipe);
+                    final ChooseRecipeState currentState = chooseRecipeViewModel.getState();
+                    chooseRecipeController.execute(selectedRecipe,
+                            currentState.getUsername(), currentState.getFavoriteRecipes());
                 }
             }
         });

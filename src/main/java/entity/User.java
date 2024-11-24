@@ -23,4 +23,15 @@ public interface User {
      */
     void addCreatedRecipe(Recipe recipe);
 
+    /**
+     * Returns the favoriteRecipes of the user.
+     * @return the favoriteRecipes of the user.
+     */
+    String[] getFavoriteRecipes();
+
+    /**
+     * Set new favoriteRecipe.
+     * @param favoriteRecipes the new favoriteRecipes;
+     */
+    void setFavoriteRecipes(String[] favoriteRecipes);
 }
