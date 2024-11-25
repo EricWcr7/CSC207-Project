@@ -1,5 +1,8 @@
 package view;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import interface_adapter.BackToEditView.BackToEditViewController;
 import interface_adapter.create.CreateController;
 import interface_adapter.create.CreateState;
@@ -13,6 +16,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class CreateView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -158,12 +164,34 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
             }
         });
 
+
+//        confirm.addActionListener(evt -> {
+//            if (createController != null) {
+//                final CreateState currentState = createViewModel.getState();
+//                createController.execute(currentState.getDishName(), currentState.getInstructions(), currentState.getIngredients());
+//            }
+//        });
+
         confirm.addActionListener(evt -> {
             if (createController != null) {
                 final CreateState currentState = createViewModel.getState();
-                createController.execute(currentState.getDishName(), currentState.getInstructions(), currentState.getIngredients());
+
+                // 获取用户输入的菜谱信息
+                String dishName = currentState.getDishName();
+                String instructions = currentState.getInstructions();
+
+                // 将 Map 转换为 HashMap
+                HashMap<String, String> ingredients = new HashMap<>(currentState.getIngredients());
+
+                // 调用原有逻辑
+                createController.execute(dishName, instructions, ingredients);
+
+                // 将新菜谱写入到新的 JSON 文件中
+                addToNewRecipesJson(dishName, instructions, ingredients);
             }
         });
+
+
     }
 
     private void addIngredientRow() {
@@ -331,4 +359,51 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
     public void setBackToEditViewConTroller(BackToEditViewController backToEditViewConTroller) {
         this.backToEditViewController = backToEditViewConTroller;
     }
+
+    private void addToNewRecipesJson(String dishName, String instructions, HashMap<String, String> ingredients) {
+        try {
+            // 读取 new_recipes.json 文件
+            FileReader reader;
+            JsonObject jsonObject;
+            JsonArray recipesArray;
+
+            try {
+                // 如果文件已存在，读取内容
+                reader = new FileReader("new_recipes.json");
+                jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+                recipesArray = jsonObject.getAsJsonArray("recipes");
+                reader.close();
+            } catch (IOException e) {
+                // 如果文件不存在，创建一个新的 JSON 对象
+                jsonObject = new JsonObject();
+                recipesArray = new JsonArray();
+                jsonObject.add("recipes", recipesArray);
+            }
+
+            // 创建新的菜谱对象
+            JsonObject newRecipe = new JsonObject();
+            newRecipe.addProperty("name", dishName);
+            newRecipe.addProperty("instructions", instructions);
+
+            // 添加配料
+            JsonObject ingredientsObject = new JsonObject();
+            for (String ingredient : ingredients.keySet()) {
+                ingredientsObject.addProperty(ingredient, ingredients.get(ingredient));
+            }
+            newRecipe.add("ingredients", ingredientsObject);
+
+            // 将新菜谱添加到 JSON 数组
+            recipesArray.add(newRecipe);
+
+            // 将更新后的 JSON 写回文件
+            FileWriter writer = new FileWriter("new_recipes.json");
+            writer.write(jsonObject.toString());
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error saving to new_recipes.json!");
+        }
+    }
+
 }

@@ -1,10 +1,15 @@
 package app;
 
 import java.awt.CardLayout;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import data_access.InMemoryUserDataAccessObject;
 import data_access.RecipeDataAccessObject;
 import entity.*;
@@ -172,6 +177,15 @@ public class AppBuilder {
         return this;
     }
 
+//    public AppBuilder addEditView() {
+//        editViewModel = new EditViewModel();
+//        editView = new EditView(editViewModel);
+//        System.out.println("Adding Edit View with name: " + editView.getViewName());
+//        cardPanel.add(editView, editView.getViewName());
+//        return this;
+//    }
+
+
     public AppBuilder addCreateView() {
         createViewModel = new CreateViewModel();
         createView = new CreateView(createViewModel);
@@ -309,7 +323,24 @@ public class AppBuilder {
             return this;
         }
 
-        public JFrame build() {
+    public void initializeNewRecipesFile() {
+        File file = new File("new_recipes.json");
+        if (!file.exists()) {
+            try (FileWriter writer = new FileWriter(file)) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.add("recipes", new JsonArray()); // 初始化空的 "recipes" 数组
+                writer.write(jsonObject.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("Failed to initialize new_recipes.json file.");
+            }
+        }
+    }
+
+
+
+
+    public JFrame build() {
             final JFrame application = new JFrame("Mealmaster");
             application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

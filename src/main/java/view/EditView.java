@@ -1,5 +1,8 @@
 package view;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.create.CreateController;
 import interface_adapter.edit.EditController;
@@ -11,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class EditView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "Edit recipe";
@@ -78,6 +83,8 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
                 // Future: Trigger editing logic for the selected recipe
             }
         });
+
+        loadNewRecipes();
     }
 
     @Override
@@ -100,5 +107,30 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
 
     public void setReturnToSearchMenuController(ReturnToSearchMenuController returnToSearchMenuController) {
         this.returnToSearchMenuController = returnToSearchMenuController;
+    }
+
+    public void loadNewRecipes() {
+        try (FileReader reader = new FileReader("new_recipes.json")) {
+            // 解析 JSON 文件
+            JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+            JsonArray recipesArray = jsonObject.getAsJsonArray("recipes");
+
+            // 清空下拉框内容
+            recipeComboBox.removeAllItems();
+
+            // 遍历 JSON 数组，将菜谱名称添加到下拉框
+            for (int i = 0; i < recipesArray.size(); i++) {
+                JsonObject recipe = recipesArray.get(i).getAsJsonObject();
+                String recipeName = recipe.get("name").getAsString(); // 获取菜谱名称
+                recipeComboBox.addItem(recipeName); // 添加到下拉框
+            }
+
+            // 确保下拉框刷新界面
+            recipeComboBox.revalidate();
+            recipeComboBox.repaint();
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading recipes from new_recipes.json!");
+        }
     }
 }
