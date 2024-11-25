@@ -8,6 +8,7 @@ import entity.CommonRecipeFactory;
 import entity.Recipe;
 import entity.RecipeFactory;
 import use_case.choose_recipe.ChooseRecipeDataAccessInterface;
+import use_case.create.CreateDataAccessInterface;
 import use_case.like_a_recipe.LikeRecipeDataAccessInterface;
 import use_case.recipe_search.RecipeSearchDataAccessInterface;
 
@@ -32,7 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * DAO for the RecipeSearch Use Case.
  */
-public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, ChooseRecipeDataAccessInterface, LikeRecipeDataAccessInterface {
+public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, ChooseRecipeDataAccessInterface, LikeRecipeDataAccessInterface, CreateDataAccessInterface {
 
     private static final String API_URL = "https://www.themealdb.com/api/json/v1/1/search.php?f=";
     private static final String FILE_IO_API_URL = "https://file.io";

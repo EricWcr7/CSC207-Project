@@ -310,8 +310,8 @@ public class AppBuilder {
         }
 
     public AppBuilder addCreateUseCase () {
-        final CreateOutputBoundary createOutputBoundary = new CreatePresenter(viewManagerModel, recipeSearchViewModel,createViewModel);
-        final CreateInputBoundary createInteractor = new CreateInteractor(createOutputBoundary, recipeFactory);
+        final CreateOutputBoundary createOutputBoundary = new CreatePresenter(viewManagerModel, recipeSearchViewModel, createViewModel);
+        final CreateInputBoundary createInteractor = new CreateInteractor(createOutputBoundary, recipeFactory, recipeDataAccessObject);
 
         final CreateController createController = new CreateController(createInteractor);
         createView.setCreateController(createController);
