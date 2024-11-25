@@ -27,6 +27,7 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final JButton back;
     private final JButton addButton;
+    private final JButton goButton;
 
     public EditView(EditViewModel editViewModel) {
         this.editViewModel = editViewModel;
@@ -54,9 +55,11 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
 
         addButton = new JButton("+");
         back = new JButton("Back");
+        goButton = new JButton("Go");
 
         buttonsPanel.add(addButton);
         buttonsPanel.add(back);
+        buttonsPanel.add(goButton);
 
         // Add panels to main layout
         this.add(upperPanel, BorderLayout.CENTER);
@@ -74,6 +77,17 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
                 this.editController.switchToCreate();
             }
         });
+
+//        goButton.addActionListener(evt -> {
+//            // 获取下拉框中当前选中的菜谱名称
+//            String selectedRecipe = (String) recipeComboBox.getSelectedItem();
+//            if (selectedRecipe != null) {
+//                // 调用方法跳转到另一个视图
+//                navigateToRecipeDetails(selectedRecipe);
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Please select a recipe!");
+//            }
+//        });
 
         // Add ActionListener to recipeComboBox
         recipeComboBox.addActionListener(evt -> {
