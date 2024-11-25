@@ -5,5 +5,5 @@ public interface ReturnToSearchMenuOutputBoundary {
     public void prepareSuccessView(ReturnToSearchMenuOutputData recipeSearchOutputData);
 
     void fromEditRecipeBackToSearchMenu();
-    void fromFavoriteRecipeBackToSearchMenu();
+    void fromFavoriteRecipeBackToSearchMenu(ReturnToSearchMenuOutputData recipeSearchOutputData);
 }
