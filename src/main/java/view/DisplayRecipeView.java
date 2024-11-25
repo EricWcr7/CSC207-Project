@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
+import interface_adapter.choose_recipe.ChooseRecipeState;
 import interface_adapter.display_recipe.DisplayRecipeState;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import interface_adapter.like_a_recipe.LikeRecipeController;
@@ -109,7 +110,8 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
                     if (evt.getSource().equals(returnToSearchMenu)) {
-                        this.returnToSearchMenuController.execute();
+                        final DisplayRecipeState currentState = displayRecipeViewModel.getState();
+                        this.returnToSearchMenuController.execute("", currentState.getUsername(), currentState.getFavoriteRecipes());
                     }
                 }
         );

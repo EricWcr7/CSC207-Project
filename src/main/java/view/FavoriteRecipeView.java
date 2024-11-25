@@ -9,8 +9,13 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
+import interface_adapter.choose_recipe.ChooseRecipeController;
+import interface_adapter.choose_recipe.ChooseRecipeState;
+import interface_adapter.display_recipe.DisplayRecipeState;
 import interface_adapter.favorite_recipe.FavoriteRecipeController;
+import interface_adapter.favorite_recipe.FavoriteRecipeState;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
+import interface_adapter.searchresult.SearchResultController;
 
 /**
  * The View for when the user is going to see recipes which they add to favorite file.
@@ -24,7 +29,8 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     private final FavoriteRecipeViewModel favoriteRecipeViewModel;
     private FavoriteRecipeController favoriteRecipeController;
     private ReturnToSearchMenuController returnToSearchMenuController;
-    private final JButton back;
+    private ChooseRecipeController chooseRecipeController;
+    private JButton back;
 
     public FavoriteRecipeView(FavoriteRecipeViewModel favoriteRecipeViewModel) {
         this.favoriteRecipeViewModel = favoriteRecipeViewModel;
@@ -57,6 +63,11 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     }
 
     private void addRecipeSectionsA() {
+        final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
+        String recipeName = "null";
+        if (currentState.getFavoriteRecipes()[0] != null) {
+            recipeName = currentState.getFavoriteRecipes()[0];
+        }
         // Main panel for recipe sections
         final JPanel recipeGrid = new JPanel(new GridLayout(6, 1));
         // 6 rows for A-F
@@ -67,8 +78,8 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         // Align items to the left
 
         // Section label
-        final JLabel sectionLabel = new JLabel(String.valueOf("A"));
-        sectionLabel.setPreferredSize(new Dimension(fifty, thirty));
+        final JLabel sectionLabel = new JLabel(String.valueOf(recipeName));
+        // sectionLabel.setPreferredSize(new Dimension(oneHundredFifty, thirty));
         // Size for the label
         sectionPanel.add(sectionLabel);
 
@@ -85,6 +96,14 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         // listener for button actions
         buttonDetailA1.addActionListener(evt -> {
             System.out.println("Button " + buttonDetailA1.getText() + " clicked!");
+            if (favoriteRecipeViewModel.getState().getFavoriteRecipes()[0] == null) {
+                System.out.println("There no favorite recipe save here !");
+            }
+            else {
+                final FavoriteRecipeState currentState1 = favoriteRecipeViewModel.getState();
+                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[0],
+                        currentState1.getUsername(), currentState1.getFavoriteRecipes());
+            }
         });
 
         // listener for button actions
@@ -100,6 +119,11 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     }
 
     private void addRecipeSectionsB() {
+        final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
+        String recipeName = "null";
+        if (currentState.getFavoriteRecipes()[1] != null) {
+            recipeName = currentState.getFavoriteRecipes()[1];
+        }
         // Main panel for recipe sections
         final JPanel recipeGrid = new JPanel(new GridLayout(6, 1));
         // 6 rows for A-F
@@ -110,8 +134,8 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         // Align items to the left
 
         // Section label
-        final JLabel sectionLabel = new JLabel(String.valueOf("B"));
-        sectionLabel.setPreferredSize(new Dimension(fifty, thirty));
+        final JLabel sectionLabel = new JLabel(String.valueOf(recipeName));
+        // sectionLabel.setPreferredSize(new Dimension(oneHundredFifty, thirty));
         // Size for the label
         sectionPanel.add(sectionLabel);
 
@@ -128,6 +152,14 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         // listener for button actions
         buttonDetailB1.addActionListener(evt -> {
             System.out.println("Button " + buttonDetailB1.getText() + " clicked!");
+            if (favoriteRecipeViewModel.getState().getFavoriteRecipes()[1] == null) {
+                System.out.println("There no favorite recipe save here !");
+            }
+            else {
+                final FavoriteRecipeState currentState1 = favoriteRecipeViewModel.getState();
+                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[1],
+                        currentState1.getUsername(), currentState1.getFavoriteRecipes());
+            }
         });
 
         // listener for button actions
@@ -143,6 +175,11 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     }
 
     private void addRecipeSectionsC() {
+        final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
+        String recipeName = "null";
+        if (currentState.getFavoriteRecipes()[2] != null) {
+            recipeName = currentState.getFavoriteRecipes()[2];
+        }
         // Main panel for recipe sections
         final JPanel recipeGrid = new JPanel(new GridLayout(6, 1));
         // 6 rows for A-F
@@ -153,8 +190,8 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         // Align items to the left
 
         // Section label
-        final JLabel sectionLabel = new JLabel(String.valueOf("C"));
-        sectionLabel.setPreferredSize(new Dimension(fifty, thirty));
+        final JLabel sectionLabel = new JLabel(String.valueOf(recipeName));
+        // sectionLabel.setPreferredSize(new Dimension(oneHundredFifty, thirty));
         // Size for the label
         sectionPanel.add(sectionLabel);
 
@@ -171,6 +208,14 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         // listener for button actions
         buttonDetailC1.addActionListener(evt -> {
             System.out.println("Button " + buttonDetailC1.getText() + " clicked!");
+            if (favoriteRecipeViewModel.getState().getFavoriteRecipes()[2] == null) {
+                System.out.println("There no favorite recipe save here !");
+            }
+            else {
+                final FavoriteRecipeState currentState1 = favoriteRecipeViewModel.getState();
+                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[2],
+                        currentState1.getUsername(), currentState1.getFavoriteRecipes());
+            }
         });
 
         // listener for button actions
@@ -186,6 +231,11 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     }
 
     private void addRecipeSectionsD() {
+        final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
+        String recipeName = "null";
+        if (currentState.getFavoriteRecipes()[2 + 1] != null) {
+            recipeName = currentState.getFavoriteRecipes()[2 + 1];
+        }
         // Main panel for recipe sections
         final JPanel recipeGrid = new JPanel(new GridLayout(6, 1));
         // 6 rows for A-F
@@ -196,8 +246,8 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         // Align items to the left
 
         // Section label
-        final JLabel sectionLabel = new JLabel(String.valueOf("D"));
-        sectionLabel.setPreferredSize(new Dimension(fifty, thirty));
+        final JLabel sectionLabel = new JLabel(String.valueOf(recipeName));
+        // sectionLabel.setPreferredSize(new Dimension(oneHundredFifty, thirty));
         // Size for the label
         sectionPanel.add(sectionLabel);
 
@@ -212,6 +262,14 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         // listener for button actions
         buttonDetailD1.addActionListener(evt -> {
             System.out.println("Button " + buttonDetailD1.getText() + " clicked!");
+            if (favoriteRecipeViewModel.getState().getFavoriteRecipes()[2 + 1] == null) {
+                System.out.println("There no favorite recipe save here !");
+            }
+            else {
+                final FavoriteRecipeState currentState1 = favoriteRecipeViewModel.getState();
+                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[2 + 1],
+                        currentState1.getUsername(), currentState1.getFavoriteRecipes());
+            }
         });
 
         // listener for button actions
@@ -228,6 +286,11 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     }
 
     private void addRecipeSectionsE() {
+        final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
+        String recipeName = "null";
+        if (currentState.getFavoriteRecipes()[2 + 2] != null) {
+            recipeName = currentState.getFavoriteRecipes()[2 + 2];
+        }
         // Main panel for recipe sections
         final JPanel recipeGrid = new JPanel(new GridLayout(6, 1));
         // 6 rows for A-F
@@ -236,8 +299,8 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         sectionPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         // Align items to the left
         // Section label
-        final JLabel sectionLabel = new JLabel(String.valueOf("E"));
-        sectionLabel.setPreferredSize(new Dimension(fifty, thirty));
+        final JLabel sectionLabel = new JLabel(String.valueOf(recipeName));
+        // sectionLabel.setPreferredSize(new Dimension(oneHundredFifty, thirty));
         // Size for the label
         sectionPanel.add(sectionLabel);
 
@@ -252,6 +315,14 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         // listener for button actions
         buttonDetailE1.addActionListener(evt -> {
             System.out.println("Button " + buttonDetailE1.getText() + " clicked!");
+            if (favoriteRecipeViewModel.getState().getFavoriteRecipes()[2 + 2] == null) {
+                System.out.println("There no favorite recipe save here !");
+            }
+            else {
+                final FavoriteRecipeState currentState1 = favoriteRecipeViewModel.getState();
+                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[2 + 2],
+                        currentState1.getUsername(), currentState1.getFavoriteRecipes());
+            }
         });
 
         // listener for button actions
@@ -268,6 +339,11 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     }
 
     private void addRecipeSectionsF() {
+        final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
+        String recipeName = "null";
+        if (currentState.getFavoriteRecipes()[2 + 2 + 1] != null) {
+            recipeName = currentState.getFavoriteRecipes()[2 + 2 + 1];
+        }
         // Main panel for recipe sections
         final JPanel recipeGrid = new JPanel(new GridLayout(6, 1));
         // 6 rows for A-F
@@ -278,8 +354,8 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         // Align items to the left
 
         // Section label
-        final JLabel sectionLabel = new JLabel(String.valueOf("F"));
-        sectionLabel.setPreferredSize(new Dimension(fifty, thirty));
+        final JLabel sectionLabel = new JLabel(String.valueOf(recipeName));
+        // sectionLabel.setPreferredSize(new Dimension(oneHundredFifty, thirty));
         // Size for the label
         sectionPanel.add(sectionLabel);
 
@@ -294,6 +370,14 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         // listener for button actions
         buttonDetailF1.addActionListener(evt -> {
             System.out.println("Button " + buttonDetailF1.getText() + " clicked!");
+            if (favoriteRecipeViewModel.getState().getFavoriteRecipes()[2 + 2 + 1] == null) {
+                System.out.println("There no favorite recipe save here !");
+            }
+            else {
+                final FavoriteRecipeState currentState1 = favoriteRecipeViewModel.getState();
+                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[2 + 2 + 1],
+                        currentState1.getUsername(), currentState1.getFavoriteRecipes());
+            }
         });
 
         // listener for button actions
@@ -316,7 +400,37 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        final FavoriteRecipeState favoriteRecipeState = (FavoriteRecipeState) evt.getNewValue();
+        favoriteRecipeViewModel.setState(favoriteRecipeState);
+        // Update UI components with the new state values
+        System.out.println("there are some change: update favoriteRecipe view");
+        this.removeAll();
+        this.favoriteRecipeViewModel.addPropertyChangeListener(this);
 
+        final JLabel title = new JLabel("my favorite recipe");
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        final JPanel buttons = new JPanel();
+        back = new JButton("back to recipe search page");
+        buttons.add(back);
+
+        this.add(title);
+        this.add(buttons);
+
+        this.add(Box.createRigidArea(new Dimension(threeHundred, 0)));
+        this.add(Box.createVerticalStrut(oneHundredFifty));
+        addRecipeSectionsA();
+        addRecipeSectionsB();
+        addRecipeSectionsC();
+        addRecipeSectionsD();
+        addRecipeSectionsE();
+        addRecipeSectionsF();
+
+        back.addActionListener(evt1 -> {
+            if (evt1.getSource().equals(back)) {
+                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu();
+            }
+        });
     }
 
     public String getViewName() {
@@ -329,5 +443,9 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
 
     public void setReturnToSearchMenuController(ReturnToSearchMenuController returnToSearchMenuController) {
         this.returnToSearchMenuController = returnToSearchMenuController;
+    }
+
+    public void setChooseRecipeController(ChooseRecipeController chooseRecipeController) {
+        this.chooseRecipeController = chooseRecipeController;
     }
 }
