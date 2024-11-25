@@ -108,7 +108,9 @@ public class RecipeSearchView extends JPanel implements ActionListener, Property
                             final RecipeSearchState currentState = recipeSearchViewModel.getState();
                             // Use searchRecipe instead of execute
                             recipeSearchController.execute(
-                                    currentState.getSearchKeyword()
+                                    currentState.getSearchKeyword(),
+                                    currentState.getUsername(),
+                                    currentState.getFavoriteRecipes()
                             );
                         }
                     }
@@ -134,7 +136,10 @@ public class RecipeSearchView extends JPanel implements ActionListener, Property
         favorite.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(favorite)) {
-                        recipeSearchController.switchToFavoriteRecipeView();
+                        final RecipeSearchState currentState = recipeSearchViewModel.getState();
+                        recipeSearchController.switchToFavoriteRecipeView(
+                                currentState.getUsername(), currentState.getFavoriteRecipes()
+                        );
                     }
                 }
         );

@@ -9,11 +9,16 @@ public class ChooseRecipeOutputData {
     private final String dishIngredients;
     private final String dishInstructions;
     private int likeNumber;
+    private final String username;
+    private final String[] favoriteRecipes;
 
-    public ChooseRecipeOutputData(String dishName, String dishIngredients, String dishInstructions, int likeNumber) {
+    public ChooseRecipeOutputData(String dishName, String dishIngredients, String dishInstructions,
+                                  int likeNumber, String username, String[] favoriteRecipes) {
         this.dishName = dishName;
         this.dishIngredients = dishIngredients;
         this.dishInstructions = dishInstructions;
+        this.username = username;
+        this.favoriteRecipes = favoriteRecipes;
         this.likeNumber = likeNumber;
     }
 
@@ -33,4 +38,11 @@ public class ChooseRecipeOutputData {
         return likeNumber;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String[] getFavoriteRecipes() {
+        return favoriteRecipes;
+    }
 }

@@ -2,6 +2,9 @@ package use_case.choose_recipe;
 
 import data_access.RecipeDataAccessObject;
 import entity.Recipe;
+
+import java.util.Arrays;
+
 /**
  * The Choose Recipe Interactor.
  * 从controller那准备好的input data知道哪个菜的名字
@@ -31,11 +34,17 @@ public class ChooseRecipeInteractor implements ChooseRecipeInputBoundary {
             recipesLoaded = true;
         }
 
+        final String username = chooseRecipeInputData.getUsername();
+        final String[] favoriteRecipes = chooseRecipeInputData.getFavoriteRecipes();
+        System.out.println("Current logged in account: " + username);
+        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
+
         final String searchDishName = chooseRecipeInputData.getDishName();
 
         final Recipe recipe = recipeDataAccessObject.getOneRecipe(searchDishName);
 
-        final ChooseRecipeOutputData chooseRecipeOutputData = new ChooseRecipeOutputData(recipe.getName(), recipe.getIngredients(), recipe.getInstructions(), recipe.getLikeNumber());
+        final ChooseRecipeOutputData chooseRecipeOutputData = new ChooseRecipeOutputData(
+                recipe.getName(), recipe.getIngredients(), recipe.getInstructions(), recipe.getLikeNumber(), username, favoriteRecipes);
         chooseRecipePresenter.prepareSuccessView(chooseRecipeOutputData);
     }
 }

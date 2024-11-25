@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
+import interface_adapter.choose_recipe.ChooseRecipeState;
 import interface_adapter.display_recipe.DisplayRecipeState;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import interface_adapter.like_a_recipe.LikeRecipeController;
@@ -9,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 import java.io.IOException;
 
 public class DisplayRecipeView extends JPanel implements PropertyChangeListener {
@@ -109,7 +111,8 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
                     if (evt.getSource().equals(returnToSearchMenu)) {
-                        this.returnToSearchMenuController.execute();
+                        final DisplayRecipeState currentState = displayRecipeViewModel.getState();
+                        this.returnToSearchMenuController.execute("", currentState.getUsername(), currentState.getFavoriteRecipes());
                     }
                 }
         );
@@ -127,6 +130,42 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                     }
                 }
         );
+
+        favoriteButton.addActionListener(
+                // This creates an anonymous subclass of ActionListener and instantiates it.
+                evt -> {
+                    if (evt.getSource().equals(favoriteButton)) {
+                        System.out.println("I like this recipe !");
+                        final DisplayRecipeState state = displayRecipeViewModel.getState();
+                        if (findPlaceToSaveFavoriteRecipe(state) == -1) {
+                            System.out.println("That full in favorite file, you can not save more recipes in file !");
+                        }
+                        else {
+                            final String[] currentList = state.getFavoriteRecipes();
+                            currentList[findPlaceToSaveFavoriteRecipe(state)] = state.getDishName();
+                            state.setFavoriteRecipes(currentList);
+                            displayRecipeViewModel.setState(state);
+                            System.out.println("Add " + state.getDishName() + " into my favoriteRecipes file !");
+                            final String username = state.getUsername();
+                            final String[] favoriteRecipes = state.getFavoriteRecipes();
+                            System.out.println("Current logged in account: " + username);
+                            System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
+                        }
+
+                    }
+                }
+        );
+    }
+
+    public int findPlaceToSaveFavoriteRecipe(DisplayRecipeState state) {
+        final String[] favoriteRecipesList = state.getFavoriteRecipes();
+        int firstIndex = -1;
+        for (int i = favoriteRecipesList.length - 1; i > -1; i--) {
+            if (favoriteRecipesList[i] == null) {
+                firstIndex = i;
+            }
+        }
+        return firstIndex;
     }
 
     public String getViewName() {

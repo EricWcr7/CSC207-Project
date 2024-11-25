@@ -6,7 +6,9 @@ import java.util.List;
 public class ChooseRecipeState {
     private String searchKeyword;
     private List<String> recipeNames; // List to store recipe names
-    private String errorMessage; // Field to store error messages
+    private String errorMessage;// Field to store error messages
+    private String username;
+    private String[] favoriteRecipes;
 
     // Default constructor
     public ChooseRecipeState() {
@@ -58,6 +60,22 @@ public class ChooseRecipeState {
         this.searchKeyword = "";
         this.recipeNames.clear();
         this.errorMessage = ""; // Clear the error message
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String[] getFavoriteRecipes() {
+        return favoriteRecipes;
+    }
+
+    public void setFavoriteRecipes(String[] favoriteRecipes) {
+        this.favoriteRecipes = favoriteRecipes;
     }
 }
 

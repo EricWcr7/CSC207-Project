@@ -17,10 +17,13 @@ public class RecipeSearchController {
     /**
      * Executes the Recipe Search Use Case.
      * @param searchKeyword the keyword user types to search for
+     * @param username the username
+     * @param favoriteRecipe the favoriteRecipe
      */
-    public void execute(String searchKeyword) {
+    public void execute(String searchKeyword, String username, String[] favoriteRecipe) {
         // Create the input data for the search operation
-        final RecipeSearchInputData recipeSearchInputData = new RecipeSearchInputData(searchKeyword);
+        final RecipeSearchInputData recipeSearchInputData = new RecipeSearchInputData(searchKeyword,
+                username, favoriteRecipe);
 
         // Perform the search operation through the interactor
         recipeSearchInteractor.execute(recipeSearchInputData);
@@ -28,8 +31,14 @@ public class RecipeSearchController {
         System.out.println("Search button clicked with keyword: " + searchKeyword);
     }
 
-    public void switchToFavoriteRecipeView() {
-        recipeSearchInteractor.switchToFavoriteRecipeView();
+    public void switchToFavoriteRecipeView(String username, String[] favoriteRecipe) {
+        // Create the input data for the search operation
+        final RecipeSearchInputData recipeSearchInputData = new RecipeSearchInputData("",
+                username, favoriteRecipe);
+
+        // Perform the search operation through the interactor
+        // recipeSearchInteractor.execute(recipeSearchInputData);
+        recipeSearchInteractor.switchToFavoriteRecipeView(recipeSearchInputData);
     }
 
     public void switchToEditView() {

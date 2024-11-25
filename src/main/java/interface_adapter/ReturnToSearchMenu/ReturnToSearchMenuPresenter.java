@@ -8,6 +8,7 @@ import interface_adapter.edit.EditViewModel;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import interface_adapter.favorite_recipe.FavoriteRecipeState;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
+import interface_adapter.recipe_search.RecipeSearchState;
 import interface_adapter.recipe_search.RecipeSearchViewModel;
 import use_case.ReturnToSearchMenu.ReturnToSearchMenuOutputBoundary;
 import use_case.ReturnToSearchMenu.ReturnToSearchMenuOutputData;
@@ -37,7 +38,7 @@ public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoun
     }
 
     @Override
-    public void prepareSuccessView() {
+    public void prepareSuccessView(ReturnToSearchMenuOutputData recipeSearchOutputData) {
         // Check the current view to determine the origin
         final String currentState = this.viewManagerModel.getState();
 
@@ -52,14 +53,24 @@ public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoun
             // e.g., displayRecipeViewModel.clearState();
         }
 
+        final RecipeSearchState currentState1 = recipeSearchViewModel.getState();
+        currentState1.setUsername(recipeSearchOutputData.getUsername());
+        currentState1.setFavoriteRecipes(recipeSearchOutputData.getFavoriteRecipes());
+        recipeSearchViewModel.setState(currentState1);
         // 返回recipeSearch View
         this.viewManagerModel.setState(recipeSearchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
 
     @Override
-    public void fromFavoriteRecipeBackToSearchMenu() {
+    public void fromFavoriteRecipeBackToSearchMenu(ReturnToSearchMenuOutputData recipeSearchOutputData) {
         final FavoriteRecipeState favoriteRecipeState = favoriteRecipeViewModel.getState();
+        final RecipeSearchState recipeSearchState = recipeSearchViewModel.getState();
+
+        recipeSearchState.setUsername(recipeSearchOutputData.getUsername());
+        recipeSearchState.setFavoriteRecipes(recipeSearchOutputData.getFavoriteRecipes());
+
+        recipeSearchViewModel.setState(recipeSearchState);
 
         this.favoriteRecipeViewModel.setState(favoriteRecipeState);
         this.favoriteRecipeViewModel.firePropertyChanged();

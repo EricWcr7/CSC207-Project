@@ -283,6 +283,7 @@ public class AppBuilder {
 
         final ChooseRecipeController chooseRecipeController = new ChooseRecipeController(chooseRecipeInteractor);
         chooseRecipeView.setChooseRecipeController(chooseRecipeController);
+        favoriteRecipeView.setChooseRecipeController(chooseRecipeController);
         return this;
     }
 
