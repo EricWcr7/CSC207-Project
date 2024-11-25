@@ -78,25 +78,36 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
             }
         });
 
-//        goButton.addActionListener(evt -> {
-//            // 获取下拉框中当前选中的菜谱名称
-//            String selectedRecipe = (String) recipeComboBox.getSelectedItem();
-//            if (selectedRecipe != null) {
-//                // 调用方法跳转到另一个视图
-//                navigateToRecipeDetails(selectedRecipe);
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Please select a recipe!");
-//            }
-//        });
+ //       goButton.addActionListener(evt -> {
+ //           // 获取下拉框中当前选中的菜谱名称
+ //           String selectedRecipe = (String) recipeComboBox.getSelectedItem();
+ //           if (selectedRecipe != null) {
+ //               // 调用方法跳转到另一个视图
+ //               navigateToRecipeDetails(selectedRecipe);
+ //           } else {
+ //               JOptionPane.showMessageDialog(this, "Please select a recipe!");
+ //           }
+ //       });
 
-        // Add ActionListener to recipeComboBox
+// Set up ActionListener for JComboBox to handle selection events
         recipeComboBox.addActionListener(evt -> {
-            String selectedRecipe = (String) recipeComboBox.getSelectedItem();
-            if (selectedRecipe != null) {
+            if (recipeComboBox.getSelectedItem() != null) {
+                String selectedRecipe = (String) recipeComboBox.getSelectedItem();
                 System.out.println("Selected recipe: " + selectedRecipe);
-                // Future: Trigger editing logic for the selected recipe
+                if (editController != null) {
+                    editController.execute(selectedRecipe);
+                } else {
+                    System.err.println("EditController is null!");
+                    JOptionPane.showMessageDialog(
+                            EditView.this,
+                            "EditController is not initialized. Please contact support.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
             }
         });
+
 
         loadNewRecipes();
     }

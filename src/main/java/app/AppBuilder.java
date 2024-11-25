@@ -47,6 +47,7 @@ import use_case.choose_recipe.ChooseRecipeOutputBoundary;
 import use_case.create.CreateInputBoundary;
 import use_case.create.CreateInteractor;
 import use_case.create.CreateOutputBoundary;
+import use_case.edit.EditDataAccessInterface;
 import use_case.edit.EditInputBoundary;
 import use_case.edit.EditInteractor;
 import use_case.edit.EditOutputBoundary;
@@ -70,6 +71,7 @@ public class AppBuilder {
 
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
+    private final EditDataAccessInterface editDataAccessInterface = new RecipeDataAccessObject();
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -89,6 +91,7 @@ public class AppBuilder {
     private EditViewModel editViewModel;
     private CreateView createView;
     private CreateViewModel createViewModel;
+    private DisplayMyRecipeView displayMyRecipeView;
 
     private RecipeSearchInputBoundary recipeSearchInteractor;
 
@@ -172,10 +175,10 @@ public class AppBuilder {
     public AppBuilder addEditView() {
         editViewModel = new EditViewModel();
         editView = new EditView(editViewModel);
-        System.out.println("Adding Edit View with name: " + editView.getViewName());
         cardPanel.add(editView, editView.getViewName());
         return this;
     }
+
 
 //    public AppBuilder addEditView() {
 //        editViewModel = new EditViewModel();
@@ -314,22 +317,22 @@ public class AppBuilder {
     }
 
     public AppBuilder addEditUseCase () {
-        final EditOutputBoundary editOutputBoundary = new EditPresenter(viewManagerModel, createViewModel, editViewModel);
+        final EditOutputBoundary editOutputBoundary = new EditPresenter(viewManagerModel, createViewModel, editViewModel, displayRecipeViewModel);
 
-        final EditInputBoundary editInteractor = new EditInteractor(editOutputBoundary);
+        final EditInputBoundary editInteractor = new EditInteractor(editDataAccessInterface, editOutputBoundary);
 
-            final EditController editController = new EditController(editInteractor);
-            editView.setEditController(editController);
-            return this;
-        }
+        final EditController editController = new EditController(editInteractor);
+        editView.setEditController(editController);
+        return this;
+    }
 
-        public AppBuilder addCreateUseCase () {
-            final CreateOutputBoundary createOutputBoundary = new CreatePresenter(viewManagerModel, recipeSearchViewModel,createViewModel);
-            final CreateInputBoundary createInteractor = new CreateInteractor(createOutputBoundary, recipeFactory);
+    public AppBuilder addCreateUseCase () {
+        final CreateOutputBoundary createOutputBoundary = new CreatePresenter(viewManagerModel, recipeSearchViewModel,createViewModel);
+        final CreateInputBoundary createInteractor = new CreateInteractor(createOutputBoundary, recipeFactory);
 
-            final CreateController createController = new CreateController(createInteractor);
-            createView.setCreateController(createController);
-            return this;
+        final CreateController createController = new CreateController(createInteractor);
+        createView.setCreateController(createController);
+        return this;
         }
 
     public void initializeNewRecipesFile() {
