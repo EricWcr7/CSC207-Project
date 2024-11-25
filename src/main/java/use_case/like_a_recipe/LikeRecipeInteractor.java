@@ -3,6 +3,7 @@ package use_case.like_a_recipe;
 import entity.Recipe;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The Like Recipe Interactor.
@@ -36,7 +37,7 @@ public class LikeRecipeInteractor implements LikeRecipeInputBoundary {
 
         // Check if the user has already liked the recipe
         final String userName = likeRecipeUserNameDataAccessObject.getCurrentUsername();
-        boolean alreadyLiked = userLikesDataAccessObject.hasUserLikedRecipe(userName, recipeName);
+        final boolean alreadyLiked = userLikesDataAccessObject.hasUserLikedRecipe(userName, recipeName);
 
         if (alreadyLiked) {
             //likeRecipePresenter.prepareFailureView("You have already liked this recipe");
@@ -46,10 +47,13 @@ public class LikeRecipeInteractor implements LikeRecipeInputBoundary {
 
         // Increment like count and persist
         theRecipe.incrementLikeNumber();
-        String recipeId = theRecipe.getId();
+        // final String recipeId = theRecipe.getId();
 
+        final List<Recipe> updatedRecipes = recipeDataAccessObject.getCachedRecipes();
+        recipeDataAccessObject.writeRecipesToFile(updatedRecipes);
         recipeDataAccessObject.deleteFileFromFileIo();
-        recipeDataAccessObject.updateRecipeField(recipeId, "likeNumber");
+        recipeDataAccessObject.uploadFileToFileIo();
+        // recipeDataAccessObject.updateRecipeField(recipeId, "likeNumber");
 
         // Add the like to user data
         userLikesDataAccessObject.addUserLike(userName, recipeName);

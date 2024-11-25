@@ -2,6 +2,7 @@ package use_case.like_a_recipe;
 
 import entity.Recipe;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * DAO for the Like a Recipe Case, accessing and updating recipe data with "like" functionality.
@@ -26,4 +27,10 @@ public interface LikeRecipeDataAccessInterface {
     void updateRecipeField(String id, String likeNumber) throws IOException;
 
     void deleteFileFromFileIo();
+
+    void writeRecipesToFile(List<Recipe> updatedRecipes);
+
+    List<Recipe> getCachedRecipes();
+
+    void uploadFileToFileIo();
 }
