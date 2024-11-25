@@ -122,11 +122,7 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                 evt -> {
                     if (evt.getSource().equals(likeButton)) {
                         final DisplayRecipeState state = displayRecipeViewModel.getState();
-                        try {
-                            this.likeRecipeController.execute(state.getDishName());
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                        this.likeRecipeController.execute(state.getDishName());
                     }
                 }
         );

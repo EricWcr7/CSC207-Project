@@ -12,7 +12,7 @@ public interface LikeRecipeInputBoundary {
      * @param likeRecipeInputData the input data
      * @throws IOException if an I/O error occurs during the update process.
      */
-    void execute(LikeRecipeInputData likeRecipeInputData) throws IOException;
+    void execute(LikeRecipeInputData likeRecipeInputData);
 
 }
 

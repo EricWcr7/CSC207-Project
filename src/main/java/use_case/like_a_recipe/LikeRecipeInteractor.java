@@ -2,7 +2,6 @@ package use_case.like_a_recipe;
 
 import entity.Recipe;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -30,7 +29,7 @@ public class LikeRecipeInteractor implements LikeRecipeInputBoundary {
     }
 
     @Override
-    public void execute(LikeRecipeInputData likeRecipeInputData) throws IOException {
+    public void execute(LikeRecipeInputData likeRecipeInputData) {
 
         final String recipeName = likeRecipeInputData.getDishName();
         final Recipe theRecipe = recipeDataAccessObject.getOneRecipe(recipeName);

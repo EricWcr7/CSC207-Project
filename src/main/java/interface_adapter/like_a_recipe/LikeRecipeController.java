@@ -4,7 +4,6 @@ package interface_adapter.like_a_recipe;
 import use_case.like_a_recipe.LikeRecipeInputBoundary;
 import use_case.like_a_recipe.LikeRecipeInputData;
 
-import java.io.IOException;
 
 public class LikeRecipeController {
 
@@ -14,7 +13,7 @@ public class LikeRecipeController {
         this.likeRecipeInteractor = likeRecipeInteractor;
     }
 
-    public void execute(String dishName) throws IOException {
+    public void execute(String dishName) {
 
         final LikeRecipeInputData likeData = new LikeRecipeInputData(dishName);
         likeRecipeInteractor.execute(likeData);
