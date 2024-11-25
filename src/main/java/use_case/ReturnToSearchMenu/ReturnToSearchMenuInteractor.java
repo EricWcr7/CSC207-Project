@@ -26,8 +26,15 @@ public class ReturnToSearchMenuInteractor implements ReturnToSearchMenuInputBoun
     public void fromEditRecipeBackToSearchMenu() {
         returnToSearchMenuPresenter.fromEditRecipeBackToSearchMenu();
     }
+
     @Override
-    public void fromFavoriteRecipeBackToSearchMenu () {
-        returnToSearchMenuPresenter.fromFavoriteRecipeBackToSearchMenu();
-        }
+    public void fromFavoriteRecipeBackToSearchMenu(ReturnToSearchMenuInputData returnToSearchMenuInputData) {
+        final String username = returnToSearchMenuInputData.getUsername();
+        final String[] favoriteRecipes = returnToSearchMenuInputData.getFavoriteRecipes();
+        System.out.println("Current logged in account: " + username);
+        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
+        final ReturnToSearchMenuOutputData recipeSearchOutputData = new ReturnToSearchMenuOutputData(
+                returnToSearchMenuInputData.getSearchKeyword(), username, favoriteRecipes);
+        returnToSearchMenuPresenter.fromFavoriteRecipeBackToSearchMenu(recipeSearchOutputData);
     }
+}

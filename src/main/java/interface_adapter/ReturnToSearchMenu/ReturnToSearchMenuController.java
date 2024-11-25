@@ -22,7 +22,9 @@ public class ReturnToSearchMenuController {
         returnToSearchMenuInteractor.fromEditRecipeBackToSearchMenu();
     }
 
-    public void fromFavoriteRecipeBackToSearchMenu() {
-        returnToSearchMenuInteractor.fromFavoriteRecipeBackToSearchMenu();
+    public void fromFavoriteRecipeBackToSearchMenu(String username, String[] favoriteRecipes) {
+        final ReturnToSearchMenuInputData returnToSearchMenuInputData = new ReturnToSearchMenuInputData(
+                "", username, favoriteRecipes);
+        returnToSearchMenuInteractor.fromFavoriteRecipeBackToSearchMenu(returnToSearchMenuInputData);
     }
 }
