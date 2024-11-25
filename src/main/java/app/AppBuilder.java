@@ -319,8 +319,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addLikeRecipeUseCase() {
-        final LikeRecipeOutputBoundary likeRecipeOutputBoundary = new LikeRecipePresenter(
-                viewManagerModel, displayRecipeViewModel);
+        final LikeRecipeOutputBoundary likeRecipeOutputBoundary = new LikeRecipePresenter(displayRecipeViewModel);
 
         final LikeRecipeInputBoundary likeRecipeInteractor = new LikeRecipeInteractor(
                 recipeDataAccessObject, userLikesDataAccessObject, userDataAccessObject, likeRecipeOutputBoundary);
