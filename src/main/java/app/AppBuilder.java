@@ -186,13 +186,22 @@ public class AppBuilder {
 //    }
 
 
+//    public AppBuilder addCreateView() {
+//        createViewModel = new CreateViewModel();
+//        createView = new CreateView(createViewModel);
+//        System.out.println("Adding Create View with name: " + createView.getViewName());
+//        cardPanel.add(createView, createView.getViewName());
+//        return this;
+//    }
+
     public AppBuilder addCreateView() {
         createViewModel = new CreateViewModel();
-        createView = new CreateView(createViewModel);
+        createView = new CreateView(createViewModel,editView); // 注入 EditView 实例
         System.out.println("Adding Create View with name: " + createView.getViewName());
         cardPanel.add(createView, createView.getViewName());
         return this;
     }
+
 
     public AppBuilder addSignupUseCase() {
         final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,

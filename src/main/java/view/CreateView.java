@@ -33,9 +33,12 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
     private JTextArea cookArea;
     private final JPanel ingredientRowsPanel = new JPanel();
     private JLabel dishNameErrorField = new JLabel();
+    private final EditView editView;
 
-    public CreateView(CreateViewModel createViewModel) {
+    public CreateView(CreateViewModel createViewModel, EditView editView) {
         this.createViewModel = createViewModel;
+        this.editView = editView;
+
         this.createViewModel.addPropertyChangeListener(this);
 
         this.setLayout(new BorderLayout());
@@ -188,9 +191,12 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
 
                 // 将新菜谱写入到新的 JSON 文件中
                 addToNewRecipesJson(dishName, instructions, ingredients);
+
+                if (editView != null) {
+                    editView.loadNewRecipes();
+                }
             }
         });
-
 
     }
 
