@@ -2,6 +2,7 @@ package use_case.recipe_search;
 
 import entity.Recipe;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,6 +41,10 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
 
         final String searchKeyword = recipeSearchInputData.getSearchKeyword();
         System.out.println("Interactor received search keyword: " + searchKeyword);
+        final String username = recipeSearchInputData.getUsername();
+        final String[] favoriteRecipes = recipeSearchInputData.getFavoriteRecipes();
+        System.out.println("Current logged in account: " + username);
+        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
 
         try {
             // Use cached recipes to search for the keyword
@@ -51,7 +56,8 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
                 recipeSearchPresenter.prepareFailureView("No recipes found for keyword: " + searchKeyword);
             } else {
                 System.out.println("Recipes found: " + recipes.size());
-                RecipeSearchOutputData recipeSearchOutputData = new RecipeSearchOutputData(searchKeyword, recipes);
+                RecipeSearchOutputData recipeSearchOutputData = new RecipeSearchOutputData(
+                        searchKeyword, recipes, username, favoriteRecipes);
                 recipeSearchPresenter.prepareSuccessView(recipeSearchOutputData);
             }
         } catch (Exception e) {

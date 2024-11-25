@@ -88,7 +88,9 @@ public class SearchResultView extends JPanel {
                             final RecipeSearchState currentState = recipeSearchViewModel.getState();
 
                             recipeSearchController.execute(
-                                    currentState.getSearchKeyword()
+                                    currentState.getSearchKeyword(),
+                                    currentState.getUsername(),
+                                    currentState.getFavoriteRecipes()
                             );
                         }
                     }

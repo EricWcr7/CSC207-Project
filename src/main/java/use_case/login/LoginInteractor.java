@@ -2,6 +2,8 @@ package use_case.login;
 
 import entity.User;
 
+import java.util.Arrays;
+
 /**
  * The Login Interactor.
  */
@@ -32,8 +34,13 @@ public class LoginInteractor implements LoginInputBoundary {
                 final User user = userDataAccessObject.get(loginInputData.getUsername());
 
                 userDataAccessObject.setCurrentUsername(user.getName());
-                final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false);
+                final LoginOutputData loginOutputData = new LoginOutputData(
+                        user.getName(),
+                        false,
+                        user.getFavoriteRecipes());
                 loginPresenter.prepareSuccessView(loginOutputData);
+                System.out.println("Current logged in account: " + username);
+                System.out.println("Current favoriteRecipe in account: " + Arrays.toString(user.getFavoriteRecipes()));
             }
         }
     }

@@ -8,11 +8,16 @@ public class ChooseRecipeOutputData {
     private final String dishName;
     private final String dishIngredients;
     private final String dishInstructions;
+    private final String username;
+    private final String[] favoriteRecipes;
 
-    public ChooseRecipeOutputData(String dishName, String dishIngredients, String dishInstructions) {
+    public ChooseRecipeOutputData(String dishName, String dishIngredients, String dishInstructions,
+                                  String username, String[] favoriteRecipes) {
         this.dishName = dishName;
         this.dishIngredients = dishIngredients;
         this.dishInstructions = dishInstructions;
+        this.username = username;
+        this.favoriteRecipes = favoriteRecipes;
     }
 
     public String getDishName() {
@@ -27,4 +32,11 @@ public class ChooseRecipeOutputData {
         return dishInstructions;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String[] getFavoriteRecipes() {
+        return favoriteRecipes;
+    }
 }
