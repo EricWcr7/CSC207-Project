@@ -565,6 +565,24 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     public void saveRecipe(Recipe recipe) {
         this.cachedRecipes.add(recipe);
     }
+
+    /**
+     * Deletes a recipe from the cached list based on the provided recipe ID.
+     *
+     * @param recipeId the ID of the recipe to delete
+     * @return true if the recipe was successfully deleted, false otherwise
+     */
+    public boolean deleteRecipeById(String recipeId) {
+        for (Recipe recipe : cachedRecipes) {
+            if (recipe.getId().equals(recipeId)) {
+                cachedRecipes.remove(recipe);
+                System.out.println("Recipe with ID: " + recipeId + " has been successfully deleted.");
+                return true;
+            }
+        }
+        System.err.println("Recipe with ID: " + recipeId + " not found.");
+        return false;
+    }
 }
 
 

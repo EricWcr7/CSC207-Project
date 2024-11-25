@@ -23,6 +23,9 @@ import interface_adapter.choose_recipe.*;
 import interface_adapter.create.CreateController;
 import interface_adapter.create.CreatePresenter;
 import interface_adapter.create.CreateViewModel;
+import interface_adapter.delete_recipe.DeleteController;
+import interface_adapter.delete_recipe.DeletePresenter;
+import interface_adapter.delete_recipe.DeleteViewModel;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import interface_adapter.edit.EditController;
 import interface_adapter.edit.EditPresenter;
@@ -47,6 +50,9 @@ import use_case.choose_recipe.ChooseRecipeOutputBoundary;
 import use_case.create.CreateInputBoundary;
 import use_case.create.CreateInteractor;
 import use_case.create.CreateOutputBoundary;
+import use_case.delete_recipe.DeleteInputBoundary;
+import use_case.delete_recipe.DeleteInteractor;
+import use_case.delete_recipe.DeleteOutputBoundary;
 import use_case.edit.EditInputBoundary;
 import use_case.edit.EditInteractor;
 import use_case.edit.EditOutputBoundary;
@@ -89,6 +95,8 @@ public class AppBuilder {
     private EditViewModel editViewModel;
     private CreateView createView;
     private CreateViewModel createViewModel;
+    private DeleteRecipeView deleteRecipeView;
+    private DeleteViewModel deleteViewModel;
 
     private RecipeSearchInputBoundary recipeSearchInteractor;
 
@@ -177,6 +185,15 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addDeleteRecipeView() {
+        deleteViewModel = new DeleteViewModel();
+        deleteRecipeView = new DeleteRecipeView(deleteViewModel);
+        System.out.println("Adding Delete Recipe View with name: " + deleteRecipeView.getViewName());
+        cardPanel.add(deleteRecipeView, deleteRecipeView.getViewName());
+        return this;
+    }
+
+
 //    public AppBuilder addEditView() {
 //        editViewModel = new EditViewModel();
 //        editView = new EditView(editViewModel);
@@ -253,7 +270,12 @@ public class AppBuilder {
     public AppBuilder addReturnToSearchMenuUseCase() {
         final ReturnToSearchMenuOutputBoundary returnToSearchMenuOutputBoundary =
                 new ReturnToSearchMenuPresenter(viewManagerModel,
-                        recipeSearchViewModel, chooseRecipeViewModel, displayRecipeViewModel, favoriteRecipeViewModel, editViewModel);
+                        recipeSearchViewModel,
+                        chooseRecipeViewModel,
+                        displayRecipeViewModel,
+                        favoriteRecipeViewModel,
+                        editViewModel,
+                        deleteViewModel);
 
         final ReturnToSearchMenuInputBoundary returnToSearchMenuInteractor =
                 new ReturnToSearchMenuInteractor(returnToSearchMenuOutputBoundary);
@@ -332,6 +354,18 @@ public class AppBuilder {
             return this;
         }
 
+    public AppBuilder addDeleteRecipeUseCase() {
+        DeleteOutputBoundary deletePresenter = new DeletePresenter();
+        DeleteInputBoundary deleteInteractor = new DeleteInteractor(recipeDataAccessObject, deletePresenter);
+        DeleteController deleteController = new DeleteController(deleteInteractor);
+
+        if (deleteRecipeView != null) {
+            deleteRecipeView.setDeleteController(deleteController);
+        }
+        return this;
+    }
+
+
     public void initializeNewRecipesFile() {
         File file = new File("new_recipes.json");
         if (!file.exists()) {
@@ -345,9 +379,6 @@ public class AppBuilder {
             }
         }
     }
-
-
-
 
     public JFrame build() {
             final JFrame application = new JFrame("Mealmaster");

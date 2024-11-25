@@ -16,8 +16,14 @@ public class ReturnToSearchMenuInteractor implements ReturnToSearchMenuInputBoun
     public void fromEditRecipeBackToSearchMenu() {
         returnToSearchMenuPresenter.fromEditRecipeBackToSearchMenu();
     }
+
     @Override
-    public void fromFavoriteRecipeBackToSearchMenu () {
+    public void fromFavoriteRecipeBackToSearchMenu() {
         returnToSearchMenuPresenter.fromFavoriteRecipeBackToSearchMenu();
-        }
     }
+
+    @Override
+    public void fromDeleteRecipeBackToSearchMenu() {
+        returnToSearchMenuPresenter.fromDeleteRecipeBackToSearchMenu();
+    }
+}

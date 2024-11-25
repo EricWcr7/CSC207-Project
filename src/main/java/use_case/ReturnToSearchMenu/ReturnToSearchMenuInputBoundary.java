@@ -5,4 +5,5 @@ public interface ReturnToSearchMenuInputBoundary {
     void execute();
     void fromEditRecipeBackToSearchMenu();
     void fromFavoriteRecipeBackToSearchMenu();
+    void fromDeleteRecipeBackToSearchMenu();
 }

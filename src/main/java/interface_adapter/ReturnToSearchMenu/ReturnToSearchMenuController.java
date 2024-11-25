@@ -22,4 +22,8 @@ public class ReturnToSearchMenuController {
     public void fromFavoriteRecipeBackToSearchMenu() {
         returnToSearchMenuInteractor.fromFavoriteRecipeBackToSearchMenu();
     }
+
+    public void fromDeleteRecipeBackToSearchMenu() {
+        returnToSearchMenuInteractor.fromDeleteRecipeBackToSearchMenu();
+    }
 }

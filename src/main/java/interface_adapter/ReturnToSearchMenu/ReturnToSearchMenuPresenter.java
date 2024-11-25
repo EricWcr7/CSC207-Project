@@ -3,6 +3,8 @@ package interface_adapter.ReturnToSearchMenu;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.choose_recipe.ChooseRecipeState;
 import interface_adapter.choose_recipe.ChooseRecipeViewModel;
+import interface_adapter.delete_recipe.DeleteState;
+import interface_adapter.delete_recipe.DeleteViewModel;
 import interface_adapter.edit.EditState;
 import interface_adapter.edit.EditViewModel;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
@@ -21,19 +23,21 @@ public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoun
     private EditViewModel editViewModel;
     private DisplayRecipeViewModel displayRecipeViewModel;
     private FavoriteRecipeViewModel favoriteRecipeViewModel;
+    private DeleteViewModel deleteViewModel;
 
     public ReturnToSearchMenuPresenter(ViewManagerModel viewManagerModel,
                                        RecipeSearchViewModel recipeSearchViewModel,
                                        ChooseRecipeViewModel chooseRecipeViewModel,
                                        DisplayRecipeViewModel displayRecipeViewModel,
                                        FavoriteRecipeViewModel favoriteRecipeViewModel,
-                                       EditViewModel editViewModel) {
+                                       EditViewModel editViewModel, DeleteViewModel deleteViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.recipeSearchViewModel = recipeSearchViewModel;
         this.chooseRecipeViewModel = chooseRecipeViewModel;
         this.displayRecipeViewModel = displayRecipeViewModel;
         this.favoriteRecipeViewModel = favoriteRecipeViewModel;
         this.editViewModel = editViewModel;
+        this.deleteViewModel = deleteViewModel;
     }
 
     @Override
@@ -76,6 +80,17 @@ public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoun
         this.editViewModel.firePropertyChanged();
 
         this.viewManagerModel.setState(recipeSearchViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void fromDeleteRecipeBackToSearchMenu() {
+        final DeleteState deleteState = deleteViewModel.getState();
+
+        this.deleteViewModel.setState(deleteState);
+        this.deleteViewModel.firePropertyChanged();
+
+        this.viewManagerModel.setState(editViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
 }

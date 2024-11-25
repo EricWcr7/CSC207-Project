@@ -7,6 +7,8 @@ import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.create.CreateController;
 import interface_adapter.edit.EditController;
 import interface_adapter.edit.EditViewModel;
+import view.DeleteRecipeView;
+import interface_adapter.delete_recipe.DeleteController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +24,7 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
     private final EditViewModel editViewModel;
     private EditController editController;
     private ReturnToSearchMenuController returnToSearchMenuController;
+    private DeleteController deleteController;
 
     private final JComboBox<String> recipeComboBox = new JComboBox<>();
 
@@ -78,16 +81,25 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
             }
         });
 
-//        goButton.addActionListener(evt -> {
-//            // 获取下拉框中当前选中的菜谱名称
-//            String selectedRecipe = (String) recipeComboBox.getSelectedItem();
-//            if (selectedRecipe != null) {
-//                // 调用方法跳转到另一个视图
-//                navigateToRecipeDetails(selectedRecipe);
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Please select a recipe!");
-//            }
-//        });
+        goButton.addActionListener(evt -> {
+            if (evt.getSource().equals(goButton)) {
+                String selectedRecipe = (String) recipeComboBox.getSelectedItem();
+                if (selectedRecipe != null) {
+                    System.out.println("Navigating to Delete Recipe View for: " + selectedRecipe);
+                    DeleteRecipeView deleteRecipeView = new DeleteRecipeView(
+                            selectedRecipe, "", "" // Pass empty strings for ingredients and instructions for now
+                    );
+                    deleteRecipeView.setDeleteController(deleteController);
+                    deleteRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
+                    // Replace the view with DeleteRecipeView
+                    JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                    topFrame.getContentPane().removeAll();
+                    topFrame.getContentPane().add(deleteRecipeView);
+                    topFrame.revalidate();
+                    topFrame.repaint();
+                }
+            }
+        });
 
         // Add ActionListener to recipeComboBox
         recipeComboBox.addActionListener(evt -> {
@@ -121,6 +133,10 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
 
     public void setReturnToSearchMenuController(ReturnToSearchMenuController returnToSearchMenuController) {
         this.returnToSearchMenuController = returnToSearchMenuController;
+    }
+
+    public void setDeleteController(DeleteController deleteController) {
+        this.deleteController = deleteController;
     }
 
     public void loadNewRecipes() {
