@@ -129,6 +129,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
                         currentState1.getUsername(), currentState1.getFavoriteRecipes()
                 );
+                this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
 
@@ -200,6 +201,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
                         currentState1.getUsername(), currentState1.getFavoriteRecipes()
                 );
+                this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
 
@@ -271,6 +273,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
                         currentState1.getUsername(), currentState1.getFavoriteRecipes()
                 );
+                this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
 
@@ -340,6 +343,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
                         currentState1.getUsername(), currentState1.getFavoriteRecipes()
                 );
+                this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
         sectionPanel.add(buttonDeleteD2);
@@ -408,6 +412,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
                         currentState1.getUsername(), currentState1.getFavoriteRecipes()
                 );
+                this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
         sectionPanel.add(buttonDeleteE2);
@@ -478,6 +483,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
                         currentState1.getUsername(), currentState1.getFavoriteRecipes()
                 );
+                this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
         sectionPanel.add(buttonDeleteF2);

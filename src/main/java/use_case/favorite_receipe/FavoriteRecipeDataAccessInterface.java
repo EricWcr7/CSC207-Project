@@ -1,5 +1,7 @@
 package use_case.favorite_receipe;
 
+import entity.User;
+
 /**
  * DAO for the FavoriteRecipe Use Case.
  */
@@ -12,4 +14,6 @@ public interface FavoriteRecipeDataAccessInterface {
     public void setUsername(String username);
 
     public void setFavoriteRecipes(String[] favoriteRecipes);
+
+    public void updateUserFavoriteRecipes(User user);
 }

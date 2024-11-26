@@ -1,5 +1,6 @@
 package data_access;
 
+import entity.User;
 import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
 import use_case.favorite_receipe.FavoriteRecipeInteractor;
 
@@ -25,5 +26,10 @@ public class FavoriteRecipeDataAccessObject implements FavoriteRecipeDataAccessI
     @Override
     public void setFavoriteRecipes(String[] favoriteRecipes) {
         this.favoriteRecipes = favoriteRecipes;
+    }
+
+    @Override
+    public void updateUserFavoriteRecipes(User user) {
+
     }
 }
