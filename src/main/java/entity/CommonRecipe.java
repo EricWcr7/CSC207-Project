@@ -38,10 +38,6 @@ public class CommonRecipe implements Recipe {
         this.dislikeNumber = dislikeNumber;
     }
 
-    // No-argument constructor for Jackson
-    public CommonRecipe() {
-    }
-
     @Override
     public String getId() {
         return id;
@@ -63,7 +59,6 @@ public class CommonRecipe implements Recipe {
     }
 
     @Override
-    @JsonIgnore
     // Format the ingredients to a string
     public String getIngredients() {
         StringBuilder ingredientsList = new StringBuilder();
