@@ -5,7 +5,6 @@ import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import use_case.like_and_dislike_a_recipe.like.LikeRecipeOutputBoundary;
 import use_case.like_and_dislike_a_recipe.like.LikeRecipeOutputData;
 
-
 public class LikeRecipePresenter implements LikeRecipeOutputBoundary {
     private final DisplayRecipeViewModel displayRecipeViewModel;
 
@@ -17,7 +16,13 @@ public class LikeRecipePresenter implements LikeRecipeOutputBoundary {
     public void prepareSuccessView(LikeRecipeOutputData outputData) {
         final DisplayRecipeState state = displayRecipeViewModel.getState();
         state.setLikeNumber(outputData.getRecipeName(), outputData.getLikeNumber());
-        this.displayRecipeViewModel.setState(state);
+        this.displayRecipeViewModel.firePropertyChanged();
+    }
+
+    @Override
+    public void prepareFailureView(String likedMessage) {
+        final DisplayRecipeState state = displayRecipeViewModel.getState();
+        state.setLikedMessage(likedMessage);
         this.displayRecipeViewModel.firePropertyChanged();
     }
 }

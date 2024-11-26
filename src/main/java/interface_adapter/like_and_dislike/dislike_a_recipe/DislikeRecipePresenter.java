@@ -16,7 +16,13 @@ public class DislikeRecipePresenter implements DislikeRecipeOutputBoundary {
     public void prepareSuccessView(DislikeRecipeOutputData outputData) {
         final DisplayRecipeState state = displayRecipeViewModel.getState();
         state.setDislikeNumber(outputData.getRecipeName(), outputData.getDislikeNumber());
-        this.displayRecipeViewModel.setState(state);
+        this.displayRecipeViewModel.firePropertyChanged();
+    }
+
+    @Override
+    public void prepareFailureView(String dislikedMessage) {
+        final DisplayRecipeState state = displayRecipeViewModel.getState();
+        state.setDislikedMessage(dislikedMessage);
         this.displayRecipeViewModel.firePropertyChanged();
     }
 }

@@ -201,6 +201,10 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
     }
 
     private void update(DisplayRecipeState displayRecipeState) {
+
+        setLikedMessagePopUp(displayRecipeState);
+        setDislikedMessagePopUp(displayRecipeState);
+
         // Update UI components with the new state values
         dishName = displayRecipeState.getDishName();
         ingredients = displayRecipeState.getIngredients();
@@ -214,6 +218,32 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
         instructionArea.setText(formatInstructions(instructions));
         likeCount.setText(String.valueOf(likeNumber));
         dislikeCount.setText(String.valueOf(dislikeNumber));
+    }
+
+    private void setDislikedMessagePopUp(DisplayRecipeState displayRecipeState) {
+        final String dislikedMessage = displayRecipeState.getDislikedMessage();
+        if (dislikedMessage != null && !dislikedMessage.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    dislikedMessage,
+                    "Notification",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            displayRecipeState.clearDislikedMessage();
+        }
+    }
+
+    private void setLikedMessagePopUp(DisplayRecipeState displayRecipeState) {
+        final String likedMessage = displayRecipeState.getLikedMessage();
+        if (likedMessage != null && !likedMessage.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    likedMessage,
+                    "Notification",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            displayRecipeState.clearLikedMessage();
+        }
     }
 
     // Format instructions to display them in a more readable way(之前句子太长了，一个屏幕装不下)

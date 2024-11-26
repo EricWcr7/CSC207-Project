@@ -10,4 +10,5 @@ public interface LikeRecipeOutputBoundary {
      */
     void prepareSuccessView(LikeRecipeOutputData outputData);
 
+    void prepareFailureView(String likedMessage);
 }

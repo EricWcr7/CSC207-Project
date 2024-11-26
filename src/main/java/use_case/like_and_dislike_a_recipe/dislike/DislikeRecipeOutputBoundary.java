@@ -7,4 +7,6 @@ public interface DislikeRecipeOutputBoundary {
      * @param outputData the output data
      */
     void prepareSuccessView(DislikeRecipeOutputData outputData);
+
+    void prepareFailureView(String dislikedMessage);
 }
