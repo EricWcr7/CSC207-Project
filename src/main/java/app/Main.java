@@ -36,6 +36,7 @@ public class Main {
                 .addFavoriteRecipeUseCase()
                 .addEditUseCase()
                 .addCreateUseCase()
+                .addLikeRecipeUseCase()
                 .build();
         application.pack();
         application.setSize(width, height);

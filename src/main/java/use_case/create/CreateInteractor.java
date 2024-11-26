@@ -10,13 +10,13 @@ import java.util.List;
 
 public class CreateInteractor implements CreateInputBoundary {
     private final CreateOutputBoundary createPresenter;
-    private final RecipeDataAccessObject recipeDataAccessObject;
+    private final CreateDataAccessInterface recipeDataAccessObject;
     private boolean recipesLoaded = false;
     private final RecipeFactory recipeFactory;
 
-    public CreateInteractor(CreateOutputBoundary createPresenter, RecipeFactory recipeFactory) {
+    public CreateInteractor(CreateOutputBoundary createPresenter, RecipeFactory recipeFactory, CreateDataAccessInterface recipeDataAccessInterface) {
         this.createPresenter = createPresenter;
-        this.recipeDataAccessObject = new RecipeDataAccessObject();
+        this.recipeDataAccessObject = recipeDataAccessInterface;
         this.recipeFactory = recipeFactory;
     }
 

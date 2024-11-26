@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import data_access.InMemoryUserDataAccessObject;
+import data_access.InMemoryUserLikesDataAccessObject;
 import data_access.RecipeDataAccessObject;
 import entity.*;
 import interface_adapter.*;
@@ -23,6 +24,8 @@ import interface_adapter.edit.EditController;
 import interface_adapter.edit.EditPresenter;
 import interface_adapter.edit.EditViewModel;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
+import interface_adapter.like_a_recipe.LikeRecipeController;
+import interface_adapter.like_a_recipe.LikeRecipePresenter;
 import interface_adapter.login.*;
 import interface_adapter.logout.*;
 import interface_adapter.recipe_search.*;
@@ -48,6 +51,10 @@ import use_case.edit.EditOutputBoundary;
 import use_case.favorite_receipe.FavoriteRecipeInputBoundary;
 import use_case.favorite_receipe.FavoriteRecipeInteractor;
 import use_case.favorite_receipe.FavoriteRecipeOutputBoundary;
+import use_case.like_a_recipe.LikeRecipeInputBoundary;
+import use_case.like_a_recipe.LikeRecipeInteractor;
+import use_case.like_a_recipe.LikeRecipeOutputBoundary;
+import use_case.like_a_recipe.UserLikesDataAccessInterface;
 import use_case.login.*;
 import use_case.logout.*;
 import use_case.recipe_search.*;
@@ -65,6 +72,7 @@ public class AppBuilder {
 
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
+    private final UserLikesDataAccessInterface userLikesDataAccessObject = new InMemoryUserLikesDataAccessObject();
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -301,14 +309,25 @@ public class AppBuilder {
             return this;
         }
 
-        public AppBuilder addCreateUseCase () {
-            final CreateOutputBoundary createOutputBoundary = new CreatePresenter(viewManagerModel, recipeSearchViewModel,createViewModel);
-            final CreateInputBoundary createInteractor = new CreateInteractor(createOutputBoundary, recipeFactory);
+    public AppBuilder addCreateUseCase () {
+        final CreateOutputBoundary createOutputBoundary = new CreatePresenter(viewManagerModel, recipeSearchViewModel, createViewModel);
+        final CreateInputBoundary createInteractor = new CreateInteractor(createOutputBoundary, recipeFactory, recipeDataAccessObject);
 
-            final CreateController createController = new CreateController(createInteractor);
-            createView.setCreateController(createController);
-            return this;
-        }
+        final CreateController createController = new CreateController(createInteractor);
+        createView.setCreateController(createController);
+        return this;
+    }
+
+    public AppBuilder addLikeRecipeUseCase() {
+        final LikeRecipeOutputBoundary likeRecipeOutputBoundary = new LikeRecipePresenter(displayRecipeViewModel);
+
+        final LikeRecipeInputBoundary likeRecipeInteractor = new LikeRecipeInteractor(
+                recipeDataAccessObject, userLikesDataAccessObject, userDataAccessObject, likeRecipeOutputBoundary);
+
+        final LikeRecipeController likeRecipeController = new LikeRecipeController(likeRecipeInteractor);
+        displayRecipeView.setLikeRecipeController(likeRecipeController);
+        return this;
+    }
 
         public JFrame build() {
             final JFrame application = new JFrame("Mealmaster");

@@ -1,5 +1,6 @@
 package data_access;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.gson.*;
 import entity.CommonRecipe;
 import entity.Recipe;
@@ -7,6 +8,8 @@ import entity.CommonRecipeFactory;
 import entity.Recipe;
 import entity.RecipeFactory;
 import use_case.choose_recipe.ChooseRecipeDataAccessInterface;
+import use_case.create.CreateDataAccessInterface;
+import use_case.like_a_recipe.LikeRecipeDataAccessInterface;
 import use_case.recipe_search.RecipeSearchDataAccessInterface;
 
 import java.io.File;
@@ -25,10 +28,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * DAO for the RecipeSearch Use Case.
  */
-public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, ChooseRecipeDataAccessInterface {
+public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, ChooseRecipeDataAccessInterface, LikeRecipeDataAccessInterface, CreateDataAccessInterface {
 
     private static final String API_URL = "https://www.themealdb.com/api/json/v1/1/search.php?f=";
     private static final String FILE_IO_API_URL = "https://file.io";
@@ -39,9 +43,10 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     // Holds the list of recipes loaded from the downloaded JSON
     private List<Recipe> cachedRecipes = new ArrayList<>();
 
+
     //public RecipeDataAccessObject() {
-        // Add a shutdown hook to delete the file from File.io when the application stops
-       // Runtime.getRuntime().addShutdownHook(new Thread(this::deleteFileFromFileIo));
+    // Add a shutdown hook to delete the file from File.io when the application stops
+    // Runtime.getRuntime().addShutdownHook(new Thread(this::deleteFileFromFileIo));
     //}
 
     @Override
@@ -275,7 +280,6 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
             RecipeFactory recipeFactory = new CommonRecipeFactory();
             Recipe recipe = recipeFactory.createRecipe(id, name, category, instructions, ingredientMeasureMap,
                     0, 0);
-            // TODO: write likeNum, dislikeNum to file once downloading. Add another 2 arguments here.
             recipes.add(recipe);
         }
 
@@ -535,6 +539,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
         System.out.println("No recipe found matching keyword: " + dishName);
         return null;
     }
+
     // might cause error when merge, need to fix commonrecipe data type(change it to recipe)
     public String getMaxId() {
         String maxId = cachedRecipes.get(0).getId();
@@ -565,6 +570,5 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     public void saveRecipe(Recipe recipe) {
         this.cachedRecipes.add(recipe);
     }
+
 }
-
-

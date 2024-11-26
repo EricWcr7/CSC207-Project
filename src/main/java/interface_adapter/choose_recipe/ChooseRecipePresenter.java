@@ -14,7 +14,6 @@ public class ChooseRecipePresenter implements ChooseRecipeOutputBoundary {
     private final ChooseRecipeViewModel chooseRecipeViewModel;
     private final DisplayRecipeViewModel displayRecipeViewModel;
 
-
     public ChooseRecipePresenter(ViewManagerModel viewManagerModel,
                                  ChooseRecipeViewModel chooseRecipeViewModel,
                                   DisplayRecipeViewModel displayRecipeViewModel) {
@@ -30,13 +29,15 @@ public class ChooseRecipePresenter implements ChooseRecipeOutputBoundary {
         // Debug: Before setting the state
         System.out.println("Before updating state in ViewModel:");
         System.out.println("Dish Name: " + outputData.getDishName());
-        System.out.println("Ingredients: " + outputData.getDishIngredients());
-        System.out.println("Instructions: " + outputData.getDishInstructions());
+//        System.out.println("Ingredients: " + outputData.getDishIngredients());
+//        System.out.println("Instructions: " + outputData.getDishInstructions());
 
         // Update the display state
+        final String dishName = outputData.getDishName();
         displayState.setDishName(outputData.getDishName());
         displayState.setIngredients(outputData.getDishIngredients());
         displayState.setInstructions(outputData.getDishInstructions());
+        displayState.setLikeNumber(dishName, outputData.getLikeNumber());
 
         // Notify that the state has changed
         this.displayRecipeViewModel.setState(displayState);
@@ -45,8 +46,8 @@ public class ChooseRecipePresenter implements ChooseRecipeOutputBoundary {
         // Debug: After setting the state
         System.out.println("Setting new state in ViewModel with data: ");
         System.out.println("Dish Name: " + displayState.getDishName());
-        System.out.println("Ingredients: " + displayState.getIngredients());
-        System.out.println("Instructions: " + displayState.getInstructions());
+//        System.out.println("Ingredients: " + displayState.getIngredients());
+//        System.out.println("Instructions: " + displayState.getInstructions());
 
         final DisplayRecipeState currentState = displayRecipeViewModel.getState();
         currentState.setUsername(outputData.getUsername());

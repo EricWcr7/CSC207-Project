@@ -1,7 +1,7 @@
 package use_case.like_a_recipe;
 
 /**
- * The output boundary for the Login Use Case.
+ * The output boundary for the like a recipe Use Case.
  */
 public interface LikeRecipeOutputBoundary {
     /**

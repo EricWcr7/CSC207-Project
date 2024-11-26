@@ -11,6 +11,7 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
+import java.io.IOException;
 
 public class DisplayRecipeView extends JPanel implements PropertyChangeListener {
     private final String viewName = "display the recipe";
@@ -24,8 +25,8 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
     private String ingredients;
     private String instructions;
 
-    private int likeNumber = 0;
-    private int dislikeNumber = 0;
+    private int likeNumber;
+    private int dislikeNumber;
 
     private final JTextArea ingredientsArea;
     private final JTextArea instructionArea;
@@ -59,7 +60,7 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
         returnToSearchMenu = new JButton("Return to Search View ");
 
         likeButton = new JButton("Like");
-        likeCount = new JLabel(String.valueOf(likeNumber));
+        likeCount = new JLabel();
 
         dislikeButton = new JButton("Dislike");
         dislikeCount = new JLabel(String.valueOf(dislikeNumber));
@@ -121,7 +122,7 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                 evt -> {
                     if (evt.getSource().equals(likeButton)) {
                         final DisplayRecipeState state = displayRecipeViewModel.getState();
-                        this.likeRecipeController.execute(state.getDishName(), state.getLikeNumber());
+                        this.likeRecipeController.execute(state.getDishName());
                     }
                 }
         );
@@ -181,17 +182,22 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
         // Update view when DisplayRecipeState changes
         final DisplayRecipeState displayRecipeState = (DisplayRecipeState) evt.getNewValue();
 
+        update(displayRecipeState);
+
+    }
+
+    private void update(DisplayRecipeState displayRecipeState) {
         // Update UI components with the new state values
         dishName = displayRecipeState.getDishName();
         ingredients = displayRecipeState.getIngredients();
         instructions = displayRecipeState.getInstructions();
-        final String formattedInstructions = formatInstructions(instructions);
+        likeNumber = displayRecipeState.getLikeNumber(dishName);
 
         // Update the labels and text areas with the new values
         ((JLabel) ((JPanel) this.getComponent(0)).getComponent(0)).setText("Dish Name: " + dishName);
         ingredientsArea.setText(ingredients);
-        instructionArea.setText(formattedInstructions);
-
+        instructionArea.setText(formatInstructions(instructions));
+        likeCount.setText(String.valueOf(likeNumber));
     }
 
     // Format instructions to display them in a more readable way(之前句子太长了，一个屏幕装不下)
