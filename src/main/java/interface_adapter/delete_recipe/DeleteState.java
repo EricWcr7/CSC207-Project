@@ -9,26 +9,10 @@ import java.beans.PropertyChangeSupport;
 public class DeleteState {
     private String username;
     private String recipeName;
+    private String ingredients;
+    private String instructions;
     private boolean isDeleted;
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getRecipeName() {
-        return recipeName;
-    }
-
-    public void setRecipeName(String recipeName) {
-        final String oldValue = this.recipeName;
-        this.recipeName = recipeName;
-        support.firePropertyChange("recipeName", oldValue, recipeName); // Notify listeners
-    }
 
     public boolean isDeleted() {
         return isDeleted;
@@ -60,6 +44,44 @@ public class DeleteState {
         final boolean oldValue = this.isDeleted;
         this.isDeleted = newValue;
         support.firePropertyChange("stateValue", oldValue, newValue); // Notify listeners
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setRecipeName(String recipeName) {
+        final String oldValue = this.recipeName;
+        this.recipeName = recipeName;
+        support.firePropertyChange("recipeName", oldValue, recipeName); // Notify listeners
+    }
+
+    public void setIngredients(String ingredients) {
+        final String oldValue = this.ingredients;
+        this.ingredients = ingredients;
+        support.firePropertyChange("ingredients", oldValue, ingredients);
+    }
+
+    public void setInstructions(String instructions) {
+        final String oldValue = this.instructions;
+        this.instructions = instructions;
+        support.firePropertyChange("instructions", oldValue, instructions);
+    }
+
+    public String getRecipeName() {
+        return recipeName;
+    }
+
+    public String getIngredients() {
+        return ingredients;
+    }
+
+    public String getInstructions() {
+        return instructions;
     }
 }
 

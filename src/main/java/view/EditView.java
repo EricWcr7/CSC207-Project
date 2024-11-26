@@ -4,10 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
-import interface_adapter.create.CreateController;
+import interface_adapter.delete_recipe.DeleteViewModel;
 import interface_adapter.edit.EditController;
 import interface_adapter.edit.EditViewModel;
-import view.DeleteRecipeView;
 import interface_adapter.delete_recipe.DeleteController;
 
 import javax.swing.*;
@@ -22,6 +21,7 @@ import java.io.IOException;
 public class EditView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "Edit recipe";
     private final EditViewModel editViewModel;
+    private DeleteViewModel deleteViewModel;
     private EditController editController;
     private ReturnToSearchMenuController returnToSearchMenuController;
     private DeleteController deleteController;
@@ -86,11 +86,9 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
                 String selectedRecipe = (String) recipeComboBox.getSelectedItem();
                 if (selectedRecipe != null) {
                     System.out.println("Navigating to Delete Recipe View for: " + selectedRecipe);
-                    DeleteRecipeView deleteRecipeView = new DeleteRecipeView(
-                            selectedRecipe, "", "" // Pass empty strings for ingredients and instructions for now
-                    );
+                    DeleteRecipeView deleteRecipeView = new DeleteRecipeView(delete);
                     deleteRecipeView.setDeleteController(deleteController);
-                    deleteRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
+                    deleteRecipeView.setBackToEditViewController(returnToSearchMenuController);
                     // Replace the view with DeleteRecipeView
                     JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
                     topFrame.getContentPane().removeAll();
