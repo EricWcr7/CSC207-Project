@@ -4,6 +4,7 @@ import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.choose_recipe.ChooseRecipeState;
 import interface_adapter.display_recipe.DisplayRecipeState;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
+import interface_adapter.favorite_recipe.FavoriteRecipeController;
 import interface_adapter.like_a_recipe.LikeRecipeController;
 
 import javax.swing.*;
@@ -19,6 +20,7 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
 
     private ReturnToSearchMenuController returnToSearchMenuController;
     private LikeRecipeController likeRecipeController;
+    private FavoriteRecipeController favoriteRecipeController;
 
     // Example: Dynamic data loaded into variables
     private String dishName;
@@ -146,6 +148,8 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                             final String[] favoriteRecipes = state.getFavoriteRecipes();
                             System.out.println("Current logged in account: " + username);
                             System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
+                            favoriteRecipeController.execute(state.getUsername() ,state.getFavoriteRecipes());
+
                         }
 
                     }
@@ -174,6 +178,10 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
 
     public void setLikeRecipeController(LikeRecipeController likeRecipeController) {
         this.likeRecipeController = likeRecipeController;
+    }
+
+    public void setFavoriteRecipeController(FavoriteRecipeController favoriteRecipeController) {
+        this.favoriteRecipeController = favoriteRecipeController;
     }
 
     @Override

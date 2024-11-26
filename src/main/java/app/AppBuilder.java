@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import data_access.FavoriteRecipeDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import data_access.InMemoryUserLikesDataAccessObject;
 import data_access.RecipeDataAccessObject;
@@ -73,6 +74,7 @@ public class AppBuilder {
 
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
+    private final FavoriteRecipeDataAccessObject favoriteRecipeDataAccessObject = new FavoriteRecipeDataAccessObject();
     private final UserLikesDataAccessInterface userLikesDataAccessObject = new InMemoryUserLikesDataAccessObject();
 
     private SignupView signupView;
@@ -304,10 +306,11 @@ public class AppBuilder {
                 viewManagerModel, favoriteRecipeViewModel);
 
         final FavoriteRecipeInputBoundary favoriteRecipeInteractor = new FavoriteRecipeInteractor(
-                favoriteRecipeOutputBoundary);
+                favoriteRecipeOutputBoundary, favoriteRecipeDataAccessObject, userDataAccessObject);
 
         final FavoriteRecipeController favoriteRecipeController = new FavoriteRecipeController(favoriteRecipeInteractor);
         favoriteRecipeView.setFavoriteRecipeController(favoriteRecipeController);
+        displayRecipeView.setFavoriteRecipeController(favoriteRecipeController);
         return this;
     }
 
