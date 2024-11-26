@@ -9,24 +9,21 @@ import entity.User;
  */
 public class FavoriteRecipeInteractor implements FavoriteRecipeInputBoundary {
     private final FavoriteRecipeOutputBoundary favoriteRecipePresenter;
-    private final FavoriteRecipeDataAccessObject favoriteRecipeDataAccessObject;
-    private final InMemoryUserDataAccessObject inMemoryUserDataAccessObject;
+    private final FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject;
 
     public FavoriteRecipeInteractor(FavoriteRecipeOutputBoundary favoriteRecipePresenter,
-                                    FavoriteRecipeDataAccessObject favoriteRecipeDataAccessObject,
-                                    InMemoryUserDataAccessObject inMemoryUserDataAccessObject) {
+                                    FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject) {
         this.favoriteRecipePresenter = favoriteRecipePresenter;
         this.favoriteRecipeDataAccessObject = favoriteRecipeDataAccessObject;
-        this.inMemoryUserDataAccessObject = inMemoryUserDataAccessObject;
     }
 
     @Override
     public void execute(FavoriteRecipeInputData favoriteRecipeInputData) {
         final String username = favoriteRecipeInputData.getUsername();
         final String[] favoriteRecipes = favoriteRecipeInputData.getFavoriteRecipes();
-        final User user = inMemoryUserDataAccessObject.get(username);
+        final User user = favoriteRecipeDataAccessObject.get(username);
         user.setFavoriteRecipes(favoriteRecipes);
-        inMemoryUserDataAccessObject.updateUserFavoriteRecipes(user);
+        favoriteRecipeDataAccessObject.updateUserFavoriteRecipes(user);
     }
 
     @Override

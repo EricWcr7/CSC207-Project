@@ -16,4 +16,6 @@ public interface FavoriteRecipeDataAccessInterface {
     public void setFavoriteRecipes(String[] favoriteRecipes);
 
     public void updateUserFavoriteRecipes(User user);
+
+    User get(String username);
 }

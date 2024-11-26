@@ -32,4 +32,9 @@ public class FavoriteRecipeDataAccessObject implements FavoriteRecipeDataAccessI
     public void updateUserFavoriteRecipes(User user) {
 
     }
+
+    @Override
+    public User get(String username) {
+        return null;
+    }
 }
