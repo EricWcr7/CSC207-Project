@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import data_access.FavoriteRecipeDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import data_access.RecipeDataAccessObject;
 import entity.*;
@@ -30,6 +31,9 @@ import interface_adapter.like_and_dislike.like_a_recipe.LikeRecipePresenter;
 import interface_adapter.login.*;
 import interface_adapter.logout.*;
 import interface_adapter.recipe_search.*;
+import interface_adapter.shopping_list.ShoppingListController;
+import interface_adapter.shopping_list.ShoppingListPresenter;
+import interface_adapter.shopping_list.ShoppingListViewModel;
 import interface_adapter.signup.*;
 import interface_adapter.favorite_recipe.FavoriteRecipeController;
 import interface_adapter.favorite_recipe.FavoriteRecipePresenter;
@@ -60,6 +64,9 @@ import use_case.like_and_dislike_a_recipe.like.LikeRecipeOutputBoundary;
 import use_case.login.*;
 import use_case.logout.*;
 import use_case.recipe_search.*;
+import use_case.shopping_list.ShoppingListInputBoundary;
+import use_case.shopping_list.ShoppingListInteractor;
+import use_case.shopping_list.ShoppingListOutputBoundary;
 import use_case.signup.*;
 import view.*;
 
@@ -74,6 +81,7 @@ public class AppBuilder {
 
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
+    private final FavoriteRecipeDataAccessObject favoriteRecipeDataAccessObject = new FavoriteRecipeDataAccessObject();
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -93,6 +101,8 @@ public class AppBuilder {
     private EditViewModel editViewModel;
     private CreateView createView;
     private CreateViewModel createViewModel;
+    private ShoppingListView shoppingListView;
+    private ShoppingListViewModel shoppingListViewModel;
 
     private RecipeSearchInputBoundary recipeSearchInteractor;
 
@@ -189,6 +199,14 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addShoppingListView() {
+        shoppingListViewModel = new ShoppingListViewModel();
+        shoppingListView = new ShoppingListView(shoppingListViewModel);
+        System.out.println("Adding Display Recipe View with name: " + favoriteRecipeView.getViewName());
+        cardPanel.add(shoppingListView, shoppingListView.getViewName());
+        return this;
+    }
+
     public AppBuilder addSignupUseCase() {
         final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
                 signupViewModel, loginViewModel);
@@ -242,13 +260,14 @@ public class AppBuilder {
                         recipeSearchViewModel, chooseRecipeViewModel, displayRecipeViewModel, favoriteRecipeViewModel, editViewModel);
 
         final ReturnToSearchMenuInputBoundary returnToSearchMenuInteractor =
-                new ReturnToSearchMenuInteractor(returnToSearchMenuOutputBoundary);
+                new ReturnToSearchMenuInteractor(returnToSearchMenuOutputBoundary, userDataAccessObject);
 
         final ReturnToSearchMenuController returnToSearchMenuController = new ReturnToSearchMenuController(returnToSearchMenuInteractor);
         chooseRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
         displayRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
         favoriteRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
         editView.setReturnToSearchMenuController(returnToSearchMenuController);
+        shoppingListView.setReturnToSearchMenuController(returnToSearchMenuController);
         return this;
     }
 
@@ -268,7 +287,7 @@ public class AppBuilder {
         final RecipeSearchOutputBoundary recipeSearchOutputBoundary = new RecipeSearchPresenter(
                 viewManagerModel, chooseRecipeViewModel, favoriteRecipeViewModel, editViewModel, recipeSearchViewModel);
 
-        recipeSearchInteractor = new RecipeSearchInteractor(recipeDataAccessObject, recipeSearchOutputBoundary);
+        recipeSearchInteractor = new RecipeSearchInteractor(recipeDataAccessObject, recipeSearchOutputBoundary, userDataAccessObject);
 
         final RecipeSearchController recipeSearchController = new RecipeSearchController(recipeSearchInteractor);
         recipeSearchView.setRecipeSearchController(recipeSearchController);
@@ -290,13 +309,21 @@ public class AppBuilder {
 
     public AppBuilder addFavoriteRecipeUseCase() {
         final FavoriteRecipeOutputBoundary favoriteRecipeOutputBoundary = new FavoriteRecipePresenter(
-                viewManagerModel, favoriteRecipeViewModel);
+                viewManagerModel, favoriteRecipeViewModel, shoppingListViewModel);
 
         final FavoriteRecipeInputBoundary favoriteRecipeInteractor = new FavoriteRecipeInteractor(
-                favoriteRecipeOutputBoundary);
+                favoriteRecipeOutputBoundary, userDataAccessObject);
+
+        final ShoppingListOutputBoundary shoppingListOutputBoundary = new ShoppingListPresenter(viewManagerModel,
+                shoppingListViewModel);
+
+        final ShoppingListInputBoundary shoppingListInteractor = new ShoppingListInteractor(shoppingListOutputBoundary);
 
         final FavoriteRecipeController favoriteRecipeController = new FavoriteRecipeController(favoriteRecipeInteractor);
+        final ShoppingListController shoppingListController = new ShoppingListController(shoppingListInteractor);
         favoriteRecipeView.setFavoriteRecipeController(favoriteRecipeController);
+        favoriteRecipeView.setShoppingListController(shoppingListController);
+        displayRecipeView.setFavoriteRecipeController(favoriteRecipeController);
         return this;
     }
 

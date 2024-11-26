@@ -64,8 +64,20 @@ public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoun
 
     @Override
     public void fromFavoriteRecipeBackToSearchMenu(ReturnToSearchMenuOutputData recipeSearchOutputData) {
-        final FavoriteRecipeState favoriteRecipeState = favoriteRecipeViewModel.getState();
+        FavoriteRecipeState favoriteRecipeState = favoriteRecipeViewModel.getState();
         final RecipeSearchState recipeSearchState = recipeSearchViewModel.getState();
+
+        // Ensure that favoriteRecipeState is properly initialized
+        if (favoriteRecipeState == null) {
+            favoriteRecipeState = new FavoriteRecipeState(); // Initialize if null
+        }
+
+        if (favoriteRecipeState.getFavoriteRecipes() == null) {
+            favoriteRecipeState.setFavoriteRecipes(new String[6]);
+            for (int i = 0; i < 6; i++) {
+                favoriteRecipeState.getFavoriteRecipes()[i] = "null"; // Set elements to null
+            }
+        }
 
         recipeSearchState.setUsername(recipeSearchOutputData.getUsername());
         recipeSearchState.setFavoriteRecipes(recipeSearchOutputData.getFavoriteRecipes());

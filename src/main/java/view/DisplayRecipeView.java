@@ -1,10 +1,12 @@
 package view;
 
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
+import interface_adapter.choose_recipe.ChooseRecipeState;
 import interface_adapter.display_recipe.DisplayRecipeState;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import interface_adapter.like_and_dislike.dislike_a_recipe.DislikeRecipeController;
 import interface_adapter.like_and_dislike.like_a_recipe.LikeRecipeController;
+import interface_adapter.favorite_recipe.FavoriteRecipeController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +20,7 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
 
     private ReturnToSearchMenuController returnToSearchMenuController;
     private LikeRecipeController likeRecipeController;
+    private FavoriteRecipeController favoriteRecipeController;
     private DislikeRecipeController dislikeRecipeController;
 
     // Example: Dynamic data loaded into variables
@@ -156,6 +159,8 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                             final String[] favoriteRecipes = state.getFavoriteRecipes();
                             System.out.println("Current logged in account: " + username);
                             System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
+                            favoriteRecipeController.execute(state.getUsername(), state.getFavoriteRecipes());
+
                         }
 
                     }
@@ -164,15 +169,30 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
     }
 
     public int findPlaceToSaveFavoriteRecipe(DisplayRecipeState state) {
-        final String[] favoriteRecipesList = state.getFavoriteRecipes();
+        String[] favoriteRecipesList = state.getFavoriteRecipes();
+
+        // Ensure favoriteRecipesList is initialized
+        if (favoriteRecipesList == null) {
+            System.out.println("Favorite recipes list is not initialized, initializing now.");
+            favoriteRecipesList = new String[6];
+            for (int i = 0; i < favoriteRecipesList.length; i++) {
+                favoriteRecipesList[i] = null; // Initialize each element to an empty string
+            }
+            state.setFavoriteRecipes(favoriteRecipesList);
+        }
+
+        // Find the first available (empty) spot in the list to save the favorite recipe
         int firstIndex = -1;
         for (int i = favoriteRecipesList.length - 1; i > -1; i--) {
-            if (favoriteRecipesList[i] == null) {
+            if (favoriteRecipesList[i] == null) { // Check for an empty string instead of null
                 firstIndex = i;
+                // break; // Stop once we find the first empty spot
             }
         }
+
         return firstIndex;
     }
+
 
     public String getViewName() {
         return viewName;
@@ -188,6 +208,10 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
 
     public void setDislikeRecipeController(DislikeRecipeController dislikeRecipeController) {
         this.dislikeRecipeController = dislikeRecipeController;
+    }
+
+    public void setFavoriteRecipeController(FavoriteRecipeController favoriteRecipeController) {
+        this.favoriteRecipeController = favoriteRecipeController;
     }
 
     @Override
