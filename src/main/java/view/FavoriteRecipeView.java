@@ -11,12 +11,10 @@ import javax.swing.*;
 
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.choose_recipe.ChooseRecipeController;
-import interface_adapter.choose_recipe.ChooseRecipeState;
-import interface_adapter.display_recipe.DisplayRecipeState;
 import interface_adapter.favorite_recipe.FavoriteRecipeController;
 import interface_adapter.favorite_recipe.FavoriteRecipeState;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
-import interface_adapter.searchresult.SearchResultController;
+import interface_adapter.shopping_list.ShoppingListController;
 
 /**
  * The View for when the user is going to see recipes which they add to favorite file.
@@ -31,7 +29,9 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     private FavoriteRecipeController favoriteRecipeController;
     private ReturnToSearchMenuController returnToSearchMenuController;
     private ChooseRecipeController chooseRecipeController;
+    private ShoppingListController shoppingListController;
     private JButton back;
+    private JButton shoppingList;
 
     public FavoriteRecipeView(FavoriteRecipeViewModel favoriteRecipeViewModel) {
         this.favoriteRecipeViewModel = favoriteRecipeViewModel;
@@ -40,9 +40,11 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         final JLabel title = new JLabel("my favorite recipe");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final JPanel buttons = new JPanel();
+        final JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER));
         back = new JButton("back to recipe search page");
+        shoppingList = new JButton("Generate Shopping list");
         buttons.add(back);
+        buttons.add(shoppingList);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -66,11 +68,40 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 );
             }
         });
+
+        shoppingList.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(shoppingList)) {
+                    final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
+                    shoppingListController.handleGenerateShoppingList(currentState.getUsername(), Arrays.asList(currentState.getFavoriteRecipes()));
+                    favoriteRecipeController.switchToShoppingListView();
+                }
+            }
+        });
+
+        revalidate();
+        repaint();
+
     }
 
     private void addRecipeSectionsA() {
         final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
-        String recipeName = "null";
+        String recipeName = "null"; // Default value
+
+        // Null check for currentState and favoriteRecipes
+        if (currentState == null || currentState.getFavoriteRecipes() == null) {
+            System.out.println("Favorite recipes are not initialized. Initializing now.");
+            if (currentState != null) {
+                currentState.setFavoriteRecipes(new String[6]); // Set default empty favorite recipes list
+                for (int i = 0; i < 6; i++) {
+                    currentState.getFavoriteRecipes()[i] = ""; // Initialize elements to avoid nulls
+                }
+            } else {
+                return; // If state is null, return to prevent further issues
+            }
+        }
+
         if (currentState.getFavoriteRecipes()[0] != null) {
             recipeName = currentState.getFavoriteRecipes()[0];
         }
@@ -129,6 +160,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
                         currentState1.getUsername(), currentState1.getFavoriteRecipes()
                 );
+                this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
 
@@ -141,7 +173,21 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
 
     private void addRecipeSectionsB() {
         final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
-        String recipeName = "null";
+        String recipeName = "null"; // Default value
+
+        // Null check for currentState and favoriteRecipes
+        if (currentState == null || currentState.getFavoriteRecipes() == null) {
+            System.out.println("Favorite recipes are not initialized. Initializing now.");
+            if (currentState != null) {
+                currentState.setFavoriteRecipes(new String[6]); // Set default empty favorite recipes list
+                for (int i = 0; i < 6; i++) {
+                    currentState.getFavoriteRecipes()[i] = ""; // Initialize elements to avoid nulls
+                }
+            } else {
+                return; // If state is null, return to prevent further issues
+            }
+        }
+
         if (currentState.getFavoriteRecipes()[1] != null) {
             recipeName = currentState.getFavoriteRecipes()[1];
         }
@@ -200,6 +246,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
                         currentState1.getUsername(), currentState1.getFavoriteRecipes()
                 );
+                this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
 
@@ -213,6 +260,20 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     private void addRecipeSectionsC() {
         final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
         String recipeName = "null";
+
+        // Null check for currentState and favoriteRecipes
+        if (currentState == null || currentState.getFavoriteRecipes() == null) {
+            System.out.println("Favorite recipes are not initialized. Initializing now.");
+            if (currentState != null) {
+                currentState.setFavoriteRecipes(new String[6]); // Set default empty favorite recipes list
+                for (int i = 0; i < 6; i++) {
+                    currentState.getFavoriteRecipes()[i] = ""; // Initialize elements to avoid nulls
+                }
+            } else {
+                return; // If state is null, return to prevent further issues
+            }
+        }
+
         if (currentState.getFavoriteRecipes()[2] != null) {
             recipeName = currentState.getFavoriteRecipes()[2];
         }
@@ -271,6 +332,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
                         currentState1.getUsername(), currentState1.getFavoriteRecipes()
                 );
+                this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
 
@@ -284,6 +346,20 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     private void addRecipeSectionsD() {
         final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
         String recipeName = "null";
+
+        // Null check for currentState and favoriteRecipes
+        if (currentState == null || currentState.getFavoriteRecipes() == null) {
+            System.out.println("Favorite recipes are not initialized. Initializing now.");
+            if (currentState != null) {
+                currentState.setFavoriteRecipes(new String[6]); // Set default empty favorite recipes list
+                for (int i = 0; i < 6; i++) {
+                    currentState.getFavoriteRecipes()[i] = ""; // Initialize elements to avoid nulls
+                }
+            } else {
+                return; // If state is null, return to prevent further issues
+            }
+        }
+
         if (currentState.getFavoriteRecipes()[2 + 1] != null) {
             recipeName = currentState.getFavoriteRecipes()[2 + 1];
         }
@@ -340,6 +416,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
                         currentState1.getUsername(), currentState1.getFavoriteRecipes()
                 );
+                this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
         sectionPanel.add(buttonDeleteD2);
@@ -354,6 +431,19 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     private void addRecipeSectionsE() {
         final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
         String recipeName = "null";
+
+        // Null check for currentState and favoriteRecipes
+        if (currentState == null || currentState.getFavoriteRecipes() == null) {
+            System.out.println("Favorite recipes are not initialized. Initializing now.");
+            if (currentState != null) {
+                currentState.setFavoriteRecipes(new String[6]); // Set default empty favorite recipes list
+                for (int i = 0; i < 6; i++) {
+                    currentState.getFavoriteRecipes()[i] = ""; // Initialize elements to avoid nulls
+                }
+            } else {
+                return; // If state is null, return to prevent further issues
+            }
+        }
         if (currentState.getFavoriteRecipes()[2 + 2] != null) {
             recipeName = currentState.getFavoriteRecipes()[2 + 2];
         }
@@ -408,6 +498,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
                         currentState1.getUsername(), currentState1.getFavoriteRecipes()
                 );
+                this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
         sectionPanel.add(buttonDeleteE2);
@@ -422,6 +513,20 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     private void addRecipeSectionsF() {
         final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
         String recipeName = "null";
+
+        // Null check for currentState and favoriteRecipes
+        if (currentState == null || currentState.getFavoriteRecipes() == null) {
+            System.out.println("Favorite recipes are not initialized. Initializing now.");
+            if (currentState != null) {
+                currentState.setFavoriteRecipes(new String[6]); // Set default empty favorite recipes list
+                for (int i = 0; i < 6; i++) {
+                    currentState.getFavoriteRecipes()[i] = ""; // Initialize elements to avoid nulls
+                }
+            } else {
+                return; // If state is null, return to prevent further issues
+            }
+        }
+
         if (currentState.getFavoriteRecipes()[2 + 2 + 1] != null) {
             recipeName = currentState.getFavoriteRecipes()[2 + 2 + 1];
         }
@@ -478,6 +583,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
                         currentState1.getUsername(), currentState1.getFavoriteRecipes()
                 );
+                this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
         sectionPanel.add(buttonDeleteF2);
@@ -506,9 +612,11 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         final JLabel title = new JLabel("my favorite recipe");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final JPanel buttons = new JPanel();
+        final JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER));
         back = new JButton("back to recipe search page");
+        shoppingList = new JButton("Generate Shopping List");
         buttons.add(back);
+        buttons.add(shoppingList);
 
         this.add(title);
         this.add(buttons);
@@ -530,6 +638,21 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 );
             }
         });
+
+        shoppingList.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(shoppingList)) {
+                    final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
+                    shoppingListController.handleGenerateShoppingList(currentState.getUsername(), Arrays.asList(currentState.getFavoriteRecipes()));
+                    favoriteRecipeController.switchToShoppingListView();
+                }
+            }
+        });
+
+        revalidate();
+        repaint();
+
     }
 
     public String getViewName() {
@@ -546,5 +669,9 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
 
     public void setChooseRecipeController(ChooseRecipeController chooseRecipeController) {
         this.chooseRecipeController = chooseRecipeController;
+    }
+
+    public void setShoppingListController(ShoppingListController shoppingListController) {
+        this.shoppingListController = shoppingListController;
     }
 }

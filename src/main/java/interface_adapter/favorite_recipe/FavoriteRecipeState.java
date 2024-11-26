@@ -8,9 +8,16 @@ import java.beans.PropertyChangeSupport;
  */
 public class FavoriteRecipeState {
     private final int six = 6;
-    private String username;
+    private String username = "";
     private String[] favoriteRecipes = new String[six];
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
+    public FavoriteRecipeState() {
+        // Ensure favoriteRecipes array is initialized with non-null values
+        for (int i = 0; i < six; i++) {
+            favoriteRecipes[i] = "null"; // Initialize each element with an empty string to avoid nulls
+        }
+    }
 
     public String getUsername() {
         return username;
