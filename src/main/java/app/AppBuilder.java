@@ -259,6 +259,7 @@ public class AppBuilder {
         displayRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
         favoriteRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
         editView.setReturnToSearchMenuController(returnToSearchMenuController);
+        shoppingListView.setReturnToSearchMenuController(returnToSearchMenuController);
         return this;
     }
 

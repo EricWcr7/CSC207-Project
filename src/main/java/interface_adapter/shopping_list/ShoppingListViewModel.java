@@ -10,4 +10,8 @@ public class ShoppingListViewModel extends ViewModel<ShoppingListState> {
         super("The Overall Shopping List");
         setState(new ShoppingListState());
     }
+
+    public Map<String, Double> getIngredients() {
+        return getState().getIngredients();
+    }
 }
