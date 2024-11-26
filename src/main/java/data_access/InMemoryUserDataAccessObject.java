@@ -5,7 +5,7 @@ import java.util.Map;
 
 import entity.User;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
-import use_case.like_a_recipe.LikeRecipeUserNameDataAccessInterface;
+import use_case.like_and_dislike_a_recipe.UserLikeAndDislikeDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
@@ -17,7 +17,7 @@ import use_case.signup.SignupUserDataAccessInterface;
 public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LikeRecipeUserNameDataAccessInterface,
+        UserLikeAndDislikeDataAccessInterface,
         LogoutUserDataAccessInterface {
 
     private final Map<String, User> users = new HashMap<>();
@@ -54,4 +54,29 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public String getCurrentUsername() {
         return this.currentUsername;
     }
+
+    @Override
+    public boolean hasUserLikedRecipe(String recipeName) {
+        final User currentUser = get(getCurrentUsername());
+        return currentUser.hasUserLikedRecipe(recipeName);
+    }
+
+    @Override
+    public void addLikedRecipe(String recipeName) {
+        final User currentUser = get(getCurrentUsername());
+        currentUser.addLikedRecipe(recipeName);
+    }
+
+    @Override
+    public boolean hasUserDislikedRecipe(String recipeName) {
+        final User currentUser = get(getCurrentUsername());
+        return currentUser.hasUserDislikedRecipe(recipeName);
+    }
+
+    @Override
+    public void addDislikedRecipe(String recipeName) {
+        final User currentUser = get(getCurrentUsername());
+        currentUser.addDislikedRecipe(recipeName);
+    }
+
 }

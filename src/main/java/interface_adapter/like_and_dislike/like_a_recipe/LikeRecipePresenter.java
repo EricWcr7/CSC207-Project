@@ -1,9 +1,9 @@
-package interface_adapter.like_a_recipe;
+package interface_adapter.like_and_dislike.like_a_recipe;
 
 import interface_adapter.display_recipe.DisplayRecipeState;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
-import use_case.like_a_recipe.LikeRecipeOutputBoundary;
-import use_case.like_a_recipe.LikeRecipeOutputData;
+import use_case.like_and_dislike_a_recipe.like.LikeRecipeOutputBoundary;
+import use_case.like_and_dislike_a_recipe.like.LikeRecipeOutputData;
 
 
 public class LikeRecipePresenter implements LikeRecipeOutputBoundary {

@@ -1,6 +1,5 @@
 package use_case.choose_recipe;
 
-import data_access.RecipeDataAccessObject;
 import entity.Recipe;
 
 import java.util.Arrays;
@@ -44,7 +43,8 @@ public class ChooseRecipeInteractor implements ChooseRecipeInputBoundary {
         final Recipe recipe = recipeDataAccessObject.getOneRecipe(searchDishName);
 
         final ChooseRecipeOutputData chooseRecipeOutputData = new ChooseRecipeOutputData(
-                recipe.getName(), recipe.getIngredients(), recipe.getInstructions(), recipe.getLikeNumber(), username, favoriteRecipes);
+                recipe.getName(), recipe.getIngredients(), recipe.getInstructions(), recipe.getLikeNumber(),
+                recipe.getDislikeNumber(), username, favoriteRecipes);
         chooseRecipePresenter.prepareSuccessView(chooseRecipeOutputData);
     }
 }

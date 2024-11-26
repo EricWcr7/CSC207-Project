@@ -38,6 +38,7 @@ public class ChooseRecipePresenter implements ChooseRecipeOutputBoundary {
         displayState.setIngredients(outputData.getDishIngredients());
         displayState.setInstructions(outputData.getDishInstructions());
         displayState.setLikeNumber(dishName, outputData.getLikeNumber());
+        displayState.setDislikeNumber(dishName, outputData.getDislikeNumber());
 
         // Notify that the state has changed
         this.displayRecipeViewModel.setState(displayState);

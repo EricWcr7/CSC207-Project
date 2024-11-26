@@ -1,6 +1,6 @@
 package data_access;
 
-import use_case.like_a_recipe.UserLikesDataAccessInterface;
+import use_case.like_and_dislike_a_recipe.UserLikesDataAccessInterface;
 
 import java.util.HashSet;
 import java.util.Set;

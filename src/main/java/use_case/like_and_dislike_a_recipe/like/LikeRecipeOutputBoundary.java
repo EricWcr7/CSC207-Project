@@ -1,4 +1,4 @@
-package use_case.like_a_recipe;
+package use_case.like_and_dislike_a_recipe.like;
 
 /**
  * The output boundary for the like a recipe Use Case.
@@ -9,4 +9,5 @@ public interface LikeRecipeOutputBoundary {
      * @param outputData the output data
      */
     void prepareSuccessView(LikeRecipeOutputData outputData);
+
 }

@@ -14,16 +14,16 @@ public class CommonUser implements User {
     private String[] favoriteRecipes;
     private final int six = 6;
     // List to store liked, disliked recipes, might use these instead of a  DAO
-//    private final List<Recipe> likedRecipes;
-//    private final List<Recipe> dislikedRecipes;
+    private final List<String> likedRecipes;
+    private final List<String> dislikedRecipes;
 
     public CommonUser(String name, String password) {
         this.name = name;
         this.password = password;
         this.recipeCreated = new ArrayList<>();
         this.favoriteRecipes = new String[six];
-//        this.likedRecipes = new ArrayList<>();
-//        this.dislikedRecipes = new ArrayList<>();
+        this.likedRecipes = new ArrayList<>();
+        this.dislikedRecipes = new ArrayList<>();
     }
 
     @Override
@@ -49,5 +49,25 @@ public class CommonUser implements User {
     @Override
     public void setFavoriteRecipes(String[] favoriteRecipes) {
         this.favoriteRecipes = favoriteRecipes;
+    }
+
+    @Override
+    public boolean hasUserLikedRecipe(String recipeName) {
+        return likedRecipes.contains(recipeName);
+    }
+
+    @Override
+    public boolean hasUserDislikedRecipe(String recipeName) {
+        return dislikedRecipes.contains(recipeName);
+    }
+
+    @Override
+    public void addDislikedRecipe(String recipeName) {
+        dislikedRecipes.add(recipeName);
+    }
+
+    @Override
+    public void addLikedRecipe(String recipeName) {
+        likedRecipes.add(recipeName);
     }
 }

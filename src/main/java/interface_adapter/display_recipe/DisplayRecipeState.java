@@ -9,17 +9,8 @@ public class DisplayRecipeState {
     private String instructions;
     private String username;
     private String[] favoriteRecipes;
-    private int likeNumber;
     private Map<String, Integer> likeNumbers = new HashMap<>();
-
-    public void setLikeNumber(String dishName, int likeNumber) {
-        likeNumbers.put(dishName, likeNumber);
-    }
-
-    public int getLikeNumber(String dishName) {
-        return likeNumbers.getOrDefault(dishName, 0);
-    }
-
+    private Map<String, Integer> dislikeNumbers = new HashMap<>();;
 
     public void setDishName(String dishName) {
         this.dishName = dishName;
@@ -45,18 +36,6 @@ public class DisplayRecipeState {
         return instructions;
     }
 
-//    public int getLikeNumber() {
-//        return likeNumber;
-//    }
-//
-//    public void setLikeNumber(int likeNumber) {
-//        this.likeNumber = likeNumber;
-//    }
-
-    public void clearLikeNumber() {
-        this.likeNumber = 0;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -71,5 +50,21 @@ public class DisplayRecipeState {
 
     public void setFavoriteRecipes(String[] favoriteRecipes) {
         this.favoriteRecipes = favoriteRecipes;
+    }
+
+    public void setLikeNumber(String recipeName, int LikeNumber) {
+        likeNumbers.put(recipeName, LikeNumber);
+    }
+
+    public int getLikeNumber(String recipeName) {
+        return likeNumbers.getOrDefault(recipeName, 0);
+    }
+
+    public void setDislikeNumber(String recipeName, int dislikeNumber) {
+        dislikeNumbers.put(recipeName, dislikeNumber);
+    }
+
+    public int getDislikeNumber(String recipeName) {
+        return dislikeNumbers.getOrDefault(recipeName, 0);
     }
 }

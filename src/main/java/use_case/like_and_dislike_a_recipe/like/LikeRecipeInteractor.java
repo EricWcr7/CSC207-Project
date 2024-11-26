@@ -1,6 +1,7 @@
-package use_case.like_a_recipe;
+package use_case.like_and_dislike_a_recipe.like;
 
 import entity.Recipe;
+import use_case.like_and_dislike_a_recipe.*;
 
 import java.util.List;
 
@@ -12,31 +13,27 @@ import java.util.List;
  * successful view就让presenter拿着更新点赞数
  */
 
-public class LikeRecipeInteractor implements LikeRecipeInputBoundary {
+public class LikeRecipeInteractor implements LikeAndDislikeRecipeInputBoundary {
     private final LikeRecipeOutputBoundary likeRecipePresenter;
-    private final LikeRecipeDataAccessInterface recipeDataAccessObject;
-    private final UserLikesDataAccessInterface userLikesDataAccessObject;
-    private final LikeRecipeUserNameDataAccessInterface likeRecipeUserNameDataAccessObject;
+    private final LikeAndDislikeRecipeDataAccessInterface recipeDataAccessObject;
+    private final UserLikeAndDislikeDataAccessInterface likeRecipeDataAccessObject;
 
-    public LikeRecipeInteractor(LikeRecipeDataAccessInterface likeRecipeDataAccessInterface,
-                                UserLikesDataAccessInterface userLikesDataAccessInterface,
-                                LikeRecipeUserNameDataAccessInterface likeRecipeUserNameDataAccessObject,
+    public LikeRecipeInteractor(LikeAndDislikeRecipeDataAccessInterface likeRecipeDataAccessInterface,
+                                UserLikeAndDislikeDataAccessInterface likeRecipeDataAccessObject,
                                 LikeRecipeOutputBoundary likeRecipePresenter) {
         this.likeRecipePresenter = likeRecipePresenter;
         this.recipeDataAccessObject = likeRecipeDataAccessInterface;
-        this.userLikesDataAccessObject = userLikesDataAccessInterface;
-        this.likeRecipeUserNameDataAccessObject = likeRecipeUserNameDataAccessObject;
+        this.likeRecipeDataAccessObject = likeRecipeDataAccessObject;
     }
 
     @Override
-    public void execute(LikeRecipeInputData likeRecipeInputData) {
+    public void execute(LikeAndDislikeRecipeInputData likeRecipeInputData) {
 
         final String recipeName = likeRecipeInputData.getDishName();
         final Recipe theRecipe = recipeDataAccessObject.getOneRecipe(recipeName);
 
         // Check if the user has already liked the recipe
-        final String userName = likeRecipeUserNameDataAccessObject.getCurrentUsername();
-        final boolean alreadyLiked = userLikesDataAccessObject.hasUserLikedRecipe(userName, recipeName);
+        final boolean alreadyLiked = likeRecipeDataAccessObject.hasUserLikedRecipe(recipeName);
 
         if (alreadyLiked) {
             //likeRecipePresenter.prepareFailureView("You have already liked this recipe");
@@ -46,16 +43,15 @@ public class LikeRecipeInteractor implements LikeRecipeInputBoundary {
 
         // Increment like count and persist
         theRecipe.incrementLikeNumber();
-        // final String recipeId = theRecipe.getId();
 
+        // Write updated recipes to file and delete the old file
         final List<Recipe> updatedRecipes = recipeDataAccessObject.getCachedRecipes();
         recipeDataAccessObject.writeRecipesToFile(updatedRecipes);
         recipeDataAccessObject.deleteFileFromFileIo();
         recipeDataAccessObject.uploadFileToFileIo();
-        // recipeDataAccessObject.updateRecipeField(recipeId, "likeNumber");
 
         // Add the like to user data
-        userLikesDataAccessObject.addUserLike(userName, recipeName);
+        likeRecipeDataAccessObject.addLikedRecipe(recipeName);
 
         final int updatedLikeNumber = theRecipe.getLikeNumber();
         final LikeRecipeOutputData likeRecipeOutputData = new LikeRecipeOutputData(recipeName, updatedLikeNumber);
