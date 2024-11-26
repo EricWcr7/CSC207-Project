@@ -29,6 +29,7 @@ import interface_adapter.like_a_recipe.LikeRecipePresenter;
 import interface_adapter.login.*;
 import interface_adapter.logout.*;
 import interface_adapter.recipe_search.*;
+import interface_adapter.shopping_list.ShoppingListViewModel;
 import interface_adapter.signup.*;
 import interface_adapter.favorite_recipe.FavoriteRecipeController;
 import interface_adapter.favorite_recipe.FavoriteRecipePresenter;
@@ -92,6 +93,8 @@ public class AppBuilder {
     private EditViewModel editViewModel;
     private CreateView createView;
     private CreateViewModel createViewModel;
+    private ShoppingListView shoppingListView;
+    private ShoppingListViewModel shoppingListViewModel;
 
     private RecipeSearchInputBoundary recipeSearchInteractor;
 
@@ -185,6 +188,14 @@ public class AppBuilder {
         createView = new CreateView(createViewModel);
         System.out.println("Adding Create View with name: " + createView.getViewName());
         cardPanel.add(createView, createView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addShoppingListView() {
+        shoppingListViewModel = new ShoppingListViewModel();
+        shoppingListView = new ShoppingListView(shoppingListViewModel);
+        System.out.println("Adding Display Recipe View with name: " + favoriteRecipeView.getViewName());
+        cardPanel.add(shoppingListView, shoppingListView.getViewName());
         return this;
     }
 
