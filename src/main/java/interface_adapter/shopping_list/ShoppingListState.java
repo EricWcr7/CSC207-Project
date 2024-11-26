@@ -1,5 +1,6 @@
 package interface_adapter.shopping_list;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class ShoppingListState {
     }
 
     public void setIngredients(Map<String, Double> ingredients) {
-        this.ingredients = ingredients;
+        this.ingredients = (ingredients != null) ? ingredients : Collections.emptyMap();
     }
 
     public void setUsername(String username) {

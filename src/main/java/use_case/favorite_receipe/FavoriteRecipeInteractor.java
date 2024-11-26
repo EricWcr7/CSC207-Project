@@ -28,4 +28,9 @@ public class FavoriteRecipeInteractor implements FavoriteRecipeInputBoundary {
         user.setFavoriteRecipes(favoriteRecipes);
         inMemoryUserDataAccessObject.updateUserFavoriteRecipes(user);
     }
+
+    @Override
+    public void switchToShoppingListView() {
+        favoriteRecipePresenter.switchToShoppingListView();
+    }
 }

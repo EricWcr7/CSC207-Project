@@ -10,4 +10,6 @@ public interface FavoriteRecipeInputBoundary {
      * @param favoriteRecipeInputData the input data
      */
     void execute(FavoriteRecipeInputData favoriteRecipeInputData);
+
+    void switchToShoppingListView();
 }

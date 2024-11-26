@@ -6,15 +6,15 @@ import use_case.shopping_list.ShoppingListInputData;
 import java.util.List;
 
 public class ShoppingListController {
-    private final ShoppingListInputBoundary inputBoundary;
+    private final ShoppingListInputBoundary shoppingListInteractor;
 
-    public ShoppingListController(ShoppingListInputBoundary inputBoundary) {
-        this.inputBoundary = inputBoundary;
+    public ShoppingListController(ShoppingListInputBoundary shoppingListInteractor) {
+        this.shoppingListInteractor = shoppingListInteractor;
     }
 
     public void handleGenerateShoppingList(List<String> recipeNames) {
         ShoppingListInputData inputData = new ShoppingListInputData(recipeNames);
-        inputBoundary.generateShoppingList(inputData);
+        shoppingListInteractor.generateShoppingList(inputData);
     }
 }
 

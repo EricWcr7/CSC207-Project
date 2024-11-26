@@ -30,6 +30,8 @@ import interface_adapter.like_a_recipe.LikeRecipePresenter;
 import interface_adapter.login.*;
 import interface_adapter.logout.*;
 import interface_adapter.recipe_search.*;
+import interface_adapter.shopping_list.ShoppingListController;
+import interface_adapter.shopping_list.ShoppingListPresenter;
 import interface_adapter.shopping_list.ShoppingListViewModel;
 import interface_adapter.signup.*;
 import interface_adapter.favorite_recipe.FavoriteRecipeController;
@@ -60,6 +62,9 @@ import use_case.like_a_recipe.UserLikesDataAccessInterface;
 import use_case.login.*;
 import use_case.logout.*;
 import use_case.recipe_search.*;
+import use_case.shopping_list.ShoppingListInputBoundary;
+import use_case.shopping_list.ShoppingListInteractor;
+import use_case.shopping_list.ShoppingListOutputBoundary;
 import use_case.signup.*;
 import view.*;
 
@@ -303,13 +308,20 @@ public class AppBuilder {
 
     public AppBuilder addFavoriteRecipeUseCase () {
         final FavoriteRecipeOutputBoundary favoriteRecipeOutputBoundary = new FavoriteRecipePresenter(
-                viewManagerModel, favoriteRecipeViewModel);
+                viewManagerModel, favoriteRecipeViewModel, shoppingListViewModel);
 
         final FavoriteRecipeInputBoundary favoriteRecipeInteractor = new FavoriteRecipeInteractor(
                 favoriteRecipeOutputBoundary, favoriteRecipeDataAccessObject, userDataAccessObject);
 
+        final ShoppingListOutputBoundary shoppingListOutputBoundary = new ShoppingListPresenter(viewManagerModel,
+                shoppingListViewModel);
+
+        final ShoppingListInputBoundary shoppingListInteractor = new ShoppingListInteractor();
+
         final FavoriteRecipeController favoriteRecipeController = new FavoriteRecipeController(favoriteRecipeInteractor);
+        final ShoppingListController shoppingListController = new ShoppingListController(shoppingListInteractor);
         favoriteRecipeView.setFavoriteRecipeController(favoriteRecipeController);
+        favoriteRecipeView.setShoppingListController(shoppingListController);
         displayRecipeView.setFavoriteRecipeController(favoriteRecipeController);
         return this;
     }

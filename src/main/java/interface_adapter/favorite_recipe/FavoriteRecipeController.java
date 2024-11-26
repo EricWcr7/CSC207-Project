@@ -2,7 +2,6 @@ package interface_adapter.favorite_recipe;
 
 import use_case.favorite_receipe.FavoriteRecipeInputBoundary;
 import use_case.favorite_receipe.FavoriteRecipeInputData;
-import use_case.like_a_recipe.LikeRecipeInputData;
 
 /**
  * The controller for the FavoriteRecipe Use Case.
@@ -22,5 +21,9 @@ public class FavoriteRecipeController {
     public void execute(String username, String[] favoriteRecipes) {
         final FavoriteRecipeInputData favoriteRecipeInputData = new FavoriteRecipeInputData(username, favoriteRecipes);
         favoriteRecipeInteractor.execute(favoriteRecipeInputData);
+    }
+
+    public void switchToShoppingListView() {
+        favoriteRecipeInteractor.switchToShoppingListView();
     }
 }

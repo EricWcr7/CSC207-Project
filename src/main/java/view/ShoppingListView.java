@@ -65,12 +65,16 @@ public class ShoppingListView extends JPanel implements PropertyChangeListener {
     }
 
     private void updateView() {
-        StringBuilder shoppingListBuilder = new StringBuilder();
-        for (Map.Entry<String, Double> entry : shoppingListViewModel.getIngredients().entrySet()) {
-            shoppingListBuilder.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+        Map<String, Double> ingredients = shoppingListViewModel.getIngredients();
+        if (ingredients != null) {
+            for (Map.Entry<String, Double> entry : ingredients.entrySet()) {
+                shoppingListTextArea.append(entry.getKey() + ": " + entry.getValue() + "\n");
+            }
+        } else {
+            shoppingListTextArea.setText("No ingredients available");
         }
-        shoppingListTextArea.setText(shoppingListBuilder.toString());
     }
+
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

@@ -158,15 +158,30 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
     }
 
     public int findPlaceToSaveFavoriteRecipe(DisplayRecipeState state) {
-        final String[] favoriteRecipesList = state.getFavoriteRecipes();
+        String[] favoriteRecipesList = state.getFavoriteRecipes();
+
+        // Ensure favoriteRecipesList is initialized
+        if (favoriteRecipesList == null) {
+            System.out.println("Favorite recipes list is not initialized, initializing now.");
+            favoriteRecipesList = new String[6];
+            for (int i = 0; i < favoriteRecipesList.length; i++) {
+                favoriteRecipesList[i] = ""; // Initialize each element to an empty string
+            }
+            state.setFavoriteRecipes(favoriteRecipesList);
+        }
+
+        // Find the first available (empty) spot in the list to save the favorite recipe
         int firstIndex = -1;
         for (int i = favoriteRecipesList.length - 1; i > -1; i--) {
-            if (favoriteRecipesList[i] == null) {
+            if (favoriteRecipesList[i].isEmpty()) { // Check for an empty string instead of null
                 firstIndex = i;
+                break; // Stop once we find the first empty spot
             }
         }
+
         return firstIndex;
     }
+
 
     public String getViewName() {
         return viewName;
