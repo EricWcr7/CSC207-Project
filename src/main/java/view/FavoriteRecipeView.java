@@ -44,11 +44,13 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         back = new JButton("back to recipe search page");
         buttons.add(back);
 
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
         this.add(title);
         this.add(buttons);
 
-        this.add(Box.createRigidArea(new Dimension(threeHundred, 0)));
-        this.add(Box.createVerticalStrut(oneHundredFifty));
+        this.add(Box.createRigidArea(new Dimension(oneHundredFifty, 0)));
+        this.add(Box.createVerticalStrut(fifty));
         addRecipeSectionsA();
         addRecipeSectionsB();
         addRecipeSectionsC();
@@ -73,7 +75,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             recipeName = currentState.getFavoriteRecipes()[0];
         }
         // Main panel for recipe sections
-        final JPanel recipeGrid = new JPanel(new GridLayout(6, 1));
+        final JPanel recipeGrid = new JPanel(new GridLayout(3, 1));
         // 6 rows for A-F
 
         final JPanel sectionPanel = new JPanel();
@@ -144,7 +146,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             recipeName = currentState.getFavoriteRecipes()[1];
         }
         // Main panel for recipe sections
-        final JPanel recipeGrid = new JPanel(new GridLayout(6, 1));
+        final JPanel recipeGrid = new JPanel(new GridLayout(3, 1));
         // 6 rows for A-F
 
         final JPanel sectionPanel = new JPanel();
@@ -215,7 +217,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             recipeName = currentState.getFavoriteRecipes()[2];
         }
         // Main panel for recipe sections
-        final JPanel recipeGrid = new JPanel(new GridLayout(6, 1));
+        final JPanel recipeGrid = new JPanel(new GridLayout(3, 1));
         // 6 rows for A-F
 
         final JPanel sectionPanel = new JPanel();
@@ -286,7 +288,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             recipeName = currentState.getFavoriteRecipes()[2 + 1];
         }
         // Main panel for recipe sections
-        final JPanel recipeGrid = new JPanel(new GridLayout(6, 1));
+        final JPanel recipeGrid = new JPanel(new GridLayout(3, 1));
         // 6 rows for A-F
 
         final JPanel sectionPanel = new JPanel();
@@ -356,7 +358,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             recipeName = currentState.getFavoriteRecipes()[2 + 2];
         }
         // Main panel for recipe sections
-        final JPanel recipeGrid = new JPanel(new GridLayout(6, 1));
+        final JPanel recipeGrid = new JPanel(new GridLayout(3, 1));
         // 6 rows for A-F
         final JPanel sectionPanel = new JPanel();
         // Panel for each section
@@ -424,7 +426,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             recipeName = currentState.getFavoriteRecipes()[2 + 2 + 1];
         }
         // Main panel for recipe sections
-        final JPanel recipeGrid = new JPanel(new GridLayout(6, 1));
+        final JPanel recipeGrid = new JPanel(new GridLayout(3, 1));
         // 6 rows for A-F
 
         final JPanel sectionPanel = new JPanel();
@@ -511,8 +513,8 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         this.add(title);
         this.add(buttons);
 
-        this.add(Box.createRigidArea(new Dimension(threeHundred, 0)));
-        this.add(Box.createVerticalStrut(oneHundredFifty));
+        this.add(Box.createRigidArea(new Dimension(oneHundredFifty, 0)));
+        this.add(Box.createVerticalStrut(fifty));
         addRecipeSectionsA();
         addRecipeSectionsB();
         addRecipeSectionsC();
