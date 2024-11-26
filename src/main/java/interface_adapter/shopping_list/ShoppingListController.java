@@ -12,8 +12,8 @@ public class ShoppingListController {
         this.shoppingListInteractor = shoppingListInteractor;
     }
 
-    public void handleGenerateShoppingList(List<String> recipeNames) {
-        ShoppingListInputData inputData = new ShoppingListInputData(recipeNames);
+    public void handleGenerateShoppingList(String username, List<String> recipeNames) {
+        ShoppingListInputData inputData = new ShoppingListInputData(username, recipeNames);
         shoppingListInteractor.generateShoppingList(inputData);
     }
 }

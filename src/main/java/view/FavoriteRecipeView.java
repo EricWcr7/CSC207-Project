@@ -74,7 +74,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource().equals(shoppingList)) {
                     final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
-                    shoppingListController.handleGenerateShoppingList(Arrays.asList(currentState.getFavoriteRecipes()));
+                    shoppingListController.handleGenerateShoppingList(currentState.getUsername(), Arrays.asList(currentState.getFavoriteRecipes()));
                     favoriteRecipeController.switchToShoppingListView();
                 }
             }
@@ -644,7 +644,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource().equals(shoppingList)) {
                     final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
-                    shoppingListController.handleGenerateShoppingList(Arrays.asList(currentState.getFavoriteRecipes()));
+                    shoppingListController.handleGenerateShoppingList(currentState.getUsername(), Arrays.asList(currentState.getFavoriteRecipes()));
                     favoriteRecipeController.switchToShoppingListView();
                 }
             }

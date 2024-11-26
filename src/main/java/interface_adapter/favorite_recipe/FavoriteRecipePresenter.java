@@ -32,12 +32,12 @@ public class FavoriteRecipePresenter implements FavoriteRecipeOutputBoundary {
     @Override
     public void switchToShoppingListView() {
         // Check and log the current state
-        if (favoriteRecipeViewModel.getState() == null) {
-            System.out.println("FavoriteRecipeState is null, initializing default state.");
-            favoriteRecipeViewModel.setState(new FavoriteRecipeState());
-        } else {
-            System.out.println("Switching to Shopping List View, current state: " + favoriteRecipeViewModel.getState());
-        }
+        // if (favoriteRecipeViewModel.getState() == null) {
+        //     System.out.println("FavoriteRecipeState is null, initializing default state.");
+        //     favoriteRecipeViewModel.setState(new FavoriteRecipeState());
+        // } else {
+        //     System.out.println("Switching to Shopping List View, current state: " + favoriteRecipeViewModel.getState());
+        // }
 
         // Switch to the shopping list view
         viewManagerModel.setState(shoppingListViewModel.getViewName());

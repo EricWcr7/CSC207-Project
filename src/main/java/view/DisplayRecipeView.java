@@ -148,7 +148,7 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                             final String[] favoriteRecipes = state.getFavoriteRecipes();
                             System.out.println("Current logged in account: " + username);
                             System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
-                            favoriteRecipeController.execute(state.getUsername() ,state.getFavoriteRecipes());
+                            favoriteRecipeController.execute(state.getUsername(), state.getFavoriteRecipes());
 
                         }
 
@@ -165,7 +165,7 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
             System.out.println("Favorite recipes list is not initialized, initializing now.");
             favoriteRecipesList = new String[6];
             for (int i = 0; i < favoriteRecipesList.length; i++) {
-                favoriteRecipesList[i] = ""; // Initialize each element to an empty string
+                favoriteRecipesList[i] = null; // Initialize each element to an empty string
             }
             state.setFavoriteRecipes(favoriteRecipesList);
         }
@@ -173,9 +173,9 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
         // Find the first available (empty) spot in the list to save the favorite recipe
         int firstIndex = -1;
         for (int i = favoriteRecipesList.length - 1; i > -1; i--) {
-            if (favoriteRecipesList[i].isEmpty()) { // Check for an empty string instead of null
+            if (favoriteRecipesList[i] == null) { // Check for an empty string instead of null
                 firstIndex = i;
-                break; // Stop once we find the first empty spot
+                // break; // Stop once we find the first empty spot
             }
         }
 

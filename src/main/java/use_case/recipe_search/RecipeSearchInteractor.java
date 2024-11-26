@@ -2,6 +2,7 @@ package use_case.recipe_search;
 
 import entity.Recipe;
 import org.jetbrains.annotations.NotNull;
+import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
 
 import java.util.*;
 
@@ -11,6 +12,7 @@ import java.util.*;
 public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
     private final RecipeSearchOutputBoundary recipeSearchPresenter;
     private final RecipeSearchDataAccessInterface recipeDataAccessObject;
+    private final FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject;
     private boolean recipesLoaded = false;  // Flag to ensure loading from cloud only once
 
     /**
@@ -20,9 +22,11 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
      * @param recipeSearchPresenter the output boundary (presenter) to display results
      */
     public RecipeSearchInteractor(RecipeSearchDataAccessInterface recipeDataAccessObject,
-                                  RecipeSearchOutputBoundary recipeSearchPresenter) {
+                                  RecipeSearchOutputBoundary recipeSearchPresenter,
+                                  FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject) {
         this.recipeSearchPresenter = recipeSearchPresenter;
         this.recipeDataAccessObject = recipeDataAccessObject; // Instantiate internally
+        this.favoriteRecipeDataAccessObject = favoriteRecipeDataAccessObject;
     }
 
     /**
@@ -100,9 +104,13 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
         final String[] favoriteRecipes = recipeSearchInputData.getFavoriteRecipes();
         System.out.println("Current logged in account: " + username);
         System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
+
         final List<Recipe> recipes = new ArrayList<>();
+        // final RecipeSearchOutputData recipeSearchOutputData = new RecipeSearchOutputData(
+        //         "", recipes, username, favoriteRecipes);
         final RecipeSearchOutputData recipeSearchOutputData = new RecipeSearchOutputData(
-                "", recipes, username, favoriteRecipes);
+                "", recipes, favoriteRecipeDataAccessObject.get(username).getName(),
+                favoriteRecipeDataAccessObject.get(username).getFavoriteRecipes());
         recipeSearchPresenter.switchToFavoriteRecipeView(recipeSearchOutputData);
     }
 

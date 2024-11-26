@@ -259,7 +259,7 @@ public class AppBuilder {
                         recipeSearchViewModel, chooseRecipeViewModel, displayRecipeViewModel, favoriteRecipeViewModel, editViewModel);
 
         final ReturnToSearchMenuInputBoundary returnToSearchMenuInteractor =
-                new ReturnToSearchMenuInteractor(returnToSearchMenuOutputBoundary);
+                new ReturnToSearchMenuInteractor(returnToSearchMenuOutputBoundary, userDataAccessObject);
 
         final ReturnToSearchMenuController returnToSearchMenuController = new ReturnToSearchMenuController(returnToSearchMenuInteractor);
         chooseRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
@@ -286,7 +286,7 @@ public class AppBuilder {
         final RecipeSearchOutputBoundary recipeSearchOutputBoundary = new RecipeSearchPresenter(
                 viewManagerModel, chooseRecipeViewModel, favoriteRecipeViewModel, editViewModel, recipeSearchViewModel);
 
-        recipeSearchInteractor = new RecipeSearchInteractor(recipeDataAccessObject, recipeSearchOutputBoundary);
+        recipeSearchInteractor = new RecipeSearchInteractor(recipeDataAccessObject, recipeSearchOutputBoundary, userDataAccessObject);
 
         final RecipeSearchController recipeSearchController = new RecipeSearchController(recipeSearchInteractor);
         recipeSearchView.setRecipeSearchController(recipeSearchController);
@@ -316,7 +316,7 @@ public class AppBuilder {
         final ShoppingListOutputBoundary shoppingListOutputBoundary = new ShoppingListPresenter(viewManagerModel,
                 shoppingListViewModel);
 
-        final ShoppingListInputBoundary shoppingListInteractor = new ShoppingListInteractor();
+        final ShoppingListInputBoundary shoppingListInteractor = new ShoppingListInteractor(shoppingListOutputBoundary);
 
         final FavoriteRecipeController favoriteRecipeController = new FavoriteRecipeController(favoriteRecipeInteractor);
         final ShoppingListController shoppingListController = new ShoppingListController(shoppingListInteractor);

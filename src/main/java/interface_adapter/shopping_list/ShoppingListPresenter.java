@@ -2,6 +2,7 @@ package interface_adapter.shopping_list;
 
 import interface_adapter.ViewManagerModel;
 import use_case.shopping_list.ShoppingListOutputBoundary;
+import use_case.shopping_list.ShoppingListOutputData;
 
 public class ShoppingListPresenter implements ShoppingListOutputBoundary {
 
@@ -14,8 +15,12 @@ public class ShoppingListPresenter implements ShoppingListOutputBoundary {
         this.shoppingListViewModel = shoppingListViewModel;
     }
     @Override
-    public void presentShoppingList(ShoppingListViewModel shoppingListViewModel) {
+    public void presentShoppingList(ShoppingListOutputData shoppingListOutputData) {
         // Logic to present the shopping list view model to the view
         // For example, this could involve notifying the view to display the updated data
+        final ShoppingListState currentState = shoppingListViewModel.getState();
+        currentState.setUsername(shoppingListOutputData.getUsername());
+        currentState.setRecipeNames(shoppingListOutputData.getRecipeNames());
+        shoppingListViewModel.setState(currentState);
     }
 }
