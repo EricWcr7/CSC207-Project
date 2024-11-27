@@ -1,6 +1,8 @@
 package data_access;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import entity.Recipe;
@@ -26,12 +28,16 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         LogoutUserDataAccessInterface {
 
     private final Map<String, User> users = new HashMap<>();
-
     private String currentUsername;
-
     private String username;
-
     private String[] favoriteRecipes;
+    private static final String FILE_IO_API_URL = "https://file.io";
+    private static final String FILE_PATH = "all_users.json";
+    private static String fileKey = ""; // Replace with actual file key after upload
+    private static final String API_KEY = "35F52QF.ZQV4A4E-ASHMAQD-QSPTZ93-NHYCJT6";
+    private static final int STATUS_CODE_OK = 200;
+    // Holds the list of users loaded from the downloaded JSON
+    private List<User> cachedUsers = new ArrayList<>();
 
     @Override
     public boolean existsByName(String identifier) {
