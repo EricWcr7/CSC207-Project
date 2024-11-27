@@ -207,7 +207,7 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         JButton deleteButton = new JButton("Delete");
 
         // Add action listener to delete the row
-        deleteButton.addActionListener(e-> {
+        deleteButton.addActionListener(e -> {
             ingredientRowsPanel.remove(newRow); // Remove the row
             updateIngredientsState(); // Update state after removing
             ingredientRowsPanel.revalidate(); // Update the layout
@@ -354,62 +354,99 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         ingredientRowsPanel.repaint();
     }
 
+    /**
+     * Retrieves the name of the current view.
+     *
+     * @return the name of the view as a String.
+     */
     public String getViewName() {
         return viewName;
     }
 
+    /**
+     * Sets the CreateController for the view. The CreateController is responsible for
+     * handling actions related to creating new recipes.
+     *
+     * @param createController the CreateController instance to be associated with this view.
+     */
     public void setCreateController(CreateController createController) {
         this.createController = createController;
     }
 
+    /**
+     * Sets the BackToEditViewController for the view. This controller is responsible for
+     * handling the logic to navigate back to the EditView from other views.
+     *
+     * @param backToEditViewConTroller the BackToEditViewController instance to be associated with this view.
+     */
     public void setBackToEditViewConTroller(BackToEditViewController backToEditViewConTroller) {
         this.backToEditViewController = backToEditViewConTroller;
     }
 
+
+    /**
+     * Adds a new recipe to the "new_recipes.json" file. If the file doesn't exist, it creates a new one.
+     *
+     * @param dishName     The name of the dish to be added.
+     * @param instructions The cooking instructions for the dish.
+     * @param ingredients  A map containing the ingredients and their quantities.
+     */
     private void addToNewRecipesJson(String dishName, String instructions, HashMap<String, String> ingredients) {
         try {
-            // 读取 new_recipes.json 文件
+            // Variables for handling JSON file and objects
             FileReader reader;
             JsonObject jsonObject;
             JsonArray recipesArray;
 
             try {
-                // 如果文件已存在，读取内容
+                // Attempt to read the existing "new_recipes.json" file
                 reader = new FileReader("new_recipes.json");
                 jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+                // Parse the JSON content
                 recipesArray = jsonObject.getAsJsonArray("recipes");
+                // Get the "recipes" array
                 reader.close();
+                // Close the file reader
             } catch (IOException e) {
-                // 如果文件不存在，创建一个新的 JSON 对象
+                // If the file does not exist, create a new JSON structure
                 jsonObject = new JsonObject();
+                // Create the root JSON object
                 recipesArray = new JsonArray();
+                // Create an empty JSON array for recipes
                 jsonObject.add("recipes", recipesArray);
+                // Add the array to the root object
             }
 
-            // 创建新的菜谱对象
+            // Create a new JSON object to represent the recipe
             JsonObject newRecipe = new JsonObject();
             newRecipe.addProperty("name", dishName);
+            // Add the dish name to the recipe
             newRecipe.addProperty("instructions", instructions);
+            // Add the instructions to the recipe
 
-            // 添加配料
+            // Add the ingredients as a JSON object
             JsonObject ingredientsObject = new JsonObject();
             for (String ingredient : ingredients.keySet()) {
                 ingredientsObject.addProperty(ingredient, ingredients.get(ingredient));
+                // Add each ingredient and its quantity
             }
             newRecipe.add("ingredients", ingredientsObject);
+            // Add the ingredients object to the recipe
 
-            // 将新菜谱添加到 JSON 数组
+            // Add the new recipe to the recipes array
             recipesArray.add(newRecipe);
 
-            // 将更新后的 JSON 写回文件
+            // Write the updated JSON structure back to the file
             FileWriter writer = new FileWriter("new_recipes.json");
             writer.write(jsonObject.toString());
+            // Convert the JSON structure to a string
             writer.close();
-
+            // Close the file writer
         } catch (IOException e) {
+            // Handle any I/O errors
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error saving to new_recipes.json!");
+            // Print the error stack trace for debugging
+            JOptionPane.showMessageDialog(this, "Error saving to new_recipes.json!"); // Show an error message to the user
         }
     }
-
 }

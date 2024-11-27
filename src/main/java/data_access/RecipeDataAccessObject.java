@@ -360,46 +360,58 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
         return HttpRequest.BodyPublishers.ofByteArrays(byteArrays);
     }
 
+    /**
+     * Downloads the recipes file from the cloud, processes it, and updates the local JSON file.
+     */
     @Override
     public void loadRecipesFromCloud() {
+        // Check if the file key is empty; if it is, the method cannot proceed
         if (FILE_KEY.isEmpty()) {
             System.err.println("File key is empty. Cannot download file.");
+            return; // Exit the method since there is no file key
         }
 
         System.out.println("Downloading file from File.io with key: " + FILE_KEY);
+
         try {
+            // Construct the download URL using the file key
             String downloadUrl = FILE_IO_API_URL + "/" + URLEncoder.encode(FILE_KEY, StandardCharsets.UTF_8);
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = HttpClient.newHttpClient(); // Create an HTTP client
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(downloadUrl))
-                    .GET()
+                    .uri(URI.create(downloadUrl)) // Set the URI for the request
+                    .GET() // Specify a GET request
                     .build();
 
+            // Send the HTTP request and capture the response
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+            // Check if the response status is 200 (OK)
             if (response.statusCode() == STATUS_CODE_OK) {
                 System.out.println("File downloaded successfully.");
 
-                // Log the entire JSON content received
+                // Extract the JSON content from the response body
                 String jsonContent = response.body();
 
-                // Parse the downloaded JSON content
+                // Parse the downloaded JSON content into a list of recipes
                 List<Recipe> processedRecipes = parseDownloadedRecipes(jsonContent);
 
-                // Write parsed recipes back to the JSON file
+                // Write the processed recipes back to the local JSON file
                 writeRecipesToFile(processedRecipes);
 
-                // Upload the updated JSON file immediately
+                // Immediately upload the updated JSON file to the cloud
                 uploadFileToFileIo();
 
             } else {
+                // Log an error if the response status is not OK
                 System.err.println("Failed to download file. Status code: " + response.statusCode());
             }
         } catch (IOException | InterruptedException e) {
+            // Handle any exceptions during the file download process
             System.err.println("Error during file download: " + e.getMessage());
-            Thread.currentThread().interrupt();
+            Thread.currentThread().interrupt(); // Restore the interrupt status of the thread
         }
     }
+
 
 
     private List<Recipe> parseDownloadedRecipes(String jsonContent) {
@@ -537,68 +549,129 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
         return null;
     }
     // might cause error when merge, need to fix commonrecipe data type(change it to recipe)
+    /**
+     * Retrieves the maximum ID from the cached recipes.
+     *
+     * @return The maximum ID as a string from the list of cached recipes.
+     */
     public String getMaxId() {
+        // Initialize maxId with the ID of the first recipe in the cachedRecipes list
         String maxId = cachedRecipes.get(0).getId();
 
+        // Iterate through the cachedRecipes list to find the recipe with the largest ID
         for (Recipe recipe : cachedRecipes) {
+            // Get the current recipe's ID
             final String currentId = recipe.getId();
 
+            // Compare the current ID with the maxId
+            // If currentId is greater (lexicographically), update maxId
             if (currentId.compareTo(maxId) > 0) {
                 maxId = currentId;
             }
         }
+
+        // Return the maximum ID found
         return maxId;
     }
 
+
+    /**
+     * Checks if a recipe with the given name exists in the cached recipes list.
+     *
+     * @param nameToCheck The name of the recipe to check for.
+     * @return true if a recipe with the given name exists; false otherwise.
+     */
     public boolean isNameInRecipes(String nameToCheck) {
+        // Iterate through the cachedRecipes list
         for (Recipe recipe : cachedRecipes) {
+            // Compare the recipe name with the given name (case-insensitive)
             if (recipe.getName().equalsIgnoreCase(nameToCheck)) {
-                return true;
+                return true; // Return true if a match is found
             }
         }
-        return false;
+        return false; // Return false if no match is found
     }
 
+    /**
+     * Retrieves the list of cached recipes.
+     *
+     * @return The list of cached recipes.
+     */
     public List<Recipe> getCachedRecipes() {
-        return cachedRecipes;
+        return cachedRecipes; // Return the cachedRecipes list
     }
 
+    /**
+     * Adds a new recipe to the cached recipes list.
+     *
+     * @param recipe The Recipe object to add to the cached list.
+     */
     public void saveRecipe(Recipe recipe) {
+        // Add the given recipe to the cachedRecipes list
         this.cachedRecipes.add(recipe);
     }
 
+
+    /**
+     * Removes a recipe from a local JSON file based on the recipe name.
+     *
+     * @param filePath   The path of the JSON file containing the recipes.
+     * @param recipeName The name of the recipe to be removed.
+     * @return true if the recipe was successfully removed and the file updated; false otherwise.
+     */
     public boolean removeRecipeFromLocalFile(String filePath, String recipeName) {
         try (FileReader reader = new FileReader(filePath)) {
+            // Parse the JSON file into a JsonObject
             JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+
+            // Retrieve the "recipes" array from the JsonObject
             JsonArray recipesArray = jsonObject.getAsJsonArray("recipes");
 
-            // 查找并删除菜谱
+            // Initialize a flag to track if the recipe was found and removed
             boolean removed = false;
+
+            // Iterate through the array to find the recipe with the matching name
             for (int i = 0; i < recipesArray.size(); i++) {
                 JsonObject recipe = recipesArray.get(i).getAsJsonObject();
+
+                // Check if the recipe name matches (case-insensitive comparison)
                 if (recipe.get("name").getAsString().equalsIgnoreCase(recipeName)) {
+                    // Remove the recipe from the array
                     recipesArray.remove(i);
                     removed = true;
-                    break;
+                    break; // Exit the loop after finding and removing the recipe
                 }
             }
 
-            // 写回文件
+            // If a recipe was removed, update the file with the modified JSON
             if (removed) {
                 try (FileWriter writer = new FileWriter(filePath)) {
+                    // Write the updated JSON object back to the file
                     writer.write(jsonObject.toString());
-                    return true;
+                    return true; // Indicate success
                 }
             }
         } catch (IOException e) {
+            // Print the stack trace for debugging purposes in case of an error
             e.printStackTrace();
         }
+
+        // Return false if the recipe was not found or if an error occurred
         return false;
     }
 
+
+    /**
+     * Removes a recipe with the specified name from the cached recipes list.
+     *
+     * @param recipeName The name of the recipe to remove.
+     */
     public void removeRecipeByName(String recipeName) {
+        // Use the removeIf method to remove any recipe whose name matches the given recipe name
+        // The comparison is case-insensitive
         cachedRecipes.removeIf(recipe -> recipe.getName().equalsIgnoreCase(recipeName));
     }
+
 
 }
 
