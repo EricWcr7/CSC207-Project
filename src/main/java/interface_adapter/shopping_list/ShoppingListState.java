@@ -15,7 +15,7 @@ public class ShoppingListState {
     }
 
     public void setIngredients(Map<String, Double> ingredients) {
-        this.ingredients = (ingredients != null) ? ingredients : Collections.emptyMap();
+        this.ingredients = ingredients;
     }
 
     public void setUsername(String username) {
