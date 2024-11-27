@@ -1,13 +1,9 @@
 package use_case.favorite_receipe;
 
-import entity.Recipe;
 import entity.User;
-import use_case.recipe_search.RecipeSearchOutputData;
 import use_case.shopping_list.ShoppingListDataAccessInterface;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * The FavoriteRecipe Interactor.
@@ -15,14 +11,14 @@ import java.util.List;
 public class FavoriteRecipeInteractor implements FavoriteRecipeInputBoundary {
     private final FavoriteRecipeOutputBoundary favoriteRecipePresenter;
     private final FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject;
-    private final ShoppingListDataAccessInterface shoppingListDataAccessObject;
+    private final ShoppingListDataAccessInterface inMemoryUserDataAccessObject;
 
     public FavoriteRecipeInteractor(FavoriteRecipeOutputBoundary favoriteRecipePresenter,
                                     FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject,
-                                    ShoppingListDataAccessInterface shoppingListDataAccessObject) {
+                                    ShoppingListDataAccessInterface inMemoryUserDataAccessObject) {
         this.favoriteRecipePresenter = favoriteRecipePresenter;
         this.favoriteRecipeDataAccessObject = favoriteRecipeDataAccessObject;
-        this.shoppingListDataAccessObject = shoppingListDataAccessObject;
+        this.inMemoryUserDataAccessObject = inMemoryUserDataAccessObject;
     }
 
     @Override
@@ -44,8 +40,8 @@ public class FavoriteRecipeInteractor implements FavoriteRecipeInputBoundary {
         System.out.println("Current favoriteRecipe in account: " + Arrays.toString(recipeNames));
 
         final FavoriteRecipeOutputData favoriteRecipeOutputData = new FavoriteRecipeOutputData(
-                shoppingListDataAccessObject.get(username).getName(),
-                shoppingListDataAccessObject.get(username).getFavoriteRecipes());
+                inMemoryUserDataAccessObject.get(username).getName(),
+                inMemoryUserDataAccessObject.get(username).getFavoriteRecipes());
         favoriteRecipePresenter.switchToShoppingListView(favoriteRecipeOutputData);
     }
 }

@@ -316,16 +316,8 @@ public class AppBuilder {
         final FavoriteRecipeInputBoundary favoriteRecipeInteractor = new FavoriteRecipeInteractor(
                 favoriteRecipeOutputBoundary, userDataAccessObject, userDataAccessObject);
 
-        final ShoppingListOutputBoundary shoppingListOutputBoundary = new ShoppingListPresenter(viewManagerModel,
-                shoppingListViewModel);
-
-        final ShoppingListInputBoundary shoppingListInteractor = new ShoppingListInteractor(shoppingListOutputBoundary,
-                userDataAccessObject);
-
         final FavoriteRecipeController favoriteRecipeController = new FavoriteRecipeController(favoriteRecipeInteractor);
-        final ShoppingListController shoppingListController = new ShoppingListController(shoppingListInteractor);
         favoriteRecipeView.setFavoriteRecipeController(favoriteRecipeController);
-        favoriteRecipeView.setShoppingListController(shoppingListController);
         displayRecipeView.setFavoriteRecipeController(favoriteRecipeController);
         return this;
     }
@@ -335,7 +327,7 @@ public class AppBuilder {
                 shoppingListViewModel);
 
         final ShoppingListInputBoundary shoppingListInteractor = new ShoppingListInteractor(shoppingListPresenter,
-                userDataAccessObject);
+                recipeDataAccessObject);
 
         final ShoppingListController shoppingListController = new ShoppingListController(shoppingListInteractor);
 

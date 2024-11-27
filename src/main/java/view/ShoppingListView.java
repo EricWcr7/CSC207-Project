@@ -1,8 +1,6 @@
 package view;
 
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
-import interface_adapter.display_recipe.DisplayRecipeState;
-import interface_adapter.favorite_recipe.FavoriteRecipeState;
 import interface_adapter.shopping_list.ShoppingListController;
 import interface_adapter.shopping_list.ShoppingListState;
 import interface_adapter.shopping_list.ShoppingListViewModel;
@@ -13,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Arrays;
 import java.util.Map;
 
 public class ShoppingListView extends JPanel implements PropertyChangeListener {
@@ -75,7 +72,7 @@ public class ShoppingListView extends JPanel implements PropertyChangeListener {
             public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource().equals(generateShoppingList)) {
                     ShoppingListState currentState = shoppingListViewModel.getState();
-                    shoppingListController.handleGenerateShoppingList(currentState.getUsername(),
+                    shoppingListController.execute(currentState.getUsername(),
                             currentState.getRecipeNames());
                 }
             }
@@ -83,9 +80,11 @@ public class ShoppingListView extends JPanel implements PropertyChangeListener {
     }
 
     private void updateView() {
-        Map<String, Double> ingredients = shoppingListViewModel.getIngredients();
+        Map<String, String> ingredients = shoppingListViewModel.getIngredients();
+        System.out.println("Ingredients Map: " + ingredients);
+        shoppingListTextArea.setText(""); // Clear previous text
         if (ingredients != null) {
-            for (Map.Entry<String, Double> entry : ingredients.entrySet()) {
+            for (Map.Entry<String, String> entry : ingredients.entrySet()) {
                 shoppingListTextArea.append(entry.getKey() + ": " + entry.getValue() + "\n");
             }
         } else {
@@ -98,8 +97,7 @@ public class ShoppingListView extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Property Change Event received with new state: " + evt.getNewValue());
         // Update view when DisplayRecipeState changes
-        final ShoppingListState shoppingListState = (ShoppingListState) evt.getNewValue();
-        update(evt);
+        updateView();
     }
     private void update(PropertyChangeEvent evt) {
         if ("ingredientQuantity".equals(evt.getPropertyName())) {

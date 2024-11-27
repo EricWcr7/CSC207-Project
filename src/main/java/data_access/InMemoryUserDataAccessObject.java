@@ -3,6 +3,7 @@ package data_access;
 import java.util.HashMap;
 import java.util.Map;
 
+import entity.Recipe;
 import entity.User;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
@@ -45,6 +46,11 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public User get(String username) {
         return users.get(username);
+    }
+
+    @Override
+    public Recipe getOneRecipe(String dishName) {
+        return null;
     }
 
     @Override
