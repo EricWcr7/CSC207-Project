@@ -61,8 +61,7 @@ public class ShoppingListView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(returnToSearchMenu)) {
                         final ShoppingListState currentState = shoppingListViewModel.getState();
-                        this.returnToSearchMenuController.fromShoppingListBackToSearchMenu(
-                                currentState.getUsername(), currentState.getRecipeNames());
+                        this.returnToSearchMenuController.fromShoppingListBackToSearchMenu();
                     }
                 }
         );
