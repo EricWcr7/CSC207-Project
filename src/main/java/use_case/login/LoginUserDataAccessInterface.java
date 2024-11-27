@@ -2,6 +2,10 @@ package use_case.login;
 
 import entity.User;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 /**
  * DAO for the Login Use Case.
  */
@@ -38,4 +42,8 @@ public interface LoginUserDataAccessInterface {
      * @param username the new current username; null to indicate that no one is currently logged into the application.
      */
     void setCurrentUsername(String username);
+
+    String findFileOnFileIo(String fileName);
+
+    void loadUsersFromCloud();
 }

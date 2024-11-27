@@ -73,6 +73,16 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     }
 
     @Override
+    public String findFileOnFileIo(String fileName) {
+        return "";
+    }
+
+    @Override
+    public void loadUsersFromCloud() {
+
+    }
+
+    @Override
     public boolean existsByName(String username) {
         final OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
