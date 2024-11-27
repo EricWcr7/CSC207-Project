@@ -2,6 +2,7 @@ package view;
 
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.display_recipe.DisplayRecipeState;
+import interface_adapter.favorite_recipe.FavoriteRecipeState;
 import interface_adapter.shopping_list.ShoppingListController;
 import interface_adapter.shopping_list.ShoppingListState;
 import interface_adapter.shopping_list.ShoppingListViewModel;
@@ -57,8 +58,8 @@ public class ShoppingListView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(returnToSearchMenu)) {
                         final ShoppingListState currentState = shoppingListViewModel.getState();
-                        this.returnToSearchMenuController.execute("", currentState.getUsername(),
-                                currentState.getFavouriteRecipes());
+                        this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
+                                currentState.getUsername(), currentState.getFavouriteRecipes());
                     }
                 }
         );
