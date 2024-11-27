@@ -79,18 +79,14 @@ import view.*;
  * the components of the Mealmaster application, including views, use cases,
  * and shared resources. It provides methods for adding views, configuring use cases,
  * and building the main application window.
- *
- * <p>The AppBuilder uses a card layout to manage the application's views and
+ * The AppBuilder uses a card layout to manage the application's views and
  * facilitates navigation between them. It follows a modular design, enabling
- * easy addition and modification of functionality.</p>
- *
- * <h2>Key Responsibilities:</h2>
- * <ul>
- *     <li>Adding and initializing views such as Login, Signup, and Recipe Search views.</li>
- *     <li>Configuring use cases for features like login, recipe creation, and shopping lists.</li>
- *     <li>Managing shared resources like user and recipe storage.</li>
- *     <li>Constructing the main application window with proper initialization.</li>
- * </ul>
+ * easy addition and modification of functionality.
+ * Key Responsibilities:
+ * dding and initializing views such as Login, Signup, and Recipe Search views.
+ * Configuring use cases for features like login, recipe creation, and shopping lists.
+ * Managing shared resources like user and recipe storage.
+ * Constructing the main application window with proper initialization.
  *
  */
 public class AppBuilder {
@@ -238,7 +234,7 @@ public class AppBuilder {
     public AppBuilder addDisplayRecipeView() {
         displayRecipeViewModel = new DisplayRecipeViewModel();
         displayRecipeView = new DisplayRecipeView(displayRecipeViewModel);
-        System.out.println("Adding Display Recipe View with name: " + displayRecipeView.getViewName());
+        System.out.println("Adding a Display Recipe View with name: " + displayRecipeView.getViewName());
         cardPanel.add(displayRecipeView, displayRecipeView.getViewName());
         return this;
     }
