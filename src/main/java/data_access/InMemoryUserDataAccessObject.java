@@ -45,7 +45,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     private static final String API_KEY = "35F52QF.ZQV4A4E-ASHMAQD-QSPTZ93-NHYCJT6";
     private static final int STATUS_CODE_OK = 200;
     private static final String FILE_PATH = "all_users.json";
-    private static String UserFILE_KEY = "";
+    private static String userFILE_KEY = "";
     private Map<String, User> users = new HashMap<>();
     private String currentUsername;
     private String username;
@@ -83,8 +83,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
                             if (nodeObject.has("name") && nodeObject.get("name").getAsString().equals(fileName)) {
                                 if (nodeObject.has("key")) {
                                     // Correctly index to get the key
-                                    UserFILE_KEY = nodeObject.get("key").getAsString();
-                                    System.out.println("User File '" + fileName + "' found on File.io with key: " + UserFILE_KEY);
+                                    userFILE_KEY = nodeObject.get("key").getAsString();
+                                    System.out.println("User File '" + fileName + "' found on File.io with key: " + userFILE_KEY);
                                 } else {
                                     System.out.println("User File object found, but no key present for file: " + fileName);
                                 }
@@ -101,21 +101,21 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
             System.err.println("Error while searching for User file on File.io: " + e.getMessage());
             Thread.currentThread().interrupt();
         }
-        return UserFILE_KEY; // File not found
+        return userFILE_KEY; // File not found
     }
 
     /**
      * Deletes the file from File.io using the file key.
      */
     public void deleteFileFromFileIo() {
-        if (UserFILE_KEY.isEmpty()) {
+        if (userFILE_KEY.isEmpty()) {
             System.err.println("User File key is empty. Cannot delete file.");
             return;
         }
 
-        System.out.println("Deleting User file from File.io with User File key: " + UserFILE_KEY);
+        System.out.println("Deleting User file from File.io with User File key: " + userFILE_KEY);
         try {
-            String deleteUrl = FILE_IO_API_URL + "/" + URLEncoder.encode(UserFILE_KEY, StandardCharsets.UTF_8);
+            String deleteUrl = FILE_IO_API_URL + "/" + URLEncoder.encode(userFILE_KEY, StandardCharsets.UTF_8);
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(deleteUrl))
@@ -174,8 +174,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
                 System.out.println("User File uploaded successfully: " + response.body());
                 // Parse the response to extract the "key" value and set FILE_KEY
                 JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
-                UserFILE_KEY = jsonResponse.get("key").getAsString();
-                System.out.println("User File key set to: " + UserFILE_KEY);
+                userFILE_KEY = jsonResponse.get("key").getAsString();
+                System.out.println("User File key set to: " + userFILE_KEY);
             } else {
                 System.err.println("Failed to upload User file. Status code: " + response.statusCode());
                 System.err.println("Response body: " + response.body());
@@ -208,13 +208,13 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public void loadUsersFromCloud() {
-        if (UserFILE_KEY.isEmpty()) {
+        if (userFILE_KEY.isEmpty()) {
             System.err.println("User File key is empty. Cannot download user file.");
         }
 
-        System.out.println("Downloading User file from File.io with key: " + UserFILE_KEY);
+        System.out.println("Downloading User file from File.io with key: " + userFILE_KEY);
         try {
-            String downloadUrl = FILE_IO_API_URL + "/" + URLEncoder.encode(UserFILE_KEY, StandardCharsets.UTF_8);
+            String downloadUrl = FILE_IO_API_URL + "/" + URLEncoder.encode(userFILE_KEY, StandardCharsets.UTF_8);
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(downloadUrl))
@@ -316,6 +316,9 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public void save(User user) {
         users.put(user.getName(), user);
+        if (!userFILE_KEY.isEmpty()) {
+            deleteFileFromFileIo();
+        }
         writeUsersToFile(users);
         uploadFileToFileIo();
     }
@@ -334,6 +337,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public void changePassword(User user) {
         // Replace the old entry with the new password
         users.put(user.getName(), user);
+        deleteFileFromFileIo();
         writeUsersToFile(users);
         uploadFileToFileIo();
     }
