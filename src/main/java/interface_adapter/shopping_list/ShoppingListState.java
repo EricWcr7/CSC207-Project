@@ -7,13 +7,13 @@ import java.util.Map;
 public class ShoppingListState {
     private String username;
     private String[] recipeNames;
-    private Map<String, Double> ingredients;
+    private Map<String, String> ingredients;
 
     public void setRecipeNames(String[] recipeNames) {
         this.recipeNames = recipeNames;
     }
 
-    public void setIngredients(Map<String, Double> ingredients) {
+    public void setIngredients(Map<String, String> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -25,7 +25,7 @@ public class ShoppingListState {
         return recipeNames;
     }
 
-    public Map<String, Double> getIngredients() {
+    public Map<String, String> getIngredients() {
         return ingredients;
     }
 

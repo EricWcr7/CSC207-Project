@@ -3,8 +3,6 @@ package interface_adapter.shopping_list;
 import use_case.shopping_list.ShoppingListInputBoundary;
 import use_case.shopping_list.ShoppingListInputData;
 
-import java.util.List;
-
 public class ShoppingListController {
     private final ShoppingListInputBoundary shoppingListInteractor;
 
@@ -12,9 +10,9 @@ public class ShoppingListController {
         this.shoppingListInteractor = shoppingListInteractor;
     }
 
-    public void handleGenerateShoppingList(String username, String[] recipeNames) {
+    public void execute(String username, String[] recipeNames) {
         ShoppingListInputData inputData = new ShoppingListInputData(username, recipeNames);
-        shoppingListInteractor.generateShoppingList(inputData);
+        shoppingListInteractor.execute(inputData);
     }
 }
 

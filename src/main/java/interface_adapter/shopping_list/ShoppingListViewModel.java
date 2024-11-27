@@ -11,7 +11,7 @@ public class ShoppingListViewModel extends ViewModel<ShoppingListState> {
         setState(new ShoppingListState());
     }
 
-    public Map<String, Double> getIngredients() {
+    public Map<String, String> getIngredients() {
         return getState().getIngredients();
     }
 

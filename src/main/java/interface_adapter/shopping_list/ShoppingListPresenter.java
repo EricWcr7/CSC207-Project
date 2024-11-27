@@ -4,6 +4,8 @@ import interface_adapter.ViewManagerModel;
 import use_case.shopping_list.ShoppingListOutputBoundary;
 import use_case.shopping_list.ShoppingListOutputData;
 
+import java.util.Map;
+
 public class ShoppingListPresenter implements ShoppingListOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
@@ -19,13 +21,15 @@ public class ShoppingListPresenter implements ShoppingListOutputBoundary {
     public void presentShoppingList(ShoppingListOutputData shoppingListOutputData) {
         // Logic to present the shopping list view model to the view
         // For example, this could involve notifying the view to display the updated data
+        System.out.println("Presenter received ShoppingListOutputData:");
+        System.out.println("Username: " + shoppingListOutputData.getUsername());
+        System.out.println("Recipe Names: " + shoppingListOutputData.getRecipeNames());
+        System.out.println("Ingredients: " + shoppingListOutputData.getIngredients());
         final ShoppingListState currentState = shoppingListViewModel.getState();
         currentState.setUsername(shoppingListOutputData.getUsername());
         currentState.setRecipeNames(shoppingListOutputData.getRecipeNames());
         currentState.setIngredients(shoppingListOutputData.getIngredients());
         shoppingListViewModel.setState(currentState);
         shoppingListViewModel.firePropertyChanged("The Overall Shopping List");
-        viewManagerModel.setState(shoppingListViewModel.getViewName());
-        viewManagerModel.firePropertyChanged();
     }
 }

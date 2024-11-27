@@ -6,9 +6,9 @@ import java.util.Map;
 public class ShoppingListOutputData {
     private final String username;
     private final String[] recipeNames;
-    private final Map<String, Double> ingredients;
+    private final Map<String, String> ingredients;
 
-    public ShoppingListOutputData(String username, String[] recipeNames, Map<String, Double> ingredients) {
+    public ShoppingListOutputData(String username, String[] recipeNames, Map<String, String> ingredients) {
         this.username = username;
         this.recipeNames = recipeNames;
         this.ingredients = ingredients;
@@ -22,7 +22,7 @@ public class ShoppingListOutputData {
         return recipeNames;
     }
 
-    public Map<String, Double> getIngredients() {
+    public Map<String, String> getIngredients() {
         return ingredients;
     }
 }
