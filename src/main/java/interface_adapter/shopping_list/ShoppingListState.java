@@ -32,4 +32,8 @@ public class ShoppingListState {
     public String getUsername() {
         return username;
     }
+
+    public void clearIngredients() {
+        this.ingredients.clear();
+    }
 }

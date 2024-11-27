@@ -64,9 +64,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         back.addActionListener(evt -> {
             if (evt.getSource().equals(back)) {
                 final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
-                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
-                        currentState.getUsername(), currentState.getFavoriteRecipes()
-                );
+                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu();
             }
         });
 
@@ -155,9 +153,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 favoriteRecipeViewModel.setState(currentState1);
                 System.out.println("Already delete this recipe !");
                 System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
-                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
-                        currentState1.getUsername(), currentState1.getFavoriteRecipes()
-                );
+                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu();
                 this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
@@ -241,9 +237,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 favoriteRecipeViewModel.setState(currentState1);
                 System.out.println("Already delete this recipe !");
                 System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
-                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
-                        currentState1.getUsername(), currentState1.getFavoriteRecipes()
-                );
+                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu();
                 this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
@@ -327,9 +321,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 favoriteRecipeViewModel.setState(currentState1);
                 System.out.println("Already delete this recipe !");
                 System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
-                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
-                        currentState1.getUsername(), currentState1.getFavoriteRecipes()
-                );
+                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu();
                 this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
@@ -411,9 +403,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 favoriteRecipeViewModel.setState(currentState1);
                 System.out.println("Already delete this recipe !");
                 System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
-                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
-                        currentState1.getUsername(), currentState1.getFavoriteRecipes()
-                );
+                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu();
                 this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
@@ -493,9 +483,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 favoriteRecipeViewModel.setState(currentState1);
                 System.out.println("Already delete this recipe !");
                 System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
-                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
-                        currentState1.getUsername(), currentState1.getFavoriteRecipes()
-                );
+                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu();
                 this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
@@ -578,9 +566,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
                 favoriteRecipeViewModel.setState(currentState1);
                 System.out.println("Already delete this recipe !");
                 System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
-                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
-                        currentState1.getUsername(), currentState1.getFavoriteRecipes()
-                );
+                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu();
                 this.favoriteRecipeController.execute(currentState1.getUsername(), currentState1.getFavoriteRecipes());
             }
         });
@@ -631,9 +617,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
         back.addActionListener(evt1 -> {
             if (evt1.getSource().equals(back)) {
                 final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
-                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
-                        currentState.getUsername(), currentState.getFavoriteRecipes()
-                );
+                this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu();
             }
         });
 

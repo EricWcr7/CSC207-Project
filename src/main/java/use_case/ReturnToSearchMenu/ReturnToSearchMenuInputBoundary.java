@@ -2,8 +2,14 @@ package use_case.ReturnToSearchMenu;
 
 public interface ReturnToSearchMenuInputBoundary {
 
-    void execute(ReturnToSearchMenuInputData returnToSearchMenuInputData);
+    // void execute(ReturnToSearchMenuInputData returnToSearchMenuInputData);
+
     void fromEditRecipeBackToSearchMenu();
-    void fromFavoriteRecipeBackToSearchMenu(ReturnToSearchMenuInputData returnToSearchMenuInputData);
-    void fromShoppingListBackToSearchMenu(ReturnToSearchMenuInputData returnToSearchMenuInputData);
+    void fromFavoriteRecipeBackToSearchMenu();
+
+    void fromShoppingListBackToSearchMenu();
+
+    void fromDisplayBackToSearchMenu();
+
+    void fromChooseBackToSearchMenu();
 }

@@ -19,15 +19,26 @@ public class ReturnToSearchMenuInteractor implements ReturnToSearchMenuInputBoun
         this.shoppingListDataAccessObject = shoppingListDataAccessObject;
     }
 
+//    @Override
+//    public void execute(ReturnToSearchMenuInputData returnToSearchMenuInputData) {
+//        final String username = returnToSearchMenuInputData.getUsername();
+//        final String[] favoriteRecipes = returnToSearchMenuInputData.getFavoriteRecipes();
+//        System.out.println("Current logged in account: " + username);
+//        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
+//        final ReturnToSearchMenuOutputData recipeSearchOutputData = new ReturnToSearchMenuOutputData(
+//                returnToSearchMenuInputData.getSearchKeyword(), username, favoriteRecipes);
+//        returnToSearchMenuPresenter.prepareSuccessView(recipeSearchOutputData);
+//    }
+
     @Override
-    public void execute(ReturnToSearchMenuInputData returnToSearchMenuInputData) {
-        final String username = returnToSearchMenuInputData.getUsername();
-        final String[] favoriteRecipes = returnToSearchMenuInputData.getFavoriteRecipes();
-        System.out.println("Current logged in account: " + username);
-        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
-        final ReturnToSearchMenuOutputData recipeSearchOutputData = new ReturnToSearchMenuOutputData(
-                returnToSearchMenuInputData.getSearchKeyword(), username, favoriteRecipes);
-        returnToSearchMenuPresenter.prepareSuccessView(recipeSearchOutputData);
+    public void fromDisplayBackToSearchMenu() {
+        returnToSearchMenuPresenter.fromDisplayBackToSearchMenu();
+    }
+
+    @Override
+    public void fromChooseBackToSearchMenu() {
+        returnToSearchMenuPresenter.fromChooseBackToSearchMenu();
+
     }
 
     @Override
@@ -36,28 +47,28 @@ public class ReturnToSearchMenuInteractor implements ReturnToSearchMenuInputBoun
     }
 
     @Override
-    public void fromFavoriteRecipeBackToSearchMenu(ReturnToSearchMenuInputData returnToSearchMenuInputData) {
-        final String username = returnToSearchMenuInputData.getUsername();
-        final String[] favoriteRecipes = returnToSearchMenuInputData.getFavoriteRecipes();
-        System.out.println("Current logged in account: " + username);
-        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
-        System.out.println("Current account in InMemoryUserDataAccessObject: " + favoriteRecipeDataAccessObject.get(username).getName());
-        System.out.println("Current favoriteRecipes in InMemoryUserDataAccessObject: " + Arrays.toString(favoriteRecipeDataAccessObject.get(username).getFavoriteRecipes()));
-        final ReturnToSearchMenuOutputData recipeSearchOutputData = new ReturnToSearchMenuOutputData(
-                returnToSearchMenuInputData.getSearchKeyword(), username, favoriteRecipes);
-        returnToSearchMenuPresenter.fromFavoriteRecipeBackToSearchMenu(recipeSearchOutputData);
+    public void fromFavoriteRecipeBackToSearchMenu() {
+//        final String username = returnToSearchMenuInputData.getUsername();
+//        final String[] favoriteRecipes = returnToSearchMenuInputData.getFavoriteRecipes();
+//        System.out.println("Current logged in account: " + username);
+//        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
+//        System.out.println("Current account in InMemoryUserDataAccessObject: " + favoriteRecipeDataAccessObject.get(username).getName());
+//        System.out.println("Current favoriteRecipes in InMemoryUserDataAccessObject: " + Arrays.toString(favoriteRecipeDataAccessObject.get(username).getFavoriteRecipes()));
+//        final ReturnToSearchMenuOutputData recipeSearchOutputData = new ReturnToSearchMenuOutputData(
+//                returnToSearchMenuInputData.getSearchKeyword(), username, favoriteRecipes);
+        returnToSearchMenuPresenter.fromFavoriteRecipeBackToSearchMenu();
     }
 
     @Override
-    public void fromShoppingListBackToSearchMenu(ReturnToSearchMenuInputData returnToSearchMenuInputData) {
-        final String username = returnToSearchMenuInputData.getUsername();
-        final String[] favoriteRecipes = returnToSearchMenuInputData.getFavoriteRecipes();
-        System.out.println("Current logged in account: " + username);
-        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
-        System.out.println("Current account in InMemoryUserDataAccessObject: " + shoppingListDataAccessObject.get(username).getName());
-        System.out.println("Current favoriteRecipes in InMemoryUserDataAccessObject: " + Arrays.toString(shoppingListDataAccessObject.get(username).getFavoriteRecipes()));
-        final ReturnToSearchMenuOutputData recipeSearchOutputData = new ReturnToSearchMenuOutputData(
-                returnToSearchMenuInputData.getSearchKeyword(), username, favoriteRecipes);
-        returnToSearchMenuPresenter.fromShoppingListBackToSearchMenu(recipeSearchOutputData);
+    public void fromShoppingListBackToSearchMenu() {
+//        final String username = returnToSearchMenuInputData.getUsername();
+//        final String[] favoriteRecipes = returnToSearchMenuInputData.getFavoriteRecipes();
+//        System.out.println("Current logged in account: " + username);
+//        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
+//        System.out.println("Current account in InMemoryUserDataAccessObject: " + shoppingListDataAccessObject.get(username).getName());
+//        System.out.println("Current favoriteRecipes in InMemoryUserDataAccessObject: " + Arrays.toString(shoppingListDataAccessObject.get(username).getFavoriteRecipes()));
+//        final ReturnToSearchMenuOutputData recipeSearchOutputData = new ReturnToSearchMenuOutputData(
+//                returnToSearchMenuInputData.getSearchKeyword(), username, favoriteRecipes);
+        returnToSearchMenuPresenter.fromShoppingListBackToSearchMenu();
     }
 }

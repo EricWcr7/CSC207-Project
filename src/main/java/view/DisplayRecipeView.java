@@ -115,7 +115,7 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                 evt -> {
                     if (evt.getSource().equals(returnToSearchMenu)) {
                         final DisplayRecipeState currentState = displayRecipeViewModel.getState();
-                        this.returnToSearchMenuController.execute("", currentState.getUsername(), currentState.getFavoriteRecipes());
+                        this.returnToSearchMenuController.fromDisplayBackToSearchMenu();
                     }
                 }
         );
