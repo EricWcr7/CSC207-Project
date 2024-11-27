@@ -39,6 +39,7 @@ public class Main {
                 .addFavoriteRecipeUseCase()
                 .addEditUseCase()
                 .addCreateUseCase()
+                .addDeleteUseCase()
                 .build();
         application.pack();
         application.setSize(width, height);

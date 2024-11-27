@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.create.CreateController;
+import interface_adapter.delete.DeleteController;
 import interface_adapter.edit.EditController;
 import interface_adapter.edit.EditViewModel;
 
@@ -21,13 +22,14 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
     private final String viewName = "Edit recipe";
     private final EditViewModel editViewModel;
     private EditController editController;
+    private DeleteController deleteController;
     private ReturnToSearchMenuController returnToSearchMenuController;
 
     private final JComboBox<String> recipeComboBox = new JComboBox<>();
 
     private final JButton back;
     private final JButton addButton;
-    private final JButton goButton;
+    private final JButton deleteButton;
 
     public EditView(EditViewModel editViewModel) {
         this.editViewModel = editViewModel;
@@ -55,11 +57,11 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
 
         addButton = new JButton("+");
         back = new JButton("Back");
-        goButton = new JButton("Go");
+        deleteButton = new JButton("Delete");
 
         buttonsPanel.add(addButton);
         buttonsPanel.add(back);
-        buttonsPanel.add(goButton);
+        buttonsPanel.add(deleteButton);
 
         // Add panels to main layout
         this.add(upperPanel, BorderLayout.CENTER);
@@ -75,21 +77,27 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
         addButton.addActionListener(evt -> {
             if (evt.getSource().equals(addButton)) {
                 this.editController.switchToCreate();
+                // 添加新菜谱后刷新下拉框
+                loadNewRecipes();
             }
         });
 
-//        goButton.addActionListener(evt -> {
-//            // 获取下拉框中当前选中的菜谱名称
-//            String selectedRecipe = (String) recipeComboBox.getSelectedItem();
-//            if (selectedRecipe != null) {
-//                // 调用方法跳转到另一个视图
-//                navigateToRecipeDetails(selectedRecipe);
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Please select a recipe!");
-//            }
-//        });
 
-        // Add ActionListener to recipeComboBox
+        deleteButton.addActionListener(evt -> {
+            // 获取下拉框中选中的菜名
+            String selectedRecipe = (String) recipeComboBox.getSelectedItem();
+
+            if (selectedRecipe != null && !selectedRecipe.isEmpty()) {
+                // 调用 DeleteController 进行删除逻辑
+                deleteController.deleteRecipe(selectedRecipe);
+            } else {
+                // 如果没有选中任何菜名，提示用户
+                JOptionPane.showMessageDialog(this, "Please select a recipe to delete!");
+            }
+            loadNewRecipes();
+        });
+
+
         recipeComboBox.addActionListener(evt -> {
             String selectedRecipe = (String) recipeComboBox.getSelectedItem();
             if (selectedRecipe != null) {
@@ -123,6 +131,10 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
         this.returnToSearchMenuController = returnToSearchMenuController;
     }
 
+    public void setDeleteController(DeleteController deleteController) {
+        this.deleteController = deleteController; // 正确初始化 deleteController
+    }
+
     public void loadNewRecipes() {
         try (FileReader reader = new FileReader("new_recipes.json")) {
             // 解析 JSON 文件
@@ -147,4 +159,5 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
             JOptionPane.showMessageDialog(this, "Error loading recipes from new_recipes.json!");
         }
     }
+
 }

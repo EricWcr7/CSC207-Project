@@ -23,6 +23,9 @@ import interface_adapter.choose_recipe.*;
 import interface_adapter.create.CreateController;
 import interface_adapter.create.CreatePresenter;
 import interface_adapter.create.CreateViewModel;
+import interface_adapter.delete.DeleteController;
+import interface_adapter.delete.DeletePresenter;
+import interface_adapter.delete.DeleteViewModel;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import interface_adapter.edit.EditController;
 import interface_adapter.edit.EditPresenter;
@@ -47,6 +50,9 @@ import use_case.choose_recipe.ChooseRecipeOutputBoundary;
 import use_case.create.CreateInputBoundary;
 import use_case.create.CreateInteractor;
 import use_case.create.CreateOutputBoundary;
+import use_case.delete.DeleteInputBoundary;
+import use_case.delete.DeleteInteractor;
+import use_case.delete.DeleteOutputBoundary;
 import use_case.edit.EditInputBoundary;
 import use_case.edit.EditInteractor;
 import use_case.edit.EditOutputBoundary;
@@ -89,6 +95,7 @@ public class AppBuilder {
     private EditViewModel editViewModel;
     private CreateView createView;
     private CreateViewModel createViewModel;
+    private DeleteViewModel deleteViewModel;
 
     private RecipeSearchInputBoundary recipeSearchInteractor;
 
@@ -331,6 +338,28 @@ public class AppBuilder {
             createView.setCreateController(createController);
             return this;
         }
+
+    public AppBuilder addDeleteUseCase() {
+        // 创建 DeleteViewModel
+        final DeleteViewModel deleteViewModel = new DeleteViewModel();
+
+        // 创建 DeletePresenter（实现 DeleteOutputBoundary）
+        final DeleteOutputBoundary deleteOutputBoundary = new DeletePresenter(deleteViewModel);
+
+        // 创建 DeleteInteractor（实现 DeleteInputBoundary）
+        final DeleteInputBoundary deleteInteractor = new DeleteInteractor(deleteOutputBoundary, recipeDataAccessObject);
+
+        // 创建 DeleteController
+        final DeleteController deleteController = new DeleteController(deleteInteractor);
+
+        // 将 DeleteController 设置到 EditView
+        editView.setDeleteController(deleteController);
+
+        System.out.println("Delete Use Case added successfully.");
+        return this;
+    }
+
+
 
     public void initializeNewRecipesFile() {
         File file = new File("new_recipes.json");

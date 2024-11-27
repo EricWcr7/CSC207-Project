@@ -10,6 +10,7 @@ import use_case.choose_recipe.ChooseRecipeDataAccessInterface;
 import use_case.recipe_search.RecipeSearchDataAccessInterface;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
@@ -565,6 +566,40 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, 
     public void saveRecipe(Recipe recipe) {
         this.cachedRecipes.add(recipe);
     }
+
+    public boolean removeRecipeFromLocalFile(String filePath, String recipeName) {
+        try (FileReader reader = new FileReader(filePath)) {
+            JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+            JsonArray recipesArray = jsonObject.getAsJsonArray("recipes");
+
+            // 查找并删除菜谱
+            boolean removed = false;
+            for (int i = 0; i < recipesArray.size(); i++) {
+                JsonObject recipe = recipesArray.get(i).getAsJsonObject();
+                if (recipe.get("name").getAsString().equalsIgnoreCase(recipeName)) {
+                    recipesArray.remove(i);
+                    removed = true;
+                    break;
+                }
+            }
+
+            // 写回文件
+            if (removed) {
+                try (FileWriter writer = new FileWriter(filePath)) {
+                    writer.write(jsonObject.toString());
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void removeRecipeByName(String recipeName) {
+        cachedRecipes.removeIf(recipe -> recipe.getName().equalsIgnoreCase(recipeName));
+    }
+
 }
 
 
