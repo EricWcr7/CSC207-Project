@@ -47,6 +47,7 @@ public class LikeRecipeInteractor implements LikeAndDislikeRecipeInputBoundary {
 
             // Add the like to user data
             likeRecipeDataAccessObject.addLikedRecipe(recipeName);
+            likeRecipeDataAccessObject.updateUserLikedRecipe(recipeName);
 
             final int updatedLikeNumber = theRecipe.getLikeNumber();
             final LikeRecipeOutputData likeRecipeOutputData = new LikeRecipeOutputData(recipeName, updatedLikeNumber);
