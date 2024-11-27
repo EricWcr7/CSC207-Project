@@ -33,7 +33,7 @@ public class Main {
                 .addRecipeSearchUseCase()
                 .addChooseRecipeUseCase()
                 .addReturnToSearchMenuUseCase()
-                .addBackTOEditViewUsecase()
+                .addBackToEditViewUsecase()
                 .addFavoriteRecipeUseCase()
                 .addEditUseCase()
                 .addCreateUseCase()

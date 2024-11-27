@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.CardLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
@@ -8,7 +9,10 @@ import javax.swing.WindowConstants;
 import data_access.FavoriteRecipeDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import data_access.RecipeDataAccessObject;
-import entity.*;
+import entity.CommonRecipeFactory;
+import entity.CommonUserFactory;
+import entity.RecipeFactory;
+import entity.UserFactory;
 import interface_adapter.*;
 import interface_adapter.BackToEditView.BackToEditViewController;
 import interface_adapter.BackToEditView.BackToEditViewPresenter;
@@ -70,6 +74,25 @@ import use_case.shopping_list.ShoppingListOutputBoundary;
 import use_case.signup.*;
 import view.*;
 
+/**
+ * The AppBuilder class is responsible for constructing and initializing
+ * the components of the Mealmaster application, including views, use cases,
+ * and shared resources. It provides methods for adding views, configuring use cases,
+ * and building the main application window.
+ *
+ * <p>The AppBuilder uses a card layout to manage the application's views and
+ * facilitates navigation between them. It follows a modular design, enabling
+ * easy addition and modification of functionality.</p>
+ *
+ * <h2>Key Responsibilities:</h2>
+ * <ul>
+ *     <li>Adding and initializing views such as Login, Signup, and Recipe Search views.</li>
+ *     <li>Configuring use cases for features like login, recipe creation, and shopping lists.</li>
+ *     <li>Managing shared resources like user and recipe storage.</li>
+ *     <li>Constructing the main application window with proper initialization.</li>
+ * </ul>
+ *
+ */
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -77,8 +100,6 @@ public class AppBuilder {
     private final UserFactory userFactory = new CommonUserFactory();
     private final RecipeFactory recipeFactory = new CommonRecipeFactory();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
-
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
     private final FavoriteRecipeDataAccessObject favoriteRecipeDataAccessObject = new FavoriteRecipeDataAccessObject();
@@ -118,8 +139,9 @@ public class AppBuilder {
         if (recipeSearchInteractor != null) {
             System.out.println("Calling initializeRecipeStorage in RecipeSearchInteractor...");
             recipeSearchInteractor.initializeRecipeStorage();
-        } else {
-            System.err.println("RecipeSearchInteractor not initialized. Ensure addRecipeSearchUseCase is called first.");
+        }
+        else {
+            System.err.println("RecipeSearchInteractor not initialized.Ensure addRecipeSearchUseCase is called first.");
         }
     }
 
@@ -127,11 +149,19 @@ public class AppBuilder {
         if (loginInteractor != null) {
             System.out.println("Calling initializeUserStorage in LogInInteractor...");
             loginInteractor.initializeUserStorage();
-        } else {
+        }
+        else {
             System.err.println("LogInInteractor not initialized. Ensure addLogInUseCase is called first.");
         }
     }
 
+    /**
+     * Adds and initializes the "Login View" to the application.
+     * This method creates a new instance of the login view and its associated view model,
+     * assigns the view a unique name, and adds it to the card panel for display.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addLoginView() {
         loginViewModel = new LoginViewModel();
         loginView = new LoginView(loginViewModel);
@@ -140,6 +170,13 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds and initializes the "Signup View" to the application.
+     * This method creates a new instance of the signup view and its associated view model,
+     * assigns the view a unique name, and adds it to the card panel for display.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addSignupView() {
         signupViewModel = new SignupViewModel();
         signupView = new SignupView(signupViewModel);
@@ -148,6 +185,13 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds and initializes the "Logged In View" to the application.
+     * This method creates a new instance of the logged-in view and its associated view model,
+     * assigns the view a unique name, and adds it to the card panel for display.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addLoggedInView() {
         loggedInViewModel = new LoggedInViewModel();
         loggedInView = new LoggedInView(loggedInViewModel);
@@ -156,6 +200,13 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds and initializes the "Recipe Search View" to the application.
+     * This method creates a new instance of the recipe search view and its associated view model,
+     * assigns the view a unique name, and adds it to the card panel for display.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addRecipeSearchView() {
         recipeSearchViewModel = new RecipeSearchViewModel();
         recipeSearchView = new RecipeSearchView(recipeSearchViewModel);
@@ -164,6 +215,13 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds and initializes the "Choose Recipe View" to the application.
+     * This method creates a new instance of the choose recipe view and its associated view model,
+     * assigns the view a unique name, and adds it to the card panel for display.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addChooseRecipeView() {
         chooseRecipeViewModel = new ChooseRecipeViewModel();
         chooseRecipeView = new ChooseRecipeView(chooseRecipeViewModel);
@@ -185,6 +243,13 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds and initializes the "Favorite Recipe View" to the application.
+     * This method creates a new instance of the favorite recipe view and its associated view model,
+     * assigns the view a unique name, and adds it to the card panel for display.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addFavoriteRecipeView() {
         favoriteRecipeViewModel = new FavoriteRecipeViewModel();
         favoriteRecipeView = new FavoriteRecipeView(favoriteRecipeViewModel);
@@ -193,6 +258,13 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds and initializes the "Edit View" to the application.
+     * This method creates a new instance of the edit view and its associated view model,
+     * assigns the view a unique name, and adds it to the card panel for display.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addEditView() {
         editViewModel = new EditViewModel();
         editView = new EditView(editViewModel);
@@ -201,6 +273,13 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds and initializes the "Create View" to the application.
+     * This method creates a new instance of the create view and its associated view model,
+     * assigns the view a unique name, and adds it to the card panel for display.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addCreateView() {
         createViewModel = new CreateViewModel();
         createView = new CreateView(createViewModel);
@@ -209,6 +288,13 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds and initializes the "Shopping List View" to the application.
+     * This method creates a new instance of the shopping list view and its associated view model,
+     * assigns the view a unique name, and adds it to the card panel for display.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addShoppingListView() {
         shoppingListViewModel = new ShoppingListViewModel();
         shoppingListView = new ShoppingListView(shoppingListViewModel);
@@ -217,6 +303,14 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Configures and adds the "Signup" use case to the application.
+     * This method initializes the components necessary for user signup functionality,
+     * including the presenter, interactor, and controller. It assigns the controller
+     * to the signup view, enabling users to create new accounts in the application.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addSignupUseCase() {
         final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
                 signupViewModel, loginViewModel);
@@ -228,6 +322,14 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Configures and adds the "Login" use case to the application.
+     * This method sets up the necessary components for handling user login,
+     * including the presenter, interactor, and controller. It assigns the controller
+     * to the login view, enabling users to log in to the application.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
                 recipeSearchViewModel, loginViewModel, signupViewModel);
@@ -238,6 +340,14 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Configures and adds the "Change Password" use case to the application.
+     * This method initializes the components required for handling password changes,
+     * including the presenter, interactor, and controller. It assigns the controller
+     * to the logged-in view, enabling users to update their password securely.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addChangePasswordUseCase() {
         final ChangePasswordOutputBoundary changePasswordOutputBoundary =
                 new ChangePasswordPresenter(loggedInViewModel);
@@ -251,6 +361,14 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Configures and adds the "Logout" use case to the application.
+     * This method sets up the components needed for handling user logout,
+     * including the presenter, interactor, and controller. It connects the controller
+     * to the recipe search view, enabling users to log out and return to the login interface.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addLogoutUseCase() {
         final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
                 recipeSearchViewModel, loginViewModel);
@@ -263,6 +381,15 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Configures and adds the "Return to Search Menu" use case to the application.
+     * This method initializes the components required for handling the functionality
+     * of returning to the search menu, including the presenter, interactor, and controller.
+     * It assigns the controller to multiple views, enabling the transition back to the search menu
+     * from various parts of the application.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addReturnToSearchMenuUseCase() {
         final ReturnToSearchMenuOutputBoundary returnToSearchMenuOutputBoundary =
                 new ReturnToSearchMenuPresenter(viewManagerModel,
@@ -273,7 +400,8 @@ public class AppBuilder {
                 new ReturnToSearchMenuInteractor(returnToSearchMenuOutputBoundary, userDataAccessObject,
                         userDataAccessObject);
 
-        final ReturnToSearchMenuController returnToSearchMenuController = new ReturnToSearchMenuController(returnToSearchMenuInteractor);
+        final ReturnToSearchMenuController returnToSearchMenuController =
+                new ReturnToSearchMenuController(returnToSearchMenuInteractor);
         chooseRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
         displayRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
         favoriteRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
@@ -282,7 +410,16 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addBackTOEditViewUsecase() {
+    /**
+     * Configures and adds the "Back to Edit View" use case to the application.
+     * This method initializes the components required for handling the transition
+     * back to the edit view, including the presenter, interactor, and controller.
+     * It assigns the controller to the create view, enabling navigation back to the
+     * edit view as part of the application's workflow.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
+    public AppBuilder addBackToEditViewUsecase() {
         final BackToEditViewOutputBoundary backToEditViewOutputBoundary = new BackToEditViewPresenter(viewManagerModel,
                 editViewModel, createViewModel);
 
@@ -294,111 +431,170 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Configures and adds the "Recipe Search" use case to the application.
+     * This method initializes the components necessary for searching recipes,
+     * including the presenter, interactor, and controller. It assigns the controller
+     * to the recipe search view, enabling users to search and filter recipes based on
+     * specific criteria.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addRecipeSearchUseCase() {
         final RecipeSearchOutputBoundary recipeSearchOutputBoundary = new RecipeSearchPresenter(
                 viewManagerModel, chooseRecipeViewModel, favoriteRecipeViewModel, editViewModel, recipeSearchViewModel);
-
-        recipeSearchInteractor = new RecipeSearchInteractor(recipeDataAccessObject, recipeSearchOutputBoundary, userDataAccessObject);
-
+        recipeSearchInteractor =
+                new RecipeSearchInteractor(recipeDataAccessObject, recipeSearchOutputBoundary, userDataAccessObject);
         final RecipeSearchController recipeSearchController = new RecipeSearchController(recipeSearchInteractor);
         recipeSearchView.setRecipeSearchController(recipeSearchController);
         return this;
     }
 
+    /**
+     * Configures and adds the "Choose Recipe" use case to the application.
+     * This method initializes the components necessary for handling recipe selection,
+     * including the presenter, interactor, and controller. It assigns the controller
+     * to the choose recipe and favorite recipe views, enabling users to select and view
+     * recipes from these interfaces.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addChooseRecipeUseCase() {
         final ChooseRecipeOutputBoundary chooseRecipeOutputBoundary = new ChooseRecipePresenter(
                 viewManagerModel, chooseRecipeViewModel, displayRecipeViewModel);
-
         final ChooseRecipeInputBoundary chooseRecipeInteractor = new ChooseRecipeInteractor(
                 recipeDataAccessObject, chooseRecipeOutputBoundary);
-
         final ChooseRecipeController chooseRecipeController = new ChooseRecipeController(chooseRecipeInteractor);
         chooseRecipeView.setChooseRecipeController(chooseRecipeController);
         favoriteRecipeView.setChooseRecipeController(chooseRecipeController);
         return this;
     }
 
+    /**
+     * Configures and adds the "Favorite Recipe" use case to the application.
+     * This method initializes the components required for managing favorite recipes,
+     * including the presenter, interactor, and controller. It assigns the controller
+     * to the favorite recipe and display recipe views, enabling users to favorite
+     * recipes and interact with their list of favorites.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addFavoriteRecipeUseCase() {
         final FavoriteRecipeOutputBoundary favoriteRecipeOutputBoundary = new FavoriteRecipePresenter(
                 viewManagerModel, favoriteRecipeViewModel, shoppingListViewModel);
-
         final FavoriteRecipeInputBoundary favoriteRecipeInteractor = new FavoriteRecipeInteractor(
                 favoriteRecipeOutputBoundary, userDataAccessObject, userDataAccessObject);
-
-        final FavoriteRecipeController favoriteRecipeController = new FavoriteRecipeController(favoriteRecipeInteractor);
+        final FavoriteRecipeController favoriteRecipeController =
+                new FavoriteRecipeController(favoriteRecipeInteractor);
         favoriteRecipeView.setFavoriteRecipeController(favoriteRecipeController);
         displayRecipeView.setFavoriteRecipeController(favoriteRecipeController);
         return this;
     }
 
+    /**
+     * Configures and adds the "Shopping List" use case to the application.
+     * This method sets up the components needed to handle the shopping list functionality,
+     * including the presenter, interactor, and controller. It connects the controller
+     * to the shopping list view, enabling users to manage and interact with their shopping list.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addShoppingListUseCase() {
         final ShoppingListOutputBoundary shoppingListPresenter = new ShoppingListPresenter(viewManagerModel,
                 shoppingListViewModel);
-
         final ShoppingListInputBoundary shoppingListInteractor = new ShoppingListInteractor(shoppingListPresenter,
                 recipeDataAccessObject);
-
         final ShoppingListController shoppingListController = new ShoppingListController(shoppingListInteractor);
-
         shoppingListView.setShoppingListController(shoppingListController);
         return this;
     }
 
-
+    /**
+     * Configures and adds the "Edit Recipe" use case to the application.
+     * This method initializes the components required for editing recipes, including
+     * the presenter, interactor, and controller. It connects the controller to the
+     * edit view, enabling users to modify existing recipes.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addEditUseCase() {
-        final EditOutputBoundary editOutputBoundary = new EditPresenter(viewManagerModel, createViewModel, editViewModel);
-
+        final EditOutputBoundary editOutputBoundary =
+                new EditPresenter(viewManagerModel, createViewModel, editViewModel);
         final EditInputBoundary editInteractor = new EditInteractor(editOutputBoundary);
+        final EditController editController = new EditController(editInteractor);
+        editView.setEditController(editController);
+        return this;
+    }
 
-            final EditController editController = new EditController(editInteractor);
-            editView.setEditController(editController);
-            return this;
-        }
-
+    /**
+     * Configures and adds the "Create Recipe" use case to the application.
+     * This method initializes the components necessary for creating new recipes,
+     * including the presenter, interactor, and controller. It assigns the controller
+     * to the create view, enabling users to add new recipes to the application.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addCreateUseCase() {
-        final CreateOutputBoundary createOutputBoundary = new CreatePresenter(viewManagerModel, recipeSearchViewModel, createViewModel);
-        final CreateInputBoundary createInteractor = new CreateInteractor(createOutputBoundary, recipeFactory, recipeDataAccessObject);
-
+        final CreateOutputBoundary createOutputBoundary =
+                new CreatePresenter(viewManagerModel, recipeSearchViewModel, createViewModel);
+        final CreateInputBoundary createInteractor =
+                new CreateInteractor(createOutputBoundary, recipeFactory, recipeDataAccessObject);
         final CreateController createController = new CreateController(createInteractor);
         createView.setCreateController(createController);
         return this;
     }
 
+    /**
+     * Configures and adds the "Like Recipe" use case to the application.
+     * This method sets up the components required to handle the "Like Recipe" functionality,
+     * including the presenter, interactor, and controller. It also connects the controller
+     * to the view to enable user interactions with the feature.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addLikeRecipeUseCase() {
         final LikeRecipeOutputBoundary likeRecipeOutputBoundary = new LikeRecipePresenter(displayRecipeViewModel);
-
         final LikeAndDislikeRecipeInputBoundary likeRecipeInteractor = new LikeRecipeInteractor(
                 recipeDataAccessObject, userDataAccessObject, likeRecipeOutputBoundary);
-
         final LikeRecipeController likeRecipeController = new LikeRecipeController(likeRecipeInteractor);
         displayRecipeView.setLikeRecipeController(likeRecipeController);
         return this;
     }
 
+    /**
+     * Configures and adds the "Dislike Recipe" use case to the application.
+     * This method initializes the necessary components, including the presenter,
+     * interactor, and controller, for handling the "Dislike Recipe" functionality.
+     * It also sets the controller in the view to enable interaction with the feature.
+     *
+     * @return the current {@link AppBuilder} instance, allowing for method chaining
+     */
     public AppBuilder addDislikeRecipeUseCase() {
-        final DislikeRecipeOutputBoundary dislikeRecipeOutputBoundary = new DislikeRecipePresenter(displayRecipeViewModel);
-
+        final DislikeRecipeOutputBoundary dislikeRecipeOutputBoundary =
+                new DislikeRecipePresenter(displayRecipeViewModel);
         final LikeAndDislikeRecipeInputBoundary dislikeRecipeInteractor = new DislikeRecipeInteractor(
                 recipeDataAccessObject, userDataAccessObject, dislikeRecipeOutputBoundary);
-
         final DislikeRecipeController dislikeRecipeController = new DislikeRecipeController(dislikeRecipeInteractor);
         displayRecipeView.setDislikeRecipeController(dislikeRecipeController);
         return this;
     }
 
+    /**
+     * Constructs and initializes the main application window for the Mealmaster application.
+     * This method sets up the main JFrame, initializes shared resources, and configures
+     * the initial view state for the application.
+     *
+     * @return a {@link JFrame} object representing the main application window
+     */
     public JFrame build() {
         final JFrame application = new JFrame("Mealmaster");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
         initializeSharedUserStorage();
         initializeSharedRecipeStorage();
-
         application.add(cardPanel);
-
         System.out.println("Setting initial view state to: " + loginView.getViewName());
         viewManagerModel.setState(loginView.getViewName());
         viewManagerModel.firePropertyChanged();
-
         return application;
     }
 }
