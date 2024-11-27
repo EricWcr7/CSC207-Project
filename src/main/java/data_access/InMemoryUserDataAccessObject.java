@@ -375,6 +375,9 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public void updateUserFavoriteRecipes(User user) {
         users.put(user.getName(), user);
+        deleteFileFromFileIo();
+        writeUsersToFile(users);
+        uploadFileToFileIo();
     }
 
     @Override
