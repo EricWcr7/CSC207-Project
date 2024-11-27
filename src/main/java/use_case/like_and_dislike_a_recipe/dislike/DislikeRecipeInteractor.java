@@ -47,6 +47,7 @@ public class DislikeRecipeInteractor implements LikeAndDislikeRecipeInputBoundar
 
             // Add the dislike to user data
             dislikeRecipeDataAccessObject.addDislikedRecipe(recipeName);
+            dislikeRecipeDataAccessObject.updateUserDislikedRecipe(recipeName);
 
             final int updatedDislikeNumber = theRecipe.getDislikeNumber();
             final DislikeRecipeOutputData dislikeRecipeOutputData = new DislikeRecipeOutputData(recipeName, updatedDislikeNumber);

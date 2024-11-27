@@ -404,4 +404,24 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         currentUser.addDislikedRecipe(recipeName);
     }
 
+    @Override
+    public void updateUserLikedRecipe(String recipeName) {
+        final User currentUser = get(getCurrentUsername());
+        // Replace the old entry with the new password
+        users.put(currentUser.getName(), currentUser);
+        deleteFileFromFileIo();
+        writeUsersToFile(users);
+        uploadFileToFileIo();
+    }
+
+    @Override
+    public void updateUserDislikedRecipe(String recipeName) {
+        final User currentUser = get(getCurrentUsername());
+        // Replace the old entry with the new password
+        users.put(currentUser.getName(), currentUser);
+        deleteFileFromFileIo();
+        writeUsersToFile(users);
+        uploadFileToFileIo();
+    }
+
 }

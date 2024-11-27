@@ -11,4 +11,8 @@ public interface UserLikeAndDislikeDataAccessInterface {
     boolean hasUserDislikedRecipe(String recipeName);
 
     void addDislikedRecipe(String recipeName);
+
+    void updateUserLikedRecipe(String recipeName);
+
+    void updateUserDislikedRecipe(String recipeName);
 }
