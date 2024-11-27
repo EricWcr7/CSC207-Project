@@ -7,7 +7,6 @@ import javax.swing.WindowConstants;
 
 import data_access.FavoriteRecipeDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
-import data_access.InMemoryUserLikesDataAccessObject;
 import data_access.RecipeDataAccessObject;
 import entity.*;
 import interface_adapter.*;
@@ -25,8 +24,10 @@ import interface_adapter.edit.EditController;
 import interface_adapter.edit.EditPresenter;
 import interface_adapter.edit.EditViewModel;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
-import interface_adapter.like_a_recipe.LikeRecipeController;
-import interface_adapter.like_a_recipe.LikeRecipePresenter;
+import interface_adapter.like_and_dislike.dislike_a_recipe.DislikeRecipeController;
+import interface_adapter.like_and_dislike.dislike_a_recipe.DislikeRecipePresenter;
+import interface_adapter.like_and_dislike.like_a_recipe.LikeRecipeController;
+import interface_adapter.like_and_dislike.like_a_recipe.LikeRecipePresenter;
 import interface_adapter.login.*;
 import interface_adapter.logout.*;
 import interface_adapter.recipe_search.*;
@@ -55,10 +56,11 @@ import use_case.edit.EditOutputBoundary;
 import use_case.favorite_receipe.FavoriteRecipeInputBoundary;
 import use_case.favorite_receipe.FavoriteRecipeInteractor;
 import use_case.favorite_receipe.FavoriteRecipeOutputBoundary;
-import use_case.like_a_recipe.LikeRecipeInputBoundary;
-import use_case.like_a_recipe.LikeRecipeInteractor;
-import use_case.like_a_recipe.LikeRecipeOutputBoundary;
-import use_case.like_a_recipe.UserLikesDataAccessInterface;
+import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeInputBoundary;
+import use_case.like_and_dislike_a_recipe.dislike.DislikeRecipeInteractor;
+import use_case.like_and_dislike_a_recipe.dislike.DislikeRecipeOutputBoundary;
+import use_case.like_and_dislike_a_recipe.like.LikeRecipeInteractor;
+import use_case.like_and_dislike_a_recipe.like.LikeRecipeOutputBoundary;
 import use_case.login.*;
 import use_case.logout.*;
 import use_case.recipe_search.*;
@@ -80,7 +82,6 @@ public class AppBuilder {
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
     private final FavoriteRecipeDataAccessObject favoriteRecipeDataAccessObject = new FavoriteRecipeDataAccessObject();
-    private final UserLikesDataAccessInterface userLikesDataAccessObject = new InMemoryUserLikesDataAccessObject();
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -306,7 +307,7 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addFavoriteRecipeUseCase () {
+    public AppBuilder addFavoriteRecipeUseCase() {
         final FavoriteRecipeOutputBoundary favoriteRecipeOutputBoundary = new FavoriteRecipePresenter(
                 viewManagerModel, favoriteRecipeViewModel, shoppingListViewModel);
 
@@ -326,7 +327,7 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addEditUseCase () {
+    public AppBuilder addEditUseCase() {
         final EditOutputBoundary editOutputBoundary = new EditPresenter(viewManagerModel, createViewModel, editViewModel);
 
         final EditInputBoundary editInteractor = new EditInteractor(editOutputBoundary);
@@ -336,7 +337,7 @@ public class AppBuilder {
             return this;
         }
 
-    public AppBuilder addCreateUseCase () {
+    public AppBuilder addCreateUseCase() {
         final CreateOutputBoundary createOutputBoundary = new CreatePresenter(viewManagerModel, recipeSearchViewModel, createViewModel);
         final CreateInputBoundary createInteractor = new CreateInteractor(createOutputBoundary, recipeFactory, recipeDataAccessObject);
 
@@ -348,11 +349,22 @@ public class AppBuilder {
     public AppBuilder addLikeRecipeUseCase() {
         final LikeRecipeOutputBoundary likeRecipeOutputBoundary = new LikeRecipePresenter(displayRecipeViewModel);
 
-        final LikeRecipeInputBoundary likeRecipeInteractor = new LikeRecipeInteractor(
-                recipeDataAccessObject, userLikesDataAccessObject, userDataAccessObject, likeRecipeOutputBoundary);
+        final LikeAndDislikeRecipeInputBoundary likeRecipeInteractor = new LikeRecipeInteractor(
+                recipeDataAccessObject, userDataAccessObject, likeRecipeOutputBoundary);
 
         final LikeRecipeController likeRecipeController = new LikeRecipeController(likeRecipeInteractor);
         displayRecipeView.setLikeRecipeController(likeRecipeController);
+        return this;
+    }
+
+    public AppBuilder addDislikeRecipeUseCase() {
+        final DislikeRecipeOutputBoundary dislikeRecipeOutputBoundary = new DislikeRecipePresenter(displayRecipeViewModel);
+
+        final LikeAndDislikeRecipeInputBoundary dislikeRecipeInteractor = new DislikeRecipeInteractor(
+                recipeDataAccessObject, userDataAccessObject, dislikeRecipeOutputBoundary);
+
+        final DislikeRecipeController dislikeRecipeController = new DislikeRecipeController(dislikeRecipeInteractor);
+        displayRecipeView.setDislikeRecipeController(dislikeRecipeController);
         return this;
     }
 

@@ -157,10 +157,22 @@ public class RecipeSearchView extends JPanel implements ActionListener, Property
     }
 
     private void setFields(RecipeSearchState state) {
-        recipeNotFountErrorField.setText(state.getErrorMessage());
+        // recipeNotFountErrorField.setText(state.getErrorMessage());
+        final String errorMessage = state.getErrorMessage();
+        if (errorMessage != null && !errorMessage.isEmpty()) {
+            // 弹窗通知错误消息
+            JOptionPane.showMessageDialog(
+                    this,
+                    errorMessage,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+
         dishInputField.setText(state.getSearchKeyword());
         // if 119,118, then, error message disappear
         // but why there is no problem for login view?
+
     }
 
     public String getViewName() {

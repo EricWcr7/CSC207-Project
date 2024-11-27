@@ -1,4 +1,4 @@
-package use_case.like_a_recipe;
+package use_case.like_and_dislike_a_recipe.like;
 
 public class LikeRecipeOutputData {
     private String recipeName;

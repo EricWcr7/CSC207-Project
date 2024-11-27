@@ -4,15 +4,15 @@ import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.choose_recipe.ChooseRecipeState;
 import interface_adapter.display_recipe.DisplayRecipeState;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
+import interface_adapter.like_and_dislike.dislike_a_recipe.DislikeRecipeController;
+import interface_adapter.like_and_dislike.like_a_recipe.LikeRecipeController;
 import interface_adapter.favorite_recipe.FavoriteRecipeController;
-import interface_adapter.like_a_recipe.LikeRecipeController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
-import java.io.IOException;
 
 public class DisplayRecipeView extends JPanel implements PropertyChangeListener {
     private final String viewName = "display the recipe";
@@ -21,6 +21,7 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
     private ReturnToSearchMenuController returnToSearchMenuController;
     private LikeRecipeController likeRecipeController;
     private FavoriteRecipeController favoriteRecipeController;
+    private DislikeRecipeController dislikeRecipeController;
 
     // Example: Dynamic data loaded into variables
     private String dishName;
@@ -65,7 +66,7 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
         likeCount = new JLabel();
 
         dislikeButton = new JButton("Dislike");
-        dislikeCount = new JLabel(String.valueOf(dislikeNumber));
+        dislikeCount = new JLabel();
 
         favoriteButton = new JButton("Favorite");
 
@@ -125,6 +126,16 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                     if (evt.getSource().equals(likeButton)) {
                         final DisplayRecipeState state = displayRecipeViewModel.getState();
                         this.likeRecipeController.execute(state.getDishName());
+                    }
+                }
+        );
+
+        dislikeButton.addActionListener(
+                // This creates an anonymous subclass of ActionListener and instantiates it.
+                evt -> {
+                    if (evt.getSource().equals(dislikeButton)) {
+                        final DisplayRecipeState state = displayRecipeViewModel.getState();
+                        this.dislikeRecipeController.execute(state.getDishName());
                     }
                 }
         );
@@ -195,6 +206,10 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
         this.likeRecipeController = likeRecipeController;
     }
 
+    public void setDislikeRecipeController(DislikeRecipeController dislikeRecipeController) {
+        this.dislikeRecipeController = dislikeRecipeController;
+    }
+
     public void setFavoriteRecipeController(FavoriteRecipeController favoriteRecipeController) {
         this.favoriteRecipeController = favoriteRecipeController;
     }
@@ -210,17 +225,49 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
     }
 
     private void update(DisplayRecipeState displayRecipeState) {
+
+        setLikedMessagePopUp(displayRecipeState);
+        setDislikedMessagePopUp(displayRecipeState);
+
         // Update UI components with the new state values
         dishName = displayRecipeState.getDishName();
         ingredients = displayRecipeState.getIngredients();
         instructions = displayRecipeState.getInstructions();
         likeNumber = displayRecipeState.getLikeNumber(dishName);
+        dislikeNumber = displayRecipeState.getDislikeNumber(dishName);
 
         // Update the labels and text areas with the new values
         ((JLabel) ((JPanel) this.getComponent(0)).getComponent(0)).setText("Dish Name: " + dishName);
         ingredientsArea.setText(ingredients);
         instructionArea.setText(formatInstructions(instructions));
         likeCount.setText(String.valueOf(likeNumber));
+        dislikeCount.setText(String.valueOf(dislikeNumber));
+    }
+
+    private void setDislikedMessagePopUp(DisplayRecipeState displayRecipeState) {
+        final String dislikedMessage = displayRecipeState.getDislikedMessage();
+        if (dislikedMessage != null && !dislikedMessage.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    dislikedMessage,
+                    "Notification",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            displayRecipeState.clearDislikedMessage();
+        }
+    }
+
+    private void setLikedMessagePopUp(DisplayRecipeState displayRecipeState) {
+        final String likedMessage = displayRecipeState.getLikedMessage();
+        if (likedMessage != null && !likedMessage.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    likedMessage,
+                    "Notification",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            displayRecipeState.clearLikedMessage();
+        }
     }
 
     // Format instructions to display them in a more readable way(之前句子太长了，一个屏幕装不下)

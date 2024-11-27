@@ -1,14 +1,12 @@
 package data_access;
 
 import com.google.gson.*;
-import entity.CommonRecipe;
 import entity.Recipe;
 import entity.CommonRecipeFactory;
-import entity.Recipe;
 import entity.RecipeFactory;
 import use_case.choose_recipe.ChooseRecipeDataAccessInterface;
 import use_case.create.CreateDataAccessInterface;
-import use_case.like_a_recipe.LikeRecipeDataAccessInterface;
+import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeDataAccessInterface;
 import use_case.recipe_search.RecipeSearchDataAccessInterface;
 
 import java.io.File;
@@ -31,7 +29,7 @@ import java.util.Map;
 /**
  * DAO for the RecipeSearch Use Case.
  */
-public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, ChooseRecipeDataAccessInterface, LikeRecipeDataAccessInterface, CreateDataAccessInterface {
+public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface, ChooseRecipeDataAccessInterface, LikeAndDislikeRecipeDataAccessInterface, CreateDataAccessInterface {
 
     private static final String API_URL = "https://www.themealdb.com/api/json/v1/1/search.php?f=";
     private static final String FILE_IO_API_URL = "https://file.io";

@@ -1,13 +1,12 @@
-package use_case.like_a_recipe;
+package use_case.like_and_dislike_a_recipe;
 
 import entity.Recipe;
-import java.io.IOException;
 import java.util.List;
 
 /**
  * DAO for the Like a Recipe Case, accessing and updating recipe data with "like" functionality.
  */
-public interface LikeRecipeDataAccessInterface {
+public interface LikeAndDislikeRecipeDataAccessInterface {
 
     /**
      * Retrieves a single recipe by its name.
