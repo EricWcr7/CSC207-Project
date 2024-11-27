@@ -105,6 +105,7 @@ public class AppBuilder {
     private ShoppingListViewModel shoppingListViewModel;
 
     private RecipeSearchInputBoundary recipeSearchInteractor;
+    private LoginInputBoundary loginInteractor;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -119,6 +120,15 @@ public class AppBuilder {
             recipeSearchInteractor.initializeRecipeStorage();
         } else {
             System.err.println("RecipeSearchInteractor not initialized. Ensure addRecipeSearchUseCase is called first.");
+        }
+    }
+
+    private void initializeSharedUserStorage() {
+        if (loginInteractor != null) {
+            System.out.println("Calling initializeUserStorage in LogInInteractor...");
+            loginInteractor.initializeUserStorage();
+        } else {
+            System.err.println("LogInInteractor not initialized. Ensure addLogInUseCase is called first.");
         }
     }
 
@@ -221,8 +231,7 @@ public class AppBuilder {
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
                 recipeSearchViewModel, loginViewModel, signupViewModel);
-        final LoginInputBoundary loginInteractor = new LoginInteractor(
-                userDataAccessObject, loginOutputBoundary);
+        loginInteractor = new LoginInteractor(userDataAccessObject, loginOutputBoundary);
 
         final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
@@ -377,10 +386,11 @@ public class AppBuilder {
         return this;
     }
 
-        public JFrame build() {
-            final JFrame application = new JFrame("Mealmaster");
-            application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    public JFrame build() {
+        final JFrame application = new JFrame("Mealmaster");
+        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        initializeSharedUserStorage();
         initializeSharedRecipeStorage();
 
         application.add(cardPanel);

@@ -99,6 +99,16 @@ public class FileUserDataAccessObject implements SignupUserDataAccessInterface,
     }
 
     @Override
+    public String findFileOnFileIo(String fileName) {
+        return "";
+    }
+
+    @Override
+    public void loadUsersFromCloud() {
+
+    }
+
+    @Override
     public String getCurrentUsername() {
         return this.currentUsername;
     }
