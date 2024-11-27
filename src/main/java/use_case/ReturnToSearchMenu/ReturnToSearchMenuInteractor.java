@@ -2,17 +2,21 @@ package use_case.ReturnToSearchMenu;
 
 import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
 import use_case.recipe_search.RecipeSearchOutputData;
+import use_case.shopping_list.ShoppingListDataAccessInterface;
 
 import java.util.Arrays;
 
 public class ReturnToSearchMenuInteractor implements ReturnToSearchMenuInputBoundary {
     private ReturnToSearchMenuOutputBoundary returnToSearchMenuPresenter;
     private final FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject;
+    private final ShoppingListDataAccessInterface shoppingListDataAccessObject;
 
     public ReturnToSearchMenuInteractor(ReturnToSearchMenuOutputBoundary returnToSearchMenuPresenter,
-                                        FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject) {
+                                        FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject,
+                                        ShoppingListDataAccessInterface shoppingListDataAccessObject) {
         this.returnToSearchMenuPresenter = returnToSearchMenuPresenter;
         this.favoriteRecipeDataAccessObject = favoriteRecipeDataAccessObject;
+        this.shoppingListDataAccessObject = shoppingListDataAccessObject;
     }
 
     @Override
@@ -42,5 +46,18 @@ public class ReturnToSearchMenuInteractor implements ReturnToSearchMenuInputBoun
         final ReturnToSearchMenuOutputData recipeSearchOutputData = new ReturnToSearchMenuOutputData(
                 returnToSearchMenuInputData.getSearchKeyword(), username, favoriteRecipes);
         returnToSearchMenuPresenter.fromFavoriteRecipeBackToSearchMenu(recipeSearchOutputData);
+    }
+
+    @Override
+    public void fromShoppingListBackToSearchMenu(ReturnToSearchMenuInputData returnToSearchMenuInputData) {
+        final String username = returnToSearchMenuInputData.getUsername();
+        final String[] favoriteRecipes = returnToSearchMenuInputData.getFavoriteRecipes();
+        System.out.println("Current logged in account: " + username);
+        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
+        System.out.println("Current account in InMemoryUserDataAccessObject: " + shoppingListDataAccessObject.get(username).getName());
+        System.out.println("Current favoriteRecipes in InMemoryUserDataAccessObject: " + Arrays.toString(shoppingListDataAccessObject.get(username).getFavoriteRecipes()));
+        final ReturnToSearchMenuOutputData recipeSearchOutputData = new ReturnToSearchMenuOutputData(
+                returnToSearchMenuInputData.getSearchKeyword(), username, favoriteRecipes);
+        returnToSearchMenuPresenter.fromShoppingListBackToSearchMenu(recipeSearchOutputData);
     }
 }

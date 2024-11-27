@@ -3,15 +3,15 @@ package use_case.shopping_list;
 import java.util.List;
 
 public class ShoppingListInputData {
-    private final List<String> recipeNames;
+    private final String[] recipeNames;
     private final String username;
 
-    public ShoppingListInputData(String username, List<String> recipeNames) {
+    public ShoppingListInputData(String username, String[] recipeNames) {
         this.recipeNames = recipeNames;
         this.username = username;
     }
 
-    public List<String> getRecipeNames() {
+    public String[] getRecipeNames() {
         return recipeNames;
     }
 

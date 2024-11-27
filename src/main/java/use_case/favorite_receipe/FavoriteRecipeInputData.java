@@ -5,18 +5,22 @@ package use_case.favorite_receipe;
  */
 public class FavoriteRecipeInputData {
     private final String username;
-    private final String[] favoriteRecipes;
+    private String[] recipeNames;
 
-    public FavoriteRecipeInputData(String username, String[] favoriteRecipes) {
+    public FavoriteRecipeInputData(String username, String[] recipeNames) {
         this.username = username;
-        this.favoriteRecipes = favoriteRecipes;
+        this.recipeNames = recipeNames;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public String[] getFavoriteRecipes() {
-        return favoriteRecipes;
+    public String[] getRecipeNames() {
+        return recipeNames;
+    }
+
+    public void setRecipeNames(String[] recipeNames) {
+        this.recipeNames = recipeNames;
     }
 }

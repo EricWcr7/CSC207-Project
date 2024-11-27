@@ -9,6 +9,7 @@ import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
 import use_case.like_and_dislike_a_recipe.UserLikeAndDislikeDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
+import use_case.shopping_list.ShoppingListDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 /**
@@ -20,6 +21,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         ChangePasswordUserDataAccessInterface,
         UserLikeAndDislikeDataAccessInterface,
         FavoriteRecipeDataAccessInterface,
+        ShoppingListDataAccessInterface,
         LogoutUserDataAccessInterface {
 
     private final Map<String, User> users = new HashMap<>();

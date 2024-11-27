@@ -11,5 +11,5 @@ public interface FavoriteRecipeInputBoundary {
      */
     void execute(FavoriteRecipeInputData favoriteRecipeInputData);
 
-    void switchToShoppingListView();
+    void switchToShoppingListView(FavoriteRecipeInputData favoriteRecipeInputData);
 }

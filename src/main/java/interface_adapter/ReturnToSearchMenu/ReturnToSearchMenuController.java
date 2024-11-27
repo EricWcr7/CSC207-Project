@@ -27,4 +27,10 @@ public class ReturnToSearchMenuController {
                 "", username, favoriteRecipes);
         returnToSearchMenuInteractor.fromFavoriteRecipeBackToSearchMenu(returnToSearchMenuInputData);
     }
+
+    public void fromShoppingListBackToSearchMenu(String username, String[] favoriteRecipes) {
+        final ReturnToSearchMenuInputData returnToSearchMenuInputData = new ReturnToSearchMenuInputData(
+                "", username, favoriteRecipes);
+        returnToSearchMenuInteractor.fromShoppingListBackToSearchMenu(returnToSearchMenuInputData);
+    }
 }

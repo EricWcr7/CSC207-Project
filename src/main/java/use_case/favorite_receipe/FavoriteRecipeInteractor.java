@@ -1,10 +1,13 @@
 package use_case.favorite_receipe;
 
-import data_access.FavoriteRecipeDataAccessObject;
-import data_access.InMemoryUserDataAccessObject;
+import entity.Recipe;
 import entity.User;
+import use_case.recipe_search.RecipeSearchOutputData;
+import use_case.shopping_list.ShoppingListDataAccessInterface;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * The FavoriteRecipe Interactor.
@@ -12,17 +15,20 @@ import java.util.Arrays;
 public class FavoriteRecipeInteractor implements FavoriteRecipeInputBoundary {
     private final FavoriteRecipeOutputBoundary favoriteRecipePresenter;
     private final FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject;
+    private final ShoppingListDataAccessInterface shoppingListDataAccessObject;
 
     public FavoriteRecipeInteractor(FavoriteRecipeOutputBoundary favoriteRecipePresenter,
-                                    FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject) {
+                                    FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject,
+                                    ShoppingListDataAccessInterface shoppingListDataAccessObject) {
         this.favoriteRecipePresenter = favoriteRecipePresenter;
         this.favoriteRecipeDataAccessObject = favoriteRecipeDataAccessObject;
+        this.shoppingListDataAccessObject = shoppingListDataAccessObject;
     }
 
     @Override
     public void execute(FavoriteRecipeInputData favoriteRecipeInputData) {
         final String username = favoriteRecipeInputData.getUsername();
-        final String[] favoriteRecipes = favoriteRecipeInputData.getFavoriteRecipes();
+        final String[] favoriteRecipes = favoriteRecipeInputData.getRecipeNames();
         final User user = favoriteRecipeDataAccessObject.get(username);
         user.setFavoriteRecipes(favoriteRecipes);
         favoriteRecipeDataAccessObject.updateUserFavoriteRecipes(user);
@@ -31,7 +37,15 @@ public class FavoriteRecipeInteractor implements FavoriteRecipeInputBoundary {
     }
 
     @Override
-    public void switchToShoppingListView() {
-        favoriteRecipePresenter.switchToShoppingListView();
+    public void switchToShoppingListView(FavoriteRecipeInputData favoriteRecipeInputData) {
+        final String username = favoriteRecipeInputData.getUsername();
+        final String[] recipeNames = favoriteRecipeInputData.getRecipeNames();
+        System.out.println("Current logged in account: " + username);
+        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(recipeNames));
+
+        final FavoriteRecipeOutputData favoriteRecipeOutputData = new FavoriteRecipeOutputData(
+                shoppingListDataAccessObject.get(username).getName(),
+                shoppingListDataAccessObject.get(username).getFavoriteRecipes());
+        favoriteRecipePresenter.switchToShoppingListView(favoriteRecipeOutputData);
     }
 }

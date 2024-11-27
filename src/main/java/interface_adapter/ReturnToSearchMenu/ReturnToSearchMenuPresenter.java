@@ -10,6 +10,8 @@ import interface_adapter.favorite_recipe.FavoriteRecipeState;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
 import interface_adapter.recipe_search.RecipeSearchState;
 import interface_adapter.recipe_search.RecipeSearchViewModel;
+import interface_adapter.shopping_list.ShoppingListState;
+import interface_adapter.shopping_list.ShoppingListViewModel;
 import use_case.ReturnToSearchMenu.ReturnToSearchMenuOutputBoundary;
 import use_case.ReturnToSearchMenu.ReturnToSearchMenuOutputData;
 import view.ChooseRecipeView;
@@ -22,19 +24,22 @@ public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoun
     private EditViewModel editViewModel;
     private DisplayRecipeViewModel displayRecipeViewModel;
     private FavoriteRecipeViewModel favoriteRecipeViewModel;
+    private ShoppingListViewModel shoppingListViewModel;
 
     public ReturnToSearchMenuPresenter(ViewManagerModel viewManagerModel,
                                        RecipeSearchViewModel recipeSearchViewModel,
                                        ChooseRecipeViewModel chooseRecipeViewModel,
                                        DisplayRecipeViewModel displayRecipeViewModel,
                                        FavoriteRecipeViewModel favoriteRecipeViewModel,
-                                       EditViewModel editViewModel) {
+                                       EditViewModel editViewModel,
+                                       ShoppingListViewModel shoppingListViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.recipeSearchViewModel = recipeSearchViewModel;
         this.chooseRecipeViewModel = chooseRecipeViewModel;
         this.displayRecipeViewModel = displayRecipeViewModel;
         this.favoriteRecipeViewModel = favoriteRecipeViewModel;
         this.editViewModel = editViewModel;
+        this.shoppingListViewModel = shoppingListViewModel;
     }
 
     @Override
@@ -74,6 +79,23 @@ public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoun
 
         this.favoriteRecipeViewModel.setState(favoriteRecipeState);
         this.favoriteRecipeViewModel.firePropertyChanged();
+
+        this.viewManagerModel.setState(recipeSearchViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void fromShoppingListBackToSearchMenu(ReturnToSearchMenuOutputData recipeSearchOutputData) {
+        ShoppingListState shoppingListState = shoppingListViewModel.getState();
+        final RecipeSearchState recipeSearchState = recipeSearchViewModel.getState();
+
+        recipeSearchState.setUsername(recipeSearchOutputData.getUsername());
+        recipeSearchState.setFavoriteRecipes(recipeSearchOutputData.getFavoriteRecipes());
+
+        recipeSearchViewModel.setState(recipeSearchState);
+
+        this.shoppingListViewModel.setState(shoppingListState);
+        this.shoppingListViewModel.firePropertyChanged();
 
         this.viewManagerModel.setState(recipeSearchViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
