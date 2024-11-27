@@ -257,10 +257,12 @@ public class AppBuilder {
     public AppBuilder addReturnToSearchMenuUseCase() {
         final ReturnToSearchMenuOutputBoundary returnToSearchMenuOutputBoundary =
                 new ReturnToSearchMenuPresenter(viewManagerModel,
-                        recipeSearchViewModel, chooseRecipeViewModel, displayRecipeViewModel, favoriteRecipeViewModel, editViewModel);
+                        recipeSearchViewModel, chooseRecipeViewModel,
+                        displayRecipeViewModel, favoriteRecipeViewModel, editViewModel, shoppingListViewModel);
 
         final ReturnToSearchMenuInputBoundary returnToSearchMenuInteractor =
-                new ReturnToSearchMenuInteractor(returnToSearchMenuOutputBoundary, userDataAccessObject);
+                new ReturnToSearchMenuInteractor(returnToSearchMenuOutputBoundary, userDataAccessObject,
+                        userDataAccessObject);
 
         final ReturnToSearchMenuController returnToSearchMenuController = new ReturnToSearchMenuController(returnToSearchMenuInteractor);
         chooseRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
@@ -312,12 +314,13 @@ public class AppBuilder {
                 viewManagerModel, favoriteRecipeViewModel, shoppingListViewModel);
 
         final FavoriteRecipeInputBoundary favoriteRecipeInteractor = new FavoriteRecipeInteractor(
-                favoriteRecipeOutputBoundary, userDataAccessObject);
+                favoriteRecipeOutputBoundary, userDataAccessObject, userDataAccessObject);
 
         final ShoppingListOutputBoundary shoppingListOutputBoundary = new ShoppingListPresenter(viewManagerModel,
                 shoppingListViewModel);
 
-        final ShoppingListInputBoundary shoppingListInteractor = new ShoppingListInteractor(shoppingListOutputBoundary);
+        final ShoppingListInputBoundary shoppingListInteractor = new ShoppingListInteractor(shoppingListOutputBoundary,
+                userDataAccessObject);
 
         final FavoriteRecipeController favoriteRecipeController = new FavoriteRecipeController(favoriteRecipeInteractor);
         final ShoppingListController shoppingListController = new ShoppingListController(shoppingListInteractor);
@@ -326,6 +329,20 @@ public class AppBuilder {
         displayRecipeView.setFavoriteRecipeController(favoriteRecipeController);
         return this;
     }
+
+    public AppBuilder addShoppingListUseCase() {
+        final ShoppingListOutputBoundary shoppingListPresenter = new ShoppingListPresenter(viewManagerModel,
+                shoppingListViewModel);
+
+        final ShoppingListInputBoundary shoppingListInteractor = new ShoppingListInteractor(shoppingListPresenter,
+                userDataAccessObject);
+
+        final ShoppingListController shoppingListController = new ShoppingListController(shoppingListInteractor);
+
+        shoppingListView.setShoppingListController(shoppingListController);
+        return this;
+    }
+
 
     public AppBuilder addEditUseCase() {
         final EditOutputBoundary editOutputBoundary = new EditPresenter(viewManagerModel, createViewModel, editViewModel);

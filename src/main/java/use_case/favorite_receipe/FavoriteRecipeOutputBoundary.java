@@ -17,5 +17,5 @@ public interface FavoriteRecipeOutputBoundary {
      */
     void prepareFailureView(String errorMessage);
 
-    void switchToShoppingListView();
+    void switchToShoppingListView(FavoriteRecipeOutputData outputData);
 }

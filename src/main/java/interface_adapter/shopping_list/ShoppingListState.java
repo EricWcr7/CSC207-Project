@@ -6,11 +6,10 @@ import java.util.Map;
 
 public class ShoppingListState {
     private String username;
-    private String[] favouriteRecipes;
-    private List<String> recipeNames;
+    private String[] recipeNames;
     private Map<String, Double> ingredients;
 
-    public void setRecipeNames(List<String> recipeNames) {
+    public void setRecipeNames(String[] recipeNames) {
         this.recipeNames = recipeNames;
     }
 
@@ -22,11 +21,7 @@ public class ShoppingListState {
         this.username = username;
     }
 
-    public void setFavouriteRecipes(String[] favouriteRecipes) {
-        this.favouriteRecipes = favouriteRecipes;
-    }
-
-    public List<String> getRecipeNames() {
+    public String[] getRecipeNames() {
         return recipeNames;
     }
 
@@ -36,9 +31,5 @@ public class ShoppingListState {
 
     public String getUsername() {
         return username;
-    }
-
-    public String[] getFavouriteRecipes() {
-        return favouriteRecipes;
     }
 }

@@ -14,6 +14,7 @@ public class ShoppingListPresenter implements ShoppingListOutputBoundary {
         this.viewManagerModel = viewManagerModel;
         this.shoppingListViewModel = shoppingListViewModel;
     }
+
     @Override
     public void presentShoppingList(ShoppingListOutputData shoppingListOutputData) {
         // Logic to present the shopping list view model to the view
@@ -21,6 +22,10 @@ public class ShoppingListPresenter implements ShoppingListOutputBoundary {
         final ShoppingListState currentState = shoppingListViewModel.getState();
         currentState.setUsername(shoppingListOutputData.getUsername());
         currentState.setRecipeNames(shoppingListOutputData.getRecipeNames());
+        currentState.setIngredients(shoppingListOutputData.getIngredients());
         shoppingListViewModel.setState(currentState);
+        shoppingListViewModel.firePropertyChanged("The Overall Shopping List");
+        viewManagerModel.setState(shoppingListViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }

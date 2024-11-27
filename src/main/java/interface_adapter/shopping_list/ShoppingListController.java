@@ -12,7 +12,7 @@ public class ShoppingListController {
         this.shoppingListInteractor = shoppingListInteractor;
     }
 
-    public void handleGenerateShoppingList(String username, List<String> recipeNames) {
+    public void handleGenerateShoppingList(String username, String[] recipeNames) {
         ShoppingListInputData inputData = new ShoppingListInputData(username, recipeNames);
         shoppingListInteractor.generateShoppingList(inputData);
     }

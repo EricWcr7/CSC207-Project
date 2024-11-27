@@ -9,8 +9,11 @@ import interface_adapter.shopping_list.ShoppingListViewModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 import java.util.Map;
 
 public class ShoppingListView extends JPanel implements PropertyChangeListener {
@@ -23,6 +26,7 @@ public class ShoppingListView extends JPanel implements PropertyChangeListener {
     private final JTextArea shoppingListTextArea;
 
     private final JButton returnToSearchMenu;
+    private final JButton generateShoppingList;
 
     public ShoppingListView(ShoppingListViewModel shoppingListViewModel) {
         this.shoppingListViewModel = shoppingListViewModel;
@@ -45,10 +49,12 @@ public class ShoppingListView extends JPanel implements PropertyChangeListener {
         shoppingListPanel.add(shoppingListTextArea);
         
         returnToSearchMenu = new JButton("Return to Search View");
+        generateShoppingList = new JButton("Generate Shopping List");
         
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(returnToSearchMenu);
+        buttonPanel.add(generateShoppingList);
         
         add(shoppingListPanel);
         add(buttonPanel);
@@ -58,11 +64,22 @@ public class ShoppingListView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(returnToSearchMenu)) {
                         final ShoppingListState currentState = shoppingListViewModel.getState();
-                        this.returnToSearchMenuController.fromFavoriteRecipeBackToSearchMenu(
-                                currentState.getUsername(), currentState.getFavouriteRecipes());
+                        this.returnToSearchMenuController.fromShoppingListBackToSearchMenu(
+                                currentState.getUsername(), currentState.getRecipeNames());
                     }
                 }
         );
+
+        generateShoppingList.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(generateShoppingList)) {
+                    ShoppingListState currentState = shoppingListViewModel.getState();
+                    shoppingListController.handleGenerateShoppingList(currentState.getUsername(),
+                            currentState.getRecipeNames());
+                }
+            }
+        });
     }
 
     private void updateView() {

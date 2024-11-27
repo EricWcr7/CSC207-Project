@@ -15,6 +15,7 @@ import interface_adapter.favorite_recipe.FavoriteRecipeController;
 import interface_adapter.favorite_recipe.FavoriteRecipeState;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
 import interface_adapter.shopping_list.ShoppingListController;
+import interface_adapter.shopping_list.ShoppingListState;
 
 /**
  * The View for when the user is going to see recipes which they add to favorite file.
@@ -42,7 +43,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
 
         final JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER));
         back = new JButton("back to recipe search page");
-        shoppingList = new JButton("Generate Shopping list");
+        shoppingList = new JButton("Shopping list");
         buttons.add(back);
         buttons.add(shoppingList);
 
@@ -69,14 +70,11 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             }
         });
 
-        shoppingList.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                if (evt.getSource().equals(shoppingList)) {
-                    final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
-                    shoppingListController.handleGenerateShoppingList(currentState.getUsername(), Arrays.asList(currentState.getFavoriteRecipes()));
-                    favoriteRecipeController.switchToShoppingListView();
-                }
+        shoppingList.addActionListener(evt -> {
+            if (evt.getSource().equals(shoppingList)) {
+                final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
+                favoriteRecipeController.switchToShoppingListView(currentState.getUsername(),
+                        currentState.getFavoriteRecipes());
             }
         });
 
@@ -614,7 +612,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
 
         final JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER));
         back = new JButton("back to recipe search page");
-        shoppingList = new JButton("Generate Shopping List");
+        shoppingList = new JButton("Shopping List");
         buttons.add(back);
         buttons.add(shoppingList);
 
@@ -639,14 +637,11 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             }
         });
 
-        shoppingList.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                if (evt.getSource().equals(shoppingList)) {
-                    final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
-                    shoppingListController.handleGenerateShoppingList(currentState.getUsername(), Arrays.asList(currentState.getFavoriteRecipes()));
-                    favoriteRecipeController.switchToShoppingListView();
-                }
+        shoppingList.addActionListener(evt2 -> {
+            if (evt2.getSource().equals(shoppingList)) {
+                final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
+                favoriteRecipeController.switchToShoppingListView(currentState.getUsername(),
+                        currentState.getFavoriteRecipes());
             }
         });
 

@@ -16,7 +16,7 @@ public class ShoppingListViewModel extends ViewModel<ShoppingListState> {
     }
 
     public String[] getFavouriteRecipes() {
-        return getState().getFavouriteRecipes();
+        return getState().getRecipeNames();
     }
 
     public String getUsername() {
