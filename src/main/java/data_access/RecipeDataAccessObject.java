@@ -52,6 +52,19 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
     private static final String NODES = "nodes";
+    private static final String NAME = "name";
+    private static final String KEY = "key";
+    private static final String IDMEAL = "idMeal";
+    private static final String STRMEAL = "strMeal";
+    private static final String STRCATEGORY = "strCategory";
+    private static final String STRINSTRUCTIONS = "strInstructions";
+    private static final int TWENTY = 20;
+    private static final String ID = "id";
+    private static final String CATEGORY = "category";
+    private static final String INSTRUCTIONS = "instructions";
+    private static final String INGREDIENTMEASUREMAP = "ingredientMeasureMap";
+    private static final String LIKENUMBER = "likeNumber";
+    private static final String DISLIKENUMBER = "dislikeNumber";
     // Holds the list of recipes loaded from the downloaded JSON
     private List<Recipe> cachedRecipes = new ArrayList<>();
 
@@ -85,11 +98,11 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
                         if (nodeElement.isJsonObject()) {
                             final JsonObject nodeObject = nodeElement.getAsJsonObject();
 
-                            if (nodeObject.has("name") && nodeObject.get("name").getAsString().equals(
+                            if (nodeObject.has(NAME) && nodeObject.get(NAME).getAsString().equals(
                                     fileName)) {
-                                if (nodeObject.has("key")) {
+                                if (nodeObject.has(KEY)) {
                                     // Correctly index to get the key
-                                    recipeFileKey = nodeObject.get("key").getAsString();
+                                    recipeFileKey = nodeObject.get(KEY).getAsString();
                                     System.out.println(
                                             "File '" + fileName + "' found on File.io with key: " + recipeFileKey);
                                 }
@@ -266,18 +279,18 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         for (int i = 0; i < mealsArray.size(); i++) {
             final JsonObject mealObject = mealsArray.get(i).getAsJsonObject();
 
-            final String id = mealObject.has("idMeal") && !mealObject.get("idMeal").isJsonNull()
-                    ? mealObject.get("idMeal").getAsString() : "";
-            final String name = mealObject.has("strMeal") && !mealObject.get("strMeal").isJsonNull()
-                    ? mealObject.get("strMeal").getAsString() : "";
-            final String category = mealObject.has("strCategory") && !mealObject.get("strCategory").isJsonNull()
-                    ? mealObject.get("strCategory").getAsString() : "";
+            final String id = mealObject.has(IDMEAL) && !mealObject.get(IDMEAL).isJsonNull()
+                    ? mealObject.get(IDMEAL).getAsString() : "";
+            final String name = mealObject.has(STRMEAL) && !mealObject.get(STRMEAL).isJsonNull()
+                    ? mealObject.get(STRMEAL).getAsString() : "";
+            final String category = mealObject.has(STRCATEGORY) && !mealObject.get(STRCATEGORY).isJsonNull()
+                    ? mealObject.get(STRCATEGORY).getAsString() : "";
             final String instructions = mealObject.has(
-                    "strInstructions") && !mealObject.get("strInstructions").isJsonNull()
-                    ? mealObject.get("strInstructions").getAsString() : "";
+                    STRINSTRUCTIONS) && !mealObject.get(STRINSTRUCTIONS).isJsonNull()
+                    ? mealObject.get(STRINSTRUCTIONS).getAsString() : "";
 
             final Map<String, String> ingredientMeasureMap = new HashMap<>();
-            for (int j = 1; j <= 20; j++) {
+            for (int j = 1; j <= TWENTY; j++) {
                 final String ingredientKey = "strIngredient" + j;
                 final String measureKey = "strMeasure" + j;
 
@@ -334,7 +347,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
                 System.out.println("File uploaded successfully: " + response.body());
                 // Parse the response to extract the "key" value and set recipeFileKey
                 final JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
-                recipeFileKey = jsonResponse.get("key").getAsString();
+                recipeFileKey = jsonResponse.get(KEY).getAsString();
                 System.out.println("File key set to: " + recipeFileKey);
             }
             else {
@@ -464,31 +477,32 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
             final JsonObject mealObject = element.getAsJsonObject();
 
             // Use correct field names as per your JSON file (likely from MealDB API)
-            final String mealName = mealObject.has("name") && !mealObject.get("name").isJsonNull()
-                    ? mealObject.get("name").getAsString() : null;
+            final String mealName = mealObject.has(NAME) && !mealObject.get(NAME).isJsonNull()
+                    ? mealObject.get(NAME).getAsString() : null;
 
             if (mealName == null || mealName.isEmpty()) {
-                System.out.println("Skipping recipe with no valid name at index " + i + ", content: " + mealObject.toString());
+                System.out.println(
+                        "Skipping recipe with no valid name at index " + i + ", content: " + mealObject.toString());
                 continue;
             }
 
-            final String idNum = mealObject.has("id") && !mealObject.get("id").isJsonNull()
-                    ? mealObject.get("id").getAsString() : "";
+            final String idNum = mealObject.has(ID) && !mealObject.get(ID).isJsonNull()
+                    ? mealObject.get(ID).getAsString() : "";
 
             System.out.println("Processing recipe: ID = " + idNum + ", Name = " + mealName);
 
             // Continue processing other fields as usual
-            final String category = mealObject.has("category") && !mealObject.get("category").isJsonNull()
-                    ? mealObject.get("category").getAsString() : "";
+            final String category = mealObject.has(CATEGORY) && !mealObject.get(CATEGORY).isJsonNull()
+                    ? mealObject.get(CATEGORY).getAsString() : "";
             final String instructions = mealObject.has(
-                    "instructions") && !mealObject.get("instructions").isJsonNull()
-                    ? mealObject.get("instructions").getAsString() : "";
+                    INSTRUCTIONS) && !mealObject.get(INSTRUCTIONS).isJsonNull()
+                    ? mealObject.get(INSTRUCTIONS).getAsString() : "";
 
             // Parse the ingredientMeasureMap
             final Map<String, String> ingredientMeasureMap = new HashMap<>();
             if (mealObject.has(
-                    "ingredientMeasureMap") && !mealObject.get("ingredientMeasureMap").isJsonNull()) {
-                final JsonObject ingredientMapJson = mealObject.getAsJsonObject("ingredientMeasureMap");
+                    INGREDIENTMEASUREMAP) && !mealObject.get(INGREDIENTMEASUREMAP).isJsonNull()) {
+                final JsonObject ingredientMapJson = mealObject.getAsJsonObject(INGREDIENTMEASUREMAP);
                 // Iterate over all the keys in the ingredientMeasureMap JSON object
                 for (String key : ingredientMapJson.keySet()) {
                     final String measure = ingredientMapJson.has(key) && !ingredientMapJson.get(key).isJsonNull()
@@ -499,12 +513,12 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
             }
 
             // Parse likeNumber
-            final int likeNumber = mealObject.has("likeNumber") && !mealObject.get("likeNumber").isJsonNull()
-                    ? mealObject.get("likeNumber").getAsInt() : 0;
+            final int likeNumber = mealObject.has(LIKENUMBER) && !mealObject.get(LIKENUMBER).isJsonNull()
+                    ? mealObject.get(LIKENUMBER).getAsInt() : 0;
 
             // Parse dislikeNumber
-            final int dislikeNumber = mealObject.has("dislikeNumber") && !mealObject.get("dislikeNumber").isJsonNull()
-                    ? mealObject.get("dislikeNumber").getAsInt() : 0;
+            final int dislikeNumber = mealObject.has(DISLIKENUMBER) && !mealObject.get(DISLIKENUMBER).isJsonNull()
+                    ? mealObject.get(DISLIKENUMBER).getAsInt() : 0;
 
             final RecipeFactory recipeFactory = new CommonRecipeFactory();
             final Recipe recipe = recipeFactory.createRecipe(
@@ -614,7 +628,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
                 final JsonObject recipe = recipesArray.get(i).getAsJsonObject();
 
                 // Check if the recipe name matches (case-insensitive comparison)
-                if (recipe.get("name").getAsString().equalsIgnoreCase(recipeName)) {
+                if (recipe.get(NAME).getAsString().equalsIgnoreCase(recipeName)) {
                     // Remove the recipe from the array
                     recipesArray.remove(i);
 
