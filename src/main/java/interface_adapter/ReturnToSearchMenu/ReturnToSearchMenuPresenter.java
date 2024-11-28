@@ -13,9 +13,7 @@ import interface_adapter.recipe_search.RecipeSearchState;
 import interface_adapter.recipe_search.RecipeSearchViewModel;
 import interface_adapter.shopping_list.ShoppingListState;
 import interface_adapter.shopping_list.ShoppingListViewModel;
-import use_case.ReturnToSearchMenu.ReturnToSearchMenuOutputBoundary;
-import use_case.ReturnToSearchMenu.ReturnToSearchMenuOutputData;
-import view.ChooseRecipeView;
+import use_case.returnToSearchMenu.ReturnToSearchMenuOutputBoundary;
 
 public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoundary {
 
