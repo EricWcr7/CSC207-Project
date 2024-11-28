@@ -71,10 +71,10 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
                 recipeSearchPresenter.prepareSuccessView(recipeSearchOutputData);
             }
         }
-        catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+        catch (Exception ex) {
+            System.out.println("An error occurred: " + ex.getMessage());
             recipeSearchPresenter.prepareFailureView(
-                    "An error occurred while searching for recipes: " + e.getMessage());
+                    "An error occurred while searching for recipes: " + ex.getMessage());
         }
     }
 
@@ -103,8 +103,8 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
                 recipeDataAccessObject.loadRecipesFromCloud();
             }
         }
-        catch (Exception e) {
-            System.err.println("Failed to initialize recipe storage: " + e.getMessage());
+        catch (Exception ex) {
+            System.err.println("Failed to initialize recipe storage: " + ex.getMessage());
         }
     }
 
