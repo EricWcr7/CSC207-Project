@@ -85,7 +85,7 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
             // Step 1: Check if "all_recipes.json" exists on File.io using the DAO
             final String fileKey = recipeDataAccessObject.findFileOnFileIo("all_recipes.json");
             System.out.println(fileKey);
-            if ("".equals(fileKey)) {
+            if (!fileKey.isEmpty()) {
                 // Case 1: If the file exists, load it from File.io using the DAO
                 System.out.println("File 'all_recipes.json' found on File.io with ID: " + fileKey);
                 recipeDataAccessObject.loadRecipesFromCloud();
