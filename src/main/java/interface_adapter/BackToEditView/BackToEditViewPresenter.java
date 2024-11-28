@@ -4,10 +4,9 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.create.CreateState;
 import interface_adapter.create.CreateViewModel;
 import interface_adapter.edit.EditViewModel;
-import use_case.BackToEditView.BackToEditViewOutputBoundary;
+import use_case.backToEditView.BackToEditViewOutputBoundary;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class BackToEditViewPresenter implements BackToEditViewOutputBoundary {
 
