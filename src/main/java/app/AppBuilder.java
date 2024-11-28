@@ -418,8 +418,6 @@ public class AppBuilder {
         return this;
     }
 
-
-
     public void initializeNewRecipesFile() {
         File file = new File("new_recipes.json");
         if (!file.exists()) {
@@ -433,9 +431,6 @@ public class AppBuilder {
             }
         }
     }
-
-
-
 
     public JFrame build() {
             final JFrame application = new JFrame("Mealmaster");
