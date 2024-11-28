@@ -2,10 +2,6 @@ package use_case.login;
 
 import entity.User;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
 /**
  * DAO for the Login Use Case.
  */
@@ -43,7 +39,22 @@ public interface LoginUserDataAccessInterface {
      */
     void setCurrentUsername(String username);
 
+    /**
+     * Searches for a file on File.io by its name and retrieves its unique file key.
+     * This method interacts with the File.io API to search for a file matching the specified
+     * name. If a file is found, its unique key is returned, allowing subsequent operations
+     * like downloading or deleting the file.
+     * @param fileName the name of the file to search for on File.io
+     * @return the unique file key of the file if found; an empty string otherwise
+     */
     String findFileOnFileIo(String fileName);
 
+    /**
+     * Downloads user data from cloud storage (e.g., File.io) and updates local storage.
+     * This method retrieves the user data file using its unique file key from File.io, parses
+     * the content to update the local storage with the user information, and optionally re-uploads
+     * the updated data file to the cloud for consistency.
+     * If the file key is not set or if an error occurs, appropriate logging and error handling are performed.
+     */
     void loadUsersFromCloud();
 }
