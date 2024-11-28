@@ -1,10 +1,11 @@
 package use_case.recipe_search;
 
-import entity.Recipe;
-import org.jetbrains.annotations.NotNull;
-import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import java.util.*;
+import entity.Recipe;
+import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
 
 /**
  * The Recipe Search Interactor.
@@ -13,20 +14,24 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
     private final RecipeSearchOutputBoundary recipeSearchPresenter;
     private final RecipeSearchDataAccessInterface recipeDataAccessObject;
     private final FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject;
-    private boolean recipesLoaded = false;  // Flag to ensure loading from cloud only once
+    private boolean recipesLoaded;
+    // Flag to ensure loading from cloud only once
 
     /**
      * Constructor for RecipeSearchInteractor.
      *
      * @param recipeDataAccessObject the Data Access interface of recipe search
      * @param recipeSearchPresenter the output boundary (presenter) to display results
+     * @param favoriteRecipeDataAccessObject the FavoriteRecipeDataAccessInterface
      */
     public RecipeSearchInteractor(RecipeSearchDataAccessInterface recipeDataAccessObject,
                                   RecipeSearchOutputBoundary recipeSearchPresenter,
                                   FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject) {
         this.recipeSearchPresenter = recipeSearchPresenter;
-        this.recipeDataAccessObject = recipeDataAccessObject; // Instantiate internally
+        this.recipeDataAccessObject = recipeDataAccessObject;
+        // Instantiate internally
         this.favoriteRecipeDataAccessObject = favoriteRecipeDataAccessObject;
+        recipesLoaded = false;
     }
 
     /**
@@ -52,21 +57,24 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
 
         try {
             // Use cached recipes to search for the keyword
-            List<Recipe> recipes = recipeDataAccessObject.searchRecipes(searchKeyword);
+            final List<Recipe> recipes = recipeDataAccessObject.searchRecipes(searchKeyword);
 
             // Check if any recipes were found
             if (recipes.isEmpty()) {
                 System.out.println("No recipes found for keyword: " + searchKeyword);
                 recipeSearchPresenter.prepareFailureView("No recipes found for keyword: " + searchKeyword);
-            } else {
+            }
+            else {
                 System.out.println("Recipes found: " + recipes.size());
-                RecipeSearchOutputData recipeSearchOutputData = new RecipeSearchOutputData(
+                final RecipeSearchOutputData recipeSearchOutputData = new RecipeSearchOutputData(
                         searchKeyword, recipes, username, favoriteRecipes);
                 recipeSearchPresenter.prepareSuccessView(recipeSearchOutputData);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
-            recipeSearchPresenter.prepareFailureView("An error occurred while searching for recipes: " + e.getMessage());
+            recipeSearchPresenter.prepareFailureView(
+                    "An error occurred while searching for recipes: " + e.getMessage());
         }
     }
 
@@ -75,17 +83,18 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
         System.out.println("Initializing shared recipe storage...");
         try {
             // Step 1: Check if "all_recipes.json" exists on File.io using the DAO
-            String fileKey = recipeDataAccessObject.findFileOnFileIo("all_recipes.json");
+            final String fileKey = recipeDataAccessObject.findFileOnFileIo("all_recipes.json");
             System.out.println(fileKey);
-            if (fileKey != "") {
+            if ("".equals(fileKey)) {
                 // Case 1: If the file exists, load it from File.io using the DAO
                 System.out.println("File 'all_recipes.json' found on File.io with ID: " + fileKey);
-                recipeDataAccessObject.loadRecipesFromCloud(); // Load recipes from the existing JSON file
+                recipeDataAccessObject.loadRecipesFromCloud();
+                // Load recipes from the existing JSON file
                 System.out.println("Recipes loaded from 'all_recipes.json' successfully.");
             }
             else {
                 // Case 2: If the file does not exist, fetch all recipes from the API using the DAO
-                List<Recipe> allRecipes = recipeDataAccessObject.fetchAllRecipes();
+                final List<Recipe> allRecipes = recipeDataAccessObject.fetchAllRecipes();
                 System.out.println("Total recipes fetched: " + allRecipes.size());
                 // Write all recipes to a shared JSON file and upload it
                 recipeDataAccessObject.writeRecipesToFile(allRecipes);
@@ -93,7 +102,8 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
                 System.out.println("Loading recipes from File.io...");
                 recipeDataAccessObject.loadRecipesFromCloud();
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.err.println("Failed to initialize recipe storage: " + e.getMessage());
         }
     }
@@ -119,12 +129,4 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
         recipeSearchPresenter.switchToEditView();
     }
 }
-
-
-
-
-
-
-
-
 

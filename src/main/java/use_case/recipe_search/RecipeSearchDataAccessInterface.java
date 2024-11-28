@@ -18,6 +18,12 @@ public interface RecipeSearchDataAccessInterface {
      */
     List<Recipe> fetchAllRecipes() throws Exception;
 
+    /**
+     * Return the List of Recipe by a searchKeyword input.
+     * @param  searchKeyword the searchKeyword.
+     * @return a list of recipes from the API.
+     * @throws Exception if there is an error during the fetch.
+     */
     List<Recipe> fetchRecipesByKeyword(String searchKeyword) throws Exception;
 
     /**
@@ -37,12 +43,11 @@ public interface RecipeSearchDataAccessInterface {
      */
     void loadRecipesFromCloud();
 
-
     /**
      * Return the list of recipes that contains the searchKeyword (not case sensitive).
      *
      * @param searchKeyword the string we type in the search dialog.
-     * @return
+     * @return a list of Recipe.
      */
     List<Recipe> searchRecipes(String searchKeyword);
 
@@ -53,5 +58,4 @@ public interface RecipeSearchDataAccessInterface {
      */
     String findFileOnFileIo(String fileName);
 }
-
 

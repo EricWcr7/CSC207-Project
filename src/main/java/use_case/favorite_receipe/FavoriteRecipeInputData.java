@@ -1,7 +1,7 @@
 package use_case.favorite_receipe;
 
 /**
- * The FavoriteRecipe Data for the Login Use Case.
+ * The FavoriteRecipe Data for the FavoriteRecipe Use Case.
  */
 public class FavoriteRecipeInputData {
     private final String username;

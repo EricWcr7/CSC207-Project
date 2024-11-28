@@ -1,5 +1,8 @@
 package use_case.recipe_search;
 
+/**
+ * The RecipeSearch Data for the RecipeSearch Use Case.
+ */
 public class RecipeSearchInputData {
     private final String searchKeyword;
     private final String username;
