@@ -66,7 +66,18 @@ public class ShoppingListInteractor implements ShoppingListInputBoundary {
         shoppingListPresenter.presentShoppingList(shoppingListOutputData);
     }
 
-    // Helper method to combine measurements (you may need to implement this logic)
+    /**
+     * Combines two measurement strings into a single string.
+     * This method takes two measurement strings and attempts to combine them logically.
+     * For example, if both measurements are in the same unit (e.g., "1 cup" and "2 cups"),
+     * the method combines them into a single measurement (e.g., "3 cups"). If the logic
+     * for combining measurements is not yet implemented, it returns the two measurements
+     * concatenated.
+     *
+     * @param measurement1 the first measurement string
+     * @param measurement2 the second measurement string
+     * @return a combined measurement string, or the concatenation of the inputs if logic is not implemented
+     */
     private String combineMeasurements(String measurement1, String measurement2) {
         // Implement logic to combine two measurement strings (e.g., "1 cup" + "2 cups" => "3 cups")
         // For now, just return them concatenated

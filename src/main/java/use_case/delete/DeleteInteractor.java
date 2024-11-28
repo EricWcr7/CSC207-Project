@@ -30,15 +30,6 @@ public class DeleteInteractor implements DeleteInputBoundary {
         // Assign DAO for data operations
     }
 
-    /**
-     * Executes the delete logic for a given recipe name.
-     * This method first deletes the recipe from the local file (`new_recipes.json`) and then
-     * checks and removes it from the cloud data. If the recipe is successfully removed from both
-     * locations, it updates the cloud file and notifies the presenter of success. Otherwise, it
-     * notifies the presenter of failure.
-     *
-     * @param inputData The input data containing the recipe name to be deleted.
-     */
     @Override
     public void execute(DeleteInputData inputData) {
         // Step 1: Extract the recipe name from input data

@@ -1,7 +1,10 @@
 package use_case.login;
 
 /**
- * Output Data for the Login Use Case.
+ * Represents the output data for the Login Use Case.
+ * This class encapsulates the result of the login process, including the username of the logged-in user,
+ * a flag indicating whether the use case failed, and the user's favorite recipes.
+ * It serves as a data transfer object between the interactor and the presenter.
  */
 public class LoginOutputData {
 
@@ -15,10 +18,20 @@ public class LoginOutputData {
         this.favoriteRecipes = favoriteRecipes;
     }
 
+    /**
+     * Gets the username of the logged-in user.
+     *
+     * @return the username of the user
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Gets the user's favorite recipes.
+     *
+     * @return an array of favorite recipes
+     */
     public String[] getFavoriteRecipes() {
         return favoriteRecipes;
     }

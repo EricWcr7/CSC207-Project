@@ -5,14 +5,21 @@ import java.util.Arrays;
 import entity.Recipe;
 
 /**
- * The Choose Recipe Interactor.
- * 从controller那准备好的input data知道哪个菜的名字
- * 从DAO里找outputdata，菜的ingredients, instructions
- * 把outputdata 准备好，也是哪个菜的具体信息
- * 知道在什么情况下准备什么view
- * successful view就让presenter拿着这些data换页面之类的
+ * The ChooseRecipeInteractor is responsible for handling the "choose recipe" use case.
+ * This interactor receives input from the controller, processes the data using the data access object (DAO),
+ * and prepares the output data for the presenter to display the appropriate view. It ensures that recipes
+ * are loaded from the cloud only once, and retrieves detailed information about a specific recipe
+ * (e.g., ingredients, instructions, likes, dislikes) based on the provided dish name.
+ * Key responsibilities include:
+ * <ul>
+ *     <li>Ensuring recipes are loaded from cloud storage only once during the application session.</li>
+ *     <li>Retrieving the recipe details based on the dish name provided in the input data.</li>
+ *     <li>Passing the recipe details to the presenter for constructing the success view.</li>
+ *     <li>Integrating with the DAO for recipe search and the presenter for preparing output views.</li>
+ * </ul>
+ * This class follows the Clean Architecture structure, acting as the interactor for the "choose recipe"
+ * use case, mediating between the controller, data access layer, and presenter.
  */
-
 public class ChooseRecipeInteractor implements ChooseRecipeInputBoundary {
     private final ChooseRecipeOutputBoundary chooseRecipePresenter;
     private final ChooseRecipeDataAccessInterface recipeDataAccessObject;
