@@ -1,11 +1,11 @@
 package use_case.create;
 
-import entity.Recipe;
+// import entity.Recipe;
 
-import java.util.HashMap;
-import java.util.Map;
+// import java.util.HashMap;
+// import java.util.Map;
 
-//public class CreateOutputData {
+// public class CreateOutputData {
 //    private final String id;
 //    private final String  category;
 //    private final String  instruction;
@@ -18,4 +18,4 @@ import java.util.Map;
 //        this.ingredientMeasureMap = recipe.getIngredients();
 //    }
 
-//}
+// }
