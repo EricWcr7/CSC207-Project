@@ -1,8 +1,10 @@
 package use_case.shopping_list;
 
-import java.util.List;
 import java.util.Map;
 
+/**
+ * Output Data for the FavoriteRecipe Use Case.
+ */
 public class ShoppingListOutputData {
     private final String username;
     private final String[] recipeNames;

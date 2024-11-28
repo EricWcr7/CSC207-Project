@@ -1,7 +1,8 @@
 package use_case.shopping_list;
 
-import java.util.List;
-
+/**
+ * The ShoppingList Data for the ShoppingList Use Case.
+ */
 public class ShoppingListInputData {
     private final String[] recipeNames;
     private final String username;
