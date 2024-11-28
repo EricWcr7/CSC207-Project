@@ -17,9 +17,15 @@ public interface RecipeSearchOutputBoundary {
      */
     void prepareFailureView(String errorMessage);
 
+    /**
+     * Prepares the switchToFavoriteRecipeView view for the RecipeSearch Use Case.
+     * @param outputData the explanation of the failure
+     */
     void switchToFavoriteRecipeView(RecipeSearchOutputData outputData);
 
+    /**
+     * Prepares the switchToEditView view for the RecipeSearch Use Case.
+     */
     void switchToEditView();
 }
-
 
