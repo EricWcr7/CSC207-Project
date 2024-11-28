@@ -21,7 +21,7 @@ public class DeleteInputData {
         if (recipeName == null || recipeName.isEmpty()) {
             throw new IllegalArgumentException("Recipe name cannot be null or empty.");
         }
-        this.recipeName = recipeName; // Assign the validated recipe name
+        this.recipeName = recipeName;
     }
 
     /**

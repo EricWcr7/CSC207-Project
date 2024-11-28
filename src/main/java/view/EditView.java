@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
-import interface_adapter.create.CreateController;
 import interface_adapter.delete.DeleteController;
 import interface_adapter.edit.EditController;
 import interface_adapter.edit.EditViewModel;
@@ -63,12 +62,12 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
 
         // Create and add the title label at the top
         JLabel titleLabel = new JLabel("My Edit Recipe", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 16)); // Set title font
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         this.add(titleLabel, BorderLayout.NORTH);
 
         // Upper panel containing the combo box
         JPanel upperPanel = new JPanel(new FlowLayout());
-        recipeComboBox.setPreferredSize(new Dimension(300, 30)); // Set size of the combo box
+        recipeComboBox.setPreferredSize(new Dimension(300, 30));
         upperPanel.add(recipeComboBox);
         this.add(upperPanel, BorderLayout.CENTER);
 
@@ -108,7 +107,8 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
                 deleteController.deleteRecipe(selectedRecipe);
                 // Refresh the combo box after deleting a recipe
                 loadNewRecipes();
-            } else {
+            }
+            else {
                 // Show an error message if no recipe is selected
                 JOptionPane.showMessageDialog(this, "Please select a recipe to delete!");
             }
@@ -170,7 +170,7 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
      * @param deleteController The controller to handle recipe deletion logic.
      */
     public void setDeleteController(DeleteController deleteController) {
-        this.deleteController = deleteController; // Correctly initialize the DeleteController
+        this.deleteController = deleteController;
     }
 
     /**
@@ -189,14 +189,15 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
             // Iterate through the JSON array and add recipe names to the combo box
             for (int i = 0; i < recipesArray.size(); i++) {
                 JsonObject recipe = recipesArray.get(i).getAsJsonObject();
-                String recipeName = recipe.get("name").getAsString(); // Extract recipe name
-                recipeComboBox.addItem(recipeName); // Add recipe name to the combo box
+                String recipeName = recipe.get("name").getAsString();
+                recipeComboBox.addItem(recipeName);
             }
 
             // Refresh the combo box to reflect the changes
             recipeComboBox.revalidate();
             recipeComboBox.repaint();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // Print the stack trace and show an error message if the file cannot be loaded
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error loading recipes from new_recipes.json!");
