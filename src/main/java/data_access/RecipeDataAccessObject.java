@@ -293,7 +293,8 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
 
             // Create a recipe using the factory
             final RecipeFactory recipeFactory = new CommonRecipeFactory();
-            final Recipe recipe = recipeFactory.createRecipe(id, name, category, instructions, ingredientMeasureMap, 0, 0);
+            final Recipe recipe = recipeFactory.createRecipe(id,
+                    name, category, instructions, ingredientMeasureMap, 0, 0);
             recipes.add(recipe);
         }
 
