@@ -72,7 +72,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
     public String findFileOnFileIo(String fileName) {
         try {
             // Initialize recipeFileKey to null for a single return statement at the end
-            recipeFileKey = null;
+            recipeFileKey = "";
 
             // Properly format the search URL with the provided file name
             final String searchUrl = FILE_IO_API_URL + "/?search=" + URLEncoder.encode(
