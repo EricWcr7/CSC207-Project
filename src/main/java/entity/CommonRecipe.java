@@ -59,15 +59,15 @@ public class CommonRecipe implements Recipe {
     @Override
     // Format the ingredients to a string
     public String getIngredients() {
-        StringBuilder ingredientsList = new StringBuilder();
+        final StringBuilder ingredientsList = new StringBuilder();
 
         for (Map.Entry<String, String> entry : getIngredientMeasureMap().entrySet()) {
-            String ingredient = entry.getKey();
-            String measurement = entry.getValue();
+            final String ingredient = entry.getKey();
+            final String measurement = entry.getValue();
             ingredientsList.append(ingredient).append(": ").append(measurement).append("\n");
         }
 
-        return ingredientsList.toString().trim(); // Remove the last newline.
+        return ingredientsList.toString().trim();
     }
 
     @Override
