@@ -107,8 +107,19 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         return userFileKey;
     }
 
-    // Helper method to process nodes
+    /**
+     * Processes a JSON array of nodes to locate a specific file object by its name and retrieve its associated key.
+     * This method iterates through the provided JSON array, checks each element to see if it is a JSON object,
+     * and looks for a node matching the specified file name. If a matching node is found and contains a key,
+     * the key's value is assigned to the `userFileKey` field. Messages are logged to indicate the result
+     * of the search operation, whether the file and key were found or if the file exists without a key.
+     *
+     * @param nodesArray the JSON array containing node objects to be processed
+     * @param fileName   the name of the file to search for within the node objects
+     */
     private void processNodes(JsonArray nodesArray, String fileName) {
+        boolean fileFound = false;
+
         for (JsonElement nodeElement : nodesArray) {
             if (nodeElement.isJsonObject()) {
                 final JsonObject nodeObject = nodeElement.getAsJsonObject();
@@ -121,14 +132,29 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
                     else {
                         System.out.println("File object found, but no key present for file: " + fileName);
                     }
+                    fileFound = true;
                     break;
                 }
             }
         }
+
+        if (!fileFound) {
+            System.out.println("File '" + fileName + "' not found in the nodes.");
+        }
     }
 
     /**
-     * Deletes the file from File.io using the file key.
+     * Deletes a file from File.io using its unique file key.
+     * This method constructs a DELETE request to the File.io API with the provided file key.
+     * If the file key is empty, the method logs an error and exits without making a request.
+     * On a successful deletion, it logs a success message. If the deletion fails, it logs
+     * the HTTP status code and response body. Any exceptions during the process are caught
+     * and logged, with the thread being interrupted in case of an `InterruptedException`.
+     * Preconditions:
+     * - `userFileKey` must be set to a valid file key.
+     *
+     * @throws IOException          if an I/O error occurs when sending or receiving the request
+     * @throws InterruptedException if the operation is interrupted during execution
      */
     public void deleteFileFromFileIo() {
         if (userFileKey.isEmpty()) {
