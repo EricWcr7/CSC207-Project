@@ -10,11 +10,9 @@ public interface ChooseRecipeOutputBoundary {
      */
     void prepareSuccessView(ChooseRecipeOutputData outputData);
 
-//    /**
-//     * Prepares the failure view for the Login Use Case.
-//     * @param errorMessage the explanation of the failure
-//     */
-//    void prepareFailView(String errorMessage);
-
-
+    //    /**
+    //     * Prepares the failure view for the Login Use Case.
+    //     * @param errorMessage the explanation of the failure
+    //     */
+    //  void prepareFailView(String errorMessage);
 }
