@@ -1,9 +1,12 @@
 package use_case.like_and_dislike_a_recipe.like;
 
-import entity.Recipe;
-import use_case.like_and_dislike_a_recipe.*;
-
 import java.util.List;
+
+import entity.Recipe;
+import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeDataAccessInterface;
+import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeInputBoundary;
+import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeInputData;
+import use_case.like_and_dislike_a_recipe.UserLikeAndDislikeDataAccessInterface;
 
 /**
  * The Like Recipe Interactor.

@@ -1,7 +1,7 @@
 package use_case.like_and_dislike_a_recipe;
 
-// 这个不用了!!!
 /**
+ * WE DO NOT USE THIS ANYMORE!!!
  * Interface for accessing user like data in the data store.
  * This interface defines methods to check if a user has liked a recipe
  * and to add a new like record for a user.

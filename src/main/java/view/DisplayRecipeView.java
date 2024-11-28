@@ -1,19 +1,21 @@
 package view;
 
-import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
-import interface_adapter.choose_recipe.ChooseRecipeState;
-import interface_adapter.display_recipe.DisplayRecipeState;
-import interface_adapter.display_recipe.DisplayRecipeViewModel;
-import interface_adapter.like_and_dislike.dislike_a_recipe.DislikeRecipeController;
-import interface_adapter.like_and_dislike.like_a_recipe.LikeRecipeController;
-import interface_adapter.favorite_recipe.FavoriteRecipeController;
-
+import java.util.Arrays;
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Arrays;
 
+import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
+import interface_adapter.display_recipe.DisplayRecipeState;
+import interface_adapter.display_recipe.DisplayRecipeViewModel;
+import interface_adapter.favorite_recipe.FavoriteRecipeController;
+import interface_adapter.like_and_dislike.dislike_a_recipe.DislikeRecipeController;
+import interface_adapter.like_and_dislike.like_a_recipe.LikeRecipeController;
+
+/**
+ * The View for when the user is displaying a recipe.
+ */
 public class DisplayRecipeView extends JPanel implements PropertyChangeListener {
     private final String viewName = "display the recipe";
     private DisplayRecipeViewModel displayRecipeViewmodel;
@@ -46,10 +48,6 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
     public DisplayRecipeView(DisplayRecipeViewModel displayRecipeViewModel) {
         this.displayRecipeViewmodel = displayRecipeViewModel;
         this.displayRecipeViewmodel.addPropertyChangeListener(this);
-
-//        dishname = displayRecipeViewModel.getDishName(); // null???
-//        ingredients = displayRecipeViewModel.getIngredients(); // empty???
-//        introduction = displayRecipeViewModel.getInstructions(); // empty???
 
         System.out.println("At DisplayRecipeView, the dishname is: " + dishName);
 
@@ -114,7 +112,6 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
                     if (evt.getSource().equals(returnToSearchMenu)) {
-                        final DisplayRecipeState currentState = displayRecipeViewModel.getState();
                         this.returnToSearchMenuController.fromDisplayBackToSearchMenu();
                     }
                 }
@@ -271,15 +268,15 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
     }
 
     // Format instructions to display them in a more readable way(之前句子太长了，一个屏幕装不下)
-    String formatInstructions(String instructions) {
+    String formatInstructions(String theInstructions) {
         // 根据句号、感叹号或问号分割句子
-        final String[] sentences = instructions.split("(?<=[.!?])\\s*");
+        final String[] sentences = theInstructions.split("(?<=[.!?])\\s*");
         // 用换行符拼接句子
         return String.join("\n", sentences);
     }
 
     private JPanel createButtonWithLabel(JButton button, JLabel label) {
-        JPanel panel = new JPanel(new BorderLayout());
+        final JPanel panel = new JPanel(new BorderLayout());
         panel.add(button, BorderLayout.WEST); // 按钮在左侧
         panel.add(label, BorderLayout.EAST); // 数字在右侧
         return panel;

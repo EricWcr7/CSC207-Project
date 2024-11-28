@@ -14,6 +14,11 @@ public class LikeRecipeController {
         this.likeRecipeInteractor = likeRecipeInteractor;
     }
 
+    /**
+     * Executes the like action for the specified dish name.
+     * Creates an input data object encapsulating the dish name and passes it to the interactor.
+     * @param dishName the name of the dish to be liked.
+     */
     public void execute(String dishName) {
 
         final LikeAndDislikeRecipeInputData likeData = new LikeAndDislikeRecipeInputData(dishName);
