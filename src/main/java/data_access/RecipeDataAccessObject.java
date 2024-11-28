@@ -271,10 +271,10 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
     }
 
     /**
-     * Processes the JsonArray of meals and converts each meal into a CommonRecipe object.
+     * Processes the JsonArray of meals and converts each meal into a Recipe object.
      *
      * @param mealsArray the JsonArray containing meal data
-     * @return a list of CommonRecipe objects
+     * @return a list of Recipe objects
      */
     private List<Recipe> processMealsArray(JsonArray mealsArray) {
         final List<Recipe> recipes = new ArrayList<>();
