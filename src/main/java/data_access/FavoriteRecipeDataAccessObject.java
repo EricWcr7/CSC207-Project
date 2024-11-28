@@ -2,7 +2,6 @@ package data_access;
 
 import entity.User;
 import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
-import use_case.favorite_receipe.FavoriteRecipeInteractor;
 
 public class FavoriteRecipeDataAccessObject implements FavoriteRecipeDataAccessInterface {
     private String username;

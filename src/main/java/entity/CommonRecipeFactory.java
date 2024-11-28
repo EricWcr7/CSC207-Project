@@ -4,6 +4,7 @@ import java.util.Map;
 /**
  * Factory for creating instances of CommonRecipe.
  */
+
 public class CommonRecipeFactory implements RecipeFactory {
 
     /**

@@ -42,11 +42,26 @@ public interface User {
      */
     boolean hasUserLikedRecipe(String recipeName);
 
+    /**
+     * Checks whether the user has disliked a specific recipe.
+     *
+     * @param recipeName the name of the recipe to check.
+     * @return {@code true} if the user has disliked the recipe, {@code false} otherwise.
+     */
     boolean hasUserDislikedRecipe(String recipeName);
 
+    /**
+     * Adds a recipe to the user's list of liked recipes.
+     *
+     * @param recipeName the name of the recipe to add to the liked recipes list.
+     */
     void addLikedRecipe(String recipeName);
 
+    /**
+     * Adds a recipe to the user's list of disliked recipes.
+     *
+     * @param recipeName the name of the recipe to add to the disliked recipes list.
+     */
     void addDislikedRecipe(String recipeName);
-
 
 }
