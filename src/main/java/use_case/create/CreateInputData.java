@@ -24,12 +24,16 @@ public class CreateInputData {
      *
      * @param dishname    The name of the dish (e.g., "Pasta").
      * @param instruction The cooking instructions (e.g., "Boil pasta and mix with sauce").
-     * @param ingredient  A map of ingredients and their respective quantities (e.g., {"Pasta": "200g", "Tomato Sauce": "100ml"}).
+     * @param ingredient  A map of ingredients and their respective quantities
+     *      (e.g., {"Pasta": "200g", "Tomato Sauce": "100ml"}).
      */
     public CreateInputData(String dishname, String instruction, Map<String, String> ingredient) {
-        this.dishname = dishname; // Assign the dish name
-        this.instruction = instruction; // Assign the instructions
-        this.ingredient = ingredient; // Assign the ingredient map
+        this.dishname = dishname;
+        // Assign the dish name
+        this.instruction = instruction;
+        // Assign the instructions
+        this.ingredient = ingredient;
+        // Assign the ingredient map
     }
 
     /**

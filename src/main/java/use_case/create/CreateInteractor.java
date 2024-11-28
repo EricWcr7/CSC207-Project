@@ -1,12 +1,9 @@
 package use_case.create;
 
-import data_access.RecipeDataAccessObject;
-import entity.CommonRecipe;
-import entity.CommonRecipeFactory;
+import java.util.List;
+
 import entity.Recipe;
 import entity.RecipeFactory;
-
-import java.util.List;
 
 /**
  * Interactor class for the Create Use Case.
@@ -15,13 +12,16 @@ import java.util.List;
 public class CreateInteractor implements CreateInputBoundary {
     private final CreateOutputBoundary createPresenter;
     private final CreateDataAccessInterface recipeDataAccessObject;
-    private boolean recipesLoaded = false;
+    private boolean recipesLoaded;
     private final RecipeFactory recipeFactory;
 
-    public CreateInteractor(CreateOutputBoundary createPresenter, RecipeFactory recipeFactory, CreateDataAccessInterface recipeDataAccessInterface) {
+    public CreateInteractor(CreateOutputBoundary createPresenter,
+                            RecipeFactory recipeFactory,
+                            CreateDataAccessInterface recipeDataAccessInterface) {
         this.createPresenter = createPresenter;
         this.recipeDataAccessObject = recipeDataAccessInterface;
         this.recipeFactory = recipeFactory;
+        recipesLoaded = false;
     }
 
     /**
@@ -41,7 +41,7 @@ public class CreateInteractor implements CreateInputBoundary {
         final String category = "created by user";
         if (!recipeDataAccessObject.isNameInRecipes(createInputData.getDishname())) {
             final Recipe recipeCreated = recipeFactory.createRecipe(id, createInputData.getDishname(), category,
-                    createInputData.getInstruction(), createInputData.getIngredient(),0,0);
+                    createInputData.getInstruction(), createInputData.getIngredient(), 0, 0);
             recipeDataAccessObject.saveRecipe(recipeCreated);
             final List<Recipe> updatedRecipe = recipeDataAccessObject.getCachedRecipes();
             recipeDataAccessObject.writeRecipesToFile(updatedRecipe);

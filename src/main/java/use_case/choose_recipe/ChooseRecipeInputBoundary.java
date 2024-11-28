@@ -1,7 +1,5 @@
 package use_case.choose_recipe;
 
-
-
 /**
  * Input Boundary for actions related to choose recipe.
  */
@@ -13,5 +11,4 @@ public interface ChooseRecipeInputBoundary {
      */
     void execute(ChooseRecipeInputData chooseRecipeInputData);
 }
-
 

@@ -1,8 +1,8 @@
 package use_case.choose_recipe;
 
-import entity.Recipe;
-
 import java.util.Arrays;
+
+import entity.Recipe;
 
 /**
  * The Choose Recipe Interactor.
@@ -16,12 +16,14 @@ import java.util.Arrays;
 public class ChooseRecipeInteractor implements ChooseRecipeInputBoundary {
     private final ChooseRecipeOutputBoundary chooseRecipePresenter;
     private final ChooseRecipeDataAccessInterface recipeDataAccessObject;
-    private boolean recipesLoaded = false;  // Flag to ensure loading from cloud only once
+    private boolean recipesLoaded;
+    // Flag to ensure loading from cloud only once
 
     public ChooseRecipeInteractor(ChooseRecipeDataAccessInterface chooseRecipeDataAccessInterface,
                                   ChooseRecipeOutputBoundary chooseRecipePresenter) {
         this.chooseRecipePresenter = chooseRecipePresenter;
         this.recipeDataAccessObject = chooseRecipeDataAccessInterface;
+        recipesLoaded = false;
     }
 
     @Override

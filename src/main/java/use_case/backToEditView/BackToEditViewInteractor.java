@@ -1,5 +1,8 @@
-package use_case.BackToEditView;
+package use_case.backToEditView;
 
+/**
+ * The BackToEditView Interactor.
+ */
 public class BackToEditViewInteractor implements BackToEditViewInputBoundary {
     private BackToEditViewOutputBoundary backToEditViewPresenter;
 
@@ -9,7 +12,7 @@ public class BackToEditViewInteractor implements BackToEditViewInputBoundary {
     }
 
     @Override
-    public void backToEditRecipeView(){
+    public void backToEditRecipeView() {
         backToEditViewPresenter.backToEditRecipeView();
     }
 

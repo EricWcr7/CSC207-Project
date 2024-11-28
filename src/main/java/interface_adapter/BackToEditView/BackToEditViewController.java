@@ -1,6 +1,6 @@
 package interface_adapter.BackToEditView;
 
-import use_case.BackToEditView.BackToEditViewInputBoundary;
+import use_case.backToEditView.BackToEditViewInputBoundary;
 
 public class BackToEditViewController {
 

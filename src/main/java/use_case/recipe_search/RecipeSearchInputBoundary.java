@@ -11,8 +11,15 @@ public interface RecipeSearchInputBoundary {
      */
     void execute(RecipeSearchInputData recipeSearchInputData);
 
+    /**
+     * Executes the switchToFavoriteRecipeView of recipe search use case.
+     * @param recipeSearchInputData the input data
+     */
     void switchToFavoriteRecipeView(RecipeSearchInputData recipeSearchInputData);
 
+    /**
+     * Executes the switchToEditView of recipe search use case.
+     */
     void switchToEditView();
 
     /**
@@ -21,5 +28,4 @@ public interface RecipeSearchInputBoundary {
      */
     void initializeRecipeStorage();
 }
-
 

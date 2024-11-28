@@ -1,5 +1,8 @@
 package use_case.edit;
 
+/**
+ * The Edit Interactor.
+ */
 public class EditInteractor implements EditInputBoundary {
     private final EditOutputBoundary editPresenter;
 

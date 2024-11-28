@@ -1,6 +1,5 @@
 package use_case.choose_recipe;
 
-import entity.CommonRecipe;
 import entity.Recipe;
 
 /**
@@ -20,5 +19,4 @@ public interface ChooseRecipeDataAccessInterface {
      */
     void loadRecipesFromCloud();
 }
-
 
