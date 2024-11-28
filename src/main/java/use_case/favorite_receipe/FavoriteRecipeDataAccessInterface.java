@@ -7,15 +7,40 @@ import entity.User;
  */
 public interface FavoriteRecipeDataAccessInterface {
 
-    public String getUsername();
+    /**
+     * Return the Username.
+     * @return Username when this method execute.
+     */
+    String getUsername();
 
-    public String[] getFavoriteRecipes();
+    /**
+     * Return the FavoriteRecipes.
+     * @return FavoriteRecipes when this method execute.
+     */
+    String[] getFavoriteRecipes();
 
-    public void setUsername(String username);
+    /**
+     * Set the username.
+     * @param username the username.
+     */
+    void setUsername(String username);
 
-    public void setFavoriteRecipes(String[] favoriteRecipes);
+    /**
+     * Set the favoriteRecipes.
+     * @param favoriteRecipes the favoriteRecipes.
+     */
+    void setFavoriteRecipes(String[] favoriteRecipes);
 
-    public void updateUserFavoriteRecipes(User user);
+    /**
+     * Update the user.
+     * @param user the user.
+     */
+    void updateUserFavoriteRecipes(User user);
 
+    /**
+     * Return the user.
+     * @param username the name of user.
+     * @return User when this method execute.
+     */
     User get(String username);
 }

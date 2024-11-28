@@ -1,9 +1,5 @@
 package use_case.favorite_receipe;
 
-import entity.Recipe;
-
-import java.util.List;
-
 /**
  * Output Data for the FavoriteRecipe Use Case.
  */
