@@ -492,76 +492,6 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         return processedRecipes;
     }
 
-    private List<Recipe> processRecipesArray(JsonArray recipesArray) {
-        final List<Recipe> processedRecipes = new ArrayList<>();
-        cachedRecipes.clear();
-
-        for (int i = 0; i < recipesArray.size(); i++) {
-            final JsonElement element = recipesArray.get(i);
-
-            if (!element.isJsonObject()) {
-                System.err.println("Unexpected element type at index " + i + ": " + element.getClass().getName());
-                System.err.println("Element content: " + element.toString());
-                continue;
-            }
-
-            final JsonObject mealObject = element.getAsJsonObject();
-
-            // Use correct field names as per your JSON file (likely from MealDB API)
-            final String mealName = mealObject.has(NAME) && !mealObject.get(NAME).isJsonNull()
-                    ? mealObject.get(NAME).getAsString() : null;
-
-            if (mealName == null || mealName.isEmpty()) {
-                System.out.println(
-                        "Skipping recipe with no valid name at index " + i + ", content: " + mealObject.toString());
-                continue;
-            }
-
-            final String idNum = mealObject.has(ID) && !mealObject.get(ID).isJsonNull()
-                    ? mealObject.get(ID).getAsString() : "";
-
-            System.out.println("Processing recipe: ID = " + idNum + ", Name = " + mealName);
-
-            // Continue processing other fields as usual
-            final String category = mealObject.has(CATEGORY) && !mealObject.get(CATEGORY).isJsonNull()
-                    ? mealObject.get(CATEGORY).getAsString() : "";
-            final String instructions = mealObject.has(
-                    INSTRUCTIONS) && !mealObject.get(INSTRUCTIONS).isJsonNull()
-                    ? mealObject.get(INSTRUCTIONS).getAsString() : "";
-
-            // Parse the ingredientMeasureMap
-            final Map<String, String> ingredientMeasureMap = new HashMap<>();
-            if (mealObject.has(
-                    INGREDIENTMEASUREMAP) && !mealObject.get(INGREDIENTMEASUREMAP).isJsonNull()) {
-                final JsonObject ingredientMapJson = mealObject.getAsJsonObject(INGREDIENTMEASUREMAP);
-                // Iterate over all the keys in the ingredientMeasureMap JSON object
-                for (String key : ingredientMapJson.keySet()) {
-                    final String measure = ingredientMapJson.has(key) && !ingredientMapJson.get(key).isJsonNull()
-                            ? ingredientMapJson.get(key).getAsString()
-                            : "";
-                    ingredientMeasureMap.put(key, measure);
-                }
-            }
-
-            // Parse likeNumber
-            final int likeNumber = mealObject.has(LIKENUMBER) && !mealObject.get(LIKENUMBER).isJsonNull()
-                    ? mealObject.get(LIKENUMBER).getAsInt() : 0;
-
-            // Parse dislikeNumber
-            final int dislikeNumber = mealObject.has(DISLIKENUMBER) && !mealObject.get(DISLIKENUMBER).isJsonNull()
-                    ? mealObject.get(DISLIKENUMBER).getAsInt() : 0;
-
-            final RecipeFactory recipeFactory = new CommonRecipeFactory();
-            final Recipe recipe = recipeFactory.createRecipe(
-                    idNum, mealName, category, instructions, ingredientMeasureMap, likeNumber, dislikeNumber);
-            processedRecipes.add(recipe);
-        }
-
-        cachedRecipes.addAll(processedRecipes);
-        System.out.println("Total recipes loaded: " + processedRecipes.size());
-        return processedRecipes;
-    }
-
     @Override
     // Method to search recipes based on a keyword from cached recipes
     public List<Recipe> searchRecipes(String keyword) {
@@ -701,4 +631,154 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
     public User get(String username) {
         return null;
     }
+
+    /**
+     * Processes a {@link JsonArray} of recipe data, converting each valid JSON object
+     * into a {@link Recipe} object and adding it to the cached recipes.
+     *
+     * @param recipesArray the {@link JsonArray} containing recipe data to be processed.
+     * @return a {@link List} of {@link Recipe} objects created from the valid entries
+     *         in the provided {@link JsonArray}.
+     */
+    private List<Recipe> processRecipesArray(JsonArray recipesArray) {
+        final List<Recipe> processedRecipes = new ArrayList<>();
+        cachedRecipes.clear();
+
+        for (int i = 0; i < recipesArray.size(); i++) {
+            final JsonElement recipeElement = recipesArray.get(i);
+
+            if (!isJsonObjectForRecipe(recipeElement)) {
+                logInvalidRecipeElement(i, recipeElement);
+                continue;
+            }
+
+            final JsonObject recipeObject = recipeElement.getAsJsonObject();
+            final String recipeName = getRecipeJsonFieldAsString(recipeObject, NAME);
+
+            if (recipeName == null || recipeName.isEmpty()) {
+                logRecipeWithInvalidName(i, recipeObject);
+                continue;
+            }
+
+            final Recipe recipe = createRecipeFromJsonObjectForRecipes(recipeObject, recipeName);
+            if (recipe != null) {
+                processedRecipes.add(recipe);
+            }
+        }
+
+        cachedRecipes.addAll(processedRecipes);
+        System.out.println("Total recipes loaded: " + processedRecipes.size());
+        return processedRecipes;
+    }
+
+    /**
+     * Validates if the given {@link JsonElement} is a {@link JsonObject} for recipes.
+     *
+     * @param recipeElement the {@link JsonElement} to be validated.
+     * @return {@code true} if the {@link JsonElement} is a {@link JsonObject}, {@code false} otherwise.
+     */
+    private boolean isJsonObjectForRecipe(JsonElement recipeElement) {
+        return recipeElement.isJsonObject();
+    }
+
+    /**
+     * Logs details of unexpected non-JsonObject elements found in the recipes array.
+     *
+     * @param index the index of the invalid element in the recipes array.
+     * @param recipeElement the {@link JsonElement} that is not a {@link JsonObject}.
+     */
+    private void logInvalidRecipeElement(int index, JsonElement recipeElement) {
+        System.err.println("Unexpected element type at index " + index + ": " + recipeElement.getClass().getName());
+        System.err.println("Element content: " + recipeElement.toString());
+    }
+
+    /**
+     * Logs details of unexpected non-JsonObject elements found in the recipes array.
+     *
+     * @param index the index of the invalid element in the recipes array.
+     * @param recipeObject the {@link JsonElement} that is not a {@link JsonObject}.
+     */
+    private void logRecipeWithInvalidName(int index, JsonObject recipeObject) {
+        System.out.println(
+                "Skipping recipe with no valid name at index " + index + ", content: " + recipeObject.toString());
+    }
+
+    /**
+     * Retrieves the value of a specified field from a {@link JsonObject} representing a recipe.
+     *
+     * @param recipeObject the {@link JsonObject} containing the recipe data.
+     * @param fieldName the name of the field to retrieve.
+     * @return the value of the field as a {@link String}, or {@code null} if the field is missing or its value is null.
+     */
+    private String getRecipeJsonFieldAsString(JsonObject recipeObject, String fieldName) {
+        String result = null;
+        if (recipeObject.has(fieldName) && !recipeObject.get(fieldName).isJsonNull()) {
+            result = recipeObject.get(fieldName).getAsString();
+        }
+        return result;
+    }
+
+    /**
+     * Creates a {@link Recipe} object from the provided {@link JsonObject} containing recipe data.
+     *
+     * @param recipeObject the {@link JsonObject} containing the recipe's data fields.
+     * @param recipeName the name of the recipe to be included in the created {@link Recipe} object.
+     * @return a {@link Recipe} object containing the parsed data from the {@link JsonObject}.
+     */
+    private Recipe createRecipeFromJsonObjectForRecipes(JsonObject recipeObject, String recipeName) {
+        final String recipeId = getRecipeJsonFieldAsString(recipeObject, ID);
+        final String recipeCategory = getRecipeJsonFieldAsString(recipeObject, CATEGORY);
+        final String recipeInstructions = getRecipeJsonFieldAsString(recipeObject, INSTRUCTIONS);
+        final Map<String, String> ingredientMeasureMap = extractIngredientMeasureMapForRecipes(recipeObject);
+
+        // Parse likeNumber
+        final int likeNumber = getRecipeJsonFieldAsInt(recipeObject, LIKENUMBER);
+
+        // Parse dislikeNumber
+        final int dislikeNumber = getRecipeJsonFieldAsInt(recipeObject, DISLIKENUMBER);
+
+        final RecipeFactory recipeFactory = new CommonRecipeFactory();
+        return recipeFactory.createRecipe(
+                recipeId, recipeName, recipeCategory, recipeInstructions,
+                ingredientMeasureMap, likeNumber, dislikeNumber);
+    }
+
+    /**
+     * Extracts a map of ingredients and their corresponding measures from the provided {@link JsonObject}.
+     *
+     * @param recipeObject the {@link JsonObject} containing the ingredient-measure data for a recipe.
+     * @return a {@link Map} where the keys are ingredient names and the values are their corresponding measures.
+     *         If no valid ingredient-measure data is found, an empty map is returned.
+     */
+    private Map<String, String> extractIngredientMeasureMapForRecipes(JsonObject recipeObject) {
+        final Map<String, String> ingredientMeasureMap = new HashMap<>();
+
+        if (recipeObject.has(INGREDIENTMEASUREMAP) && !recipeObject.get(INGREDIENTMEASUREMAP).isJsonNull()) {
+            final JsonObject ingredientMapJson = recipeObject.getAsJsonObject(INGREDIENTMEASUREMAP);
+            for (String key : ingredientMapJson.keySet()) {
+                final String measure = getRecipeJsonFieldAsString(ingredientMapJson, key);
+                if (measure != null && !measure.isEmpty()) {
+                    ingredientMeasureMap.put(key, measure);
+                }
+            }
+        }
+
+        return ingredientMeasureMap;
+    }
+
+    /**
+     * Retrieves the value of a specified field from a {@link JsonObject} representing a recipe as an integer.
+     *
+     * @param recipeObject the {@link JsonObject} containing the recipe data.
+     * @param fieldName the name of the field to retrieve.
+     * @return the value of the field as an {@code int}, or {@code 0} if the field is missing or its value is null.
+     */
+    private int getRecipeJsonFieldAsInt(JsonObject recipeObject, String fieldName) {
+        int result = 0;
+        if (recipeObject.has(fieldName) && !recipeObject.get(fieldName).isJsonNull()) {
+            result = recipeObject.get(fieldName).getAsInt();
+        }
+        return result;
+    }
+
 }
