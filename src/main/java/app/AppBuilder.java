@@ -398,8 +398,6 @@ public class AppBuilder {
         return this;
     }
 
-
-
     public AppBuilder addDeleteUseCase() {
         // 创建 DeleteViewModel
         final DeleteViewModel deleteViewModel = new DeleteViewModel();
