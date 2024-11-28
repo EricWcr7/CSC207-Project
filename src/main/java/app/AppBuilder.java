@@ -1,11 +1,16 @@
 package app;
 
 import java.awt.CardLayout;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import data_access.FavoriteRecipeDataAccessObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import data_access.InMemoryUserDataAccessObject;
 import data_access.RecipeDataAccessObject;
 import entity.*;
@@ -19,6 +24,9 @@ import interface_adapter.choose_recipe.*;
 import interface_adapter.create.CreateController;
 import interface_adapter.create.CreatePresenter;
 import interface_adapter.create.CreateViewModel;
+import interface_adapter.delete.DeleteController;
+import interface_adapter.delete.DeletePresenter;
+import interface_adapter.delete.DeleteViewModel;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import interface_adapter.edit.EditController;
 import interface_adapter.edit.EditPresenter;
@@ -50,6 +58,9 @@ import use_case.choose_recipe.ChooseRecipeOutputBoundary;
 import use_case.create.CreateInputBoundary;
 import use_case.create.CreateInteractor;
 import use_case.create.CreateOutputBoundary;
+import use_case.delete.DeleteInputBoundary;
+import use_case.delete.DeleteInteractor;
+import use_case.delete.DeleteOutputBoundary;
 import use_case.edit.EditInputBoundary;
 import use_case.edit.EditInteractor;
 import use_case.edit.EditOutputBoundary;
@@ -103,6 +114,7 @@ public class AppBuilder {
     private CreateViewModel createViewModel;
     private ShoppingListView shoppingListView;
     private ShoppingListViewModel shoppingListViewModel;
+    private DeleteViewModel deleteViewModel;
 
     private RecipeSearchInputBoundary recipeSearchInteractor;
     private LoginInputBoundary loginInteractor;
@@ -203,7 +215,7 @@ public class AppBuilder {
 
     public AppBuilder addCreateView() {
         createViewModel = new CreateViewModel();
-        createView = new CreateView(createViewModel);
+        createView = new CreateView(createViewModel,editView); // 注入 EditView 实例
         System.out.println("Adding Create View with name: " + createView.getViewName());
         cardPanel.add(createView, createView.getViewName());
         return this;
@@ -389,6 +401,48 @@ public class AppBuilder {
     public JFrame build() {
         final JFrame application = new JFrame("Mealmaster");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    public AppBuilder addDeleteUseCase() {
+        // 创建 DeleteViewModel
+        final DeleteViewModel deleteViewModel = new DeleteViewModel();
+
+        // 创建 DeletePresenter（实现 DeleteOutputBoundary）
+        final DeleteOutputBoundary deleteOutputBoundary = new DeletePresenter(deleteViewModel);
+
+        // 创建 DeleteInteractor（实现 DeleteInputBoundary）
+        final DeleteInputBoundary deleteInteractor = new DeleteInteractor(deleteOutputBoundary, recipeDataAccessObject);
+
+        // 创建 DeleteController
+        final DeleteController deleteController = new DeleteController(deleteInteractor);
+
+        // 将 DeleteController 设置到 EditView
+        editView.setDeleteController(deleteController);
+
+        System.out.println("Delete Use Case added successfully.");
+        return this;
+    }
+
+
+
+    public void initializeNewRecipesFile() {
+        File file = new File("new_recipes.json");
+        if (!file.exists()) {
+            try (FileWriter writer = new FileWriter(file)) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.add("recipes", new JsonArray()); // 初始化空的 "recipes" 数组
+                writer.write(jsonObject.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("Failed to initialize new_recipes.json file.");
+            }
+        }
+    }
+
+
+
+
+    public JFrame build() {
+            final JFrame application = new JFrame("Mealmaster");
+            application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         initializeSharedUserStorage();
         initializeSharedRecipeStorage();

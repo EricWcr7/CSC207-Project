@@ -40,6 +40,7 @@ public class Main {
                 .addLikeRecipeUseCase()
                 .addDislikeRecipeUseCase()
                 .addShoppingListUseCase()
+                .addDeleteUseCase()
                 .build();
         application.pack();
         application.setSize(width, height);

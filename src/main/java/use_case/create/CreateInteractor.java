@@ -8,6 +8,10 @@ import entity.RecipeFactory;
 
 import java.util.List;
 
+/**
+ * Interactor class for the Create Use Case.
+ * Handles the business logic for creating a new recipe.
+ */
 public class CreateInteractor implements CreateInputBoundary {
     private final CreateOutputBoundary createPresenter;
     private final CreateDataAccessInterface recipeDataAccessObject;
@@ -20,6 +24,12 @@ public class CreateInteractor implements CreateInputBoundary {
         this.recipeFactory = recipeFactory;
     }
 
+    /**
+     * Executes the logic to create a new recipe.
+     *
+     * @param createInputData Input data for creating the recipe, including the dish name,
+     *                        instructions, and ingredients.
+     */
     public void execute(CreateInputData createInputData) {
         if (!recipesLoaded) {
             System.out.println("Loading recipes from cloud");
