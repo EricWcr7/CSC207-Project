@@ -669,9 +669,6 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         cachedRecipes.removeIf(recipe -> recipe.getName().equalsIgnoreCase(recipeName));
     }
 
-
-}
-
     @Override
     public String getUsername() {
         return "";

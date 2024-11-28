@@ -398,9 +398,8 @@ public class AppBuilder {
         return this;
     }
 
-    public JFrame build() {
-        final JFrame application = new JFrame("Mealmaster");
-        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+
     public AppBuilder addDeleteUseCase() {
         // 创建 DeleteViewModel
         final DeleteViewModel deleteViewModel = new DeleteViewModel();
