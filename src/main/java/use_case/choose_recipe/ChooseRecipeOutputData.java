@@ -49,5 +49,6 @@ public class ChooseRecipeOutputData {
     }
 
     public int getDislikeNumber() {
-        return dislikeNumber; }
+        return dislikeNumber;
+    }
 }
