@@ -1,16 +1,5 @@
 package data_access;
 
-import com.google.gson.*;
-import entity.Recipe;
-import entity.CommonRecipeFactory;
-import entity.RecipeFactory;
-import entity.User;
-import use_case.choose_recipe.ChooseRecipeDataAccessInterface;
-import use_case.create.CreateDataAccessInterface;
-import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeDataAccessInterface;
-import use_case.recipe_search.RecipeSearchDataAccessInterface;
-import use_case.shopping_list.ShoppingListDataAccessInterface;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -28,6 +17,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import entity.CommonRecipeFactory;
+import entity.Recipe;
+import entity.RecipeFactory;
+import entity.User;
+import use_case.choose_recipe.ChooseRecipeDataAccessInterface;
+import use_case.create.CreateDataAccessInterface;
+import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeDataAccessInterface;
+import use_case.recipe_search.RecipeSearchDataAccessInterface;
+import use_case.shopping_list.ShoppingListDataAccessInterface;
 
 /**
  * DAO for the RecipeSearch Use Case.
