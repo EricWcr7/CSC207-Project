@@ -1,6 +1,5 @@
 package data_access;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
@@ -15,7 +14,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import entity.CommonUserFactory;
 import entity.Recipe;
@@ -47,7 +52,12 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     private static final String API_KEY = "35F52QF.ZQV4A4E-ASHMAQD-QSPTZ93-NHYCJT6";
     private static final int STATUS_CODE_OK = 200;
     private static final String FILE_PATH = "all_users.json";
-    private static String userFILE_KEY = "";
+    private static String userFileKey = "";
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String BEARER = "Bearer ";
+    private static final String NODES = "nodes";
+    private static final String NAME = "name";
+    private static final String KEY = "key";
     private Map<String, User> users = new HashMap<>();
     private String currentUsername;
     private String username;
@@ -56,134 +66,190 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public String findFileOnFileIo(String fileName) {
         try {
+            // Initialize recipeFileKey to null for a single return statement at the end
+            userFileKey = "";
+
             // Properly format the search URL with the provided file name
-            String searchUrl = FILE_IO_API_URL + "/?search=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8);
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
+            final String searchUrl = FILE_IO_API_URL + "/?search=" + URLEncoder.encode(
+                    fileName, StandardCharsets.UTF_8);
+            final HttpClient client = HttpClient.newHttpClient();
+            final HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(searchUrl))
                     .header("accept", "application/json")
-                    .header("Authorization", "Bearer " + API_KEY)
+                    .header(AUTHORIZATION, BEARER + API_KEY)
                     .GET()
                     .build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == STATUS_CODE_OK) {
-                // Parse the response to find if the file exists
-                System.out.println("File.io search response: " + response.body()); // Debug log to see the response
-                JsonElement jsonResponse = JsonParser.parseString(response.body());
-                JsonObject responseObject = jsonResponse.getAsJsonObject();
-
-                // Correctly handle the response with "nodes" instead of "files"
-                if (responseObject.has("nodes") && responseObject.get("nodes").isJsonArray()) {
-                    JsonArray nodesArray = responseObject.getAsJsonArray("nodes");
-
-                    for (JsonElement nodeElement : nodesArray) {
-                        if (nodeElement.isJsonObject()) {
-                            JsonObject nodeObject = nodeElement.getAsJsonObject();
-
-                            if (nodeObject.has("name") && nodeObject.get("name").getAsString().equals(fileName)) {
-                                if (nodeObject.has("key")) {
-                                    // Correctly index to get the key
-                                    userFILE_KEY = nodeObject.get("key").getAsString();
-                                    System.out.println("User File '" + fileName + "' found on File.io with key: " + userFILE_KEY);
-                                } else {
-                                    System.out.println("User File object found, but no key present for file: " + fileName);
-                                }
-                            }
-                        }
-                    }
-                } else {
+                // Parse the response
+                final JsonObject responseObject = JsonParser.parseString(response.body()).getAsJsonObject();
+                if (responseObject.has(NODES) && responseObject.get(NODES).isJsonArray()) {
+                    final JsonArray nodesArray = responseObject.getAsJsonArray(NODES);
+                    processNodes(nodesArray, fileName);
+                }
+                else {
                     System.out.println("No 'nodes' array found in the response. Response: " + response.body());
                 }
-            } else {
-                System.out.println("Failed to get User file list from File.io. Status code: " + response.statusCode());
             }
-        } catch (IOException | InterruptedException e) {
-            System.err.println("Error while searching for User file on File.io: " + e.getMessage());
+            else {
+                System.out.println("Failed to get user file list from File.io. Status code: " + response.statusCode());
+            }
+        }
+        catch (IOException | InterruptedException ex) {
+            System.err.println("Error while searching for file on File.io: " + ex.getMessage());
             Thread.currentThread().interrupt();
         }
-        return userFILE_KEY; // File not found
+
+        // Single return statement
+        return userFileKey;
     }
 
     /**
-     * Deletes the file from File.io using the file key.
+     * Processes a JSON array of nodes to locate a specific file object by its name and retrieve its associated key.
+     * This method iterates through the provided JSON array, checks each element to see if it is a JSON object,
+     * and looks for a node matching the specified file name. If a matching node is found and contains a key,
+     * the key's value is assigned to the `userFileKey` field. Messages are logged to indicate the result
+     * of the search operation, whether the file and key were found or if the file exists without a key.
+     *
+     * @param nodesArray the JSON array containing node objects to be processed
+     * @param fileName   the name of the file to search for within the node objects
      */
-    public void deleteFileFromFileIo() {
-        if (userFILE_KEY.isEmpty()) {
+    private void processNodes(JsonArray nodesArray, String fileName) {
+        boolean fileFound = false;
+
+        for (JsonElement nodeElement : nodesArray) {
+            if (nodeElement.isJsonObject()) {
+                final JsonObject nodeObject = nodeElement.getAsJsonObject();
+
+                if (nodeObject.has(NAME) && nodeObject.get(NAME).getAsString().equals(fileName)) {
+                    if (nodeObject.has(KEY)) {
+                        userFileKey = nodeObject.get(KEY).getAsString();
+                        System.out.println("File '" + fileName + "' found on File.io with key: " + userFileKey);
+                    }
+                    else {
+                        System.out.println("File object found, but no key present for file: " + fileName);
+                    }
+                    fileFound = true;
+                    break;
+                }
+            }
+        }
+
+        if (!fileFound) {
+            System.out.println("File '" + fileName + "' not found in the nodes.");
+        }
+    }
+
+    /**
+     * Deletes a file from File.io using its unique file key.
+     * This method constructs and sends a DELETE request to the File.io API to remove a file identified
+     * by its key. If the file key is empty, it logs an error and does not attempt to send the request.
+     * In the case of a successful deletion, a success message is logged. If the deletion fails, the
+     * method logs the HTTP status code and response body. Any exceptions during the process are caught
+     * and logged, with the thread being interrupted for an InterruptedException.
+     * Preconditions:
+     * - The `userFileKey` field must be initialized with a valid file key.
+     */
+    private void deleteFileFromFileIo() {
+        if (!userFileKey.isEmpty()) {
+            System.out.println("Deleting User file from File.io with User File key: " + userFileKey);
+            try {
+                final String deleteUrl = FILE_IO_API_URL + "/" + URLEncoder.encode(userFileKey, StandardCharsets.UTF_8);
+                final HttpClient client = HttpClient.newHttpClient();
+                final HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(deleteUrl))
+                        .DELETE()
+                        .header(AUTHORIZATION, BEARER + API_KEY)
+                        .build();
+
+                final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == STATUS_CODE_OK) {
+                    System.out.println("User File deleted successfully: " + response.body());
+                }
+                else {
+                    System.err.println("Failed to delete User file. Status code: " + response.statusCode());
+                    System.err.println("Response body: " + response.body());
+                }
+            }
+            catch (IOException | InterruptedException ex) {
+                System.err.println("Error during User file deletion: " + ex.getMessage());
+                Thread.currentThread().interrupt();
+            }
+        }
+        else {
             System.err.println("User File key is empty. Cannot delete file.");
-            return;
-        }
-
-        System.out.println("Deleting User file from File.io with User File key: " + userFILE_KEY);
-        try {
-            String deleteUrl = FILE_IO_API_URL + "/" + URLEncoder.encode(userFILE_KEY, StandardCharsets.UTF_8);
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(deleteUrl))
-                    .DELETE()
-                    .header("Authorization", "Bearer " + API_KEY)
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if (response.statusCode() == STATUS_CODE_OK) {
-                System.out.println("User File deleted successfully: " + response.body());
-            } else {
-                System.err.println("Failed to delete User file. Status code: " + response.statusCode());
-                System.err.println("Response body: " + response.body());
-            }
-        } catch (IOException | InterruptedException e) {
-            System.err.println("Error during User file deletion: " + e.getMessage());
-            Thread.currentThread().interrupt();
         }
     }
 
     /**
-     * Writes the list of users in JSON format to a file.
+     * Writes a map of users to a file in JSON format.
+     * This method serializes the provided map of user objects to JSON format using the Gson library
+     * and writes the resulting JSON string to a file specified by the constant {@code FILE_PATH}.
+     * If the write operation is successful, a confirmation message is logged to the console.
+     * In case of an I/O error during the process, an error message is logged.
+     *
+     * @param allUsers a map where the key is a string representing the user's identifier and the value is
+     *                 the corresponding {@link User} object to be serialized and saved
      */
-    public void writeUsersToFile(Map<String, User> allUsers) {
+    private void writeUsersToFile(Map<String, User> allUsers) {
         System.out.println("Writing all users to JSON file.");
-        final File file = new File(FILE_PATH);
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String jsonContent = gson.toJson(allUsers);
+        final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        final String jsonContent = gson.toJson(allUsers);
 
         try (FileWriter writer = new FileWriter(FILE_PATH)) {
             writer.write(jsonContent);
             System.out.println("All user data written to file successfully.");
-        } catch (IOException e) {
-            System.err.println("Error while writing to User file: " + e.getMessage());
+        }
+        catch (IOException ex) {
+            System.err.println("Error while writing to User file: " + ex.getMessage());
         }
     }
 
-    public void uploadFileToFileIo() {
+    /**
+     * Uploads a file to File.io using a POST request with Bearer authentication.
+     * This method sends a file located at the path specified by the {@code FILE_PATH} constant
+     * to the File.io API using the HTTP POST method. The request includes a Bearer token for
+     * authorization and uses a multipart/form-data content type. On a successful upload, the
+     * method parses the API response to retrieve the file key and sets it to the {@code userFileKey} field.
+     * If the upload fails, it logs the HTTP status code and response body. Any exceptions
+     * during the process are caught and logged, with the thread being interrupted if necessary.
+     * Preconditions:
+     * - The file at {@code FILE_PATH} must exist and be accessible.
+     * - The {@code API_KEY} constant must contain a valid API key for File.io.
+     */
+    private void uploadFileToFileIo() {
         System.out.println("Uploading file to File.io with Bearer Auth.");
         try {
             final HttpClient client = HttpClient.newHttpClient();
-            String bearerToken = API_KEY; // Replace this with your actual token
+            final String bearerToken = API_KEY;
 
-            HttpRequest request = HttpRequest.newBuilder()
+            final HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(FILE_IO_API_URL))
-                    .header("Authorization", "Bearer " + bearerToken)
+                    .header(AUTHORIZATION, BEARER + bearerToken)
                     .header("Content-Type", "multipart/form-data; boundary=----WebKitFormBoundary")
                     .POST(ofFileUpload(Path.of(FILE_PATH)))
                     .build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == STATUS_CODE_OK) {
                 System.out.println("User File uploaded successfully: " + response.body());
                 // Parse the response to extract the "key" value and set FILE_KEY
-                JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
-                userFILE_KEY = jsonResponse.get("key").getAsString();
-                System.out.println("User File key set to: " + userFILE_KEY);
-            } else {
+                final JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
+                userFileKey = jsonResponse.get(KEY).getAsString();
+                System.out.println("User File key set to: " + userFileKey);
+            }
+            else {
                 System.err.println("Failed to upload User file. Status code: " + response.statusCode());
                 System.err.println("Response body: " + response.body());
             }
-        } catch (IOException | InterruptedException e) {
-            System.err.println("Error during User file upload: " + e.getMessage());
+        }
+        catch (IOException | InterruptedException ex) {
+            System.err.println("Error during User file upload: " + ex.getMessage());
             Thread.currentThread().interrupt();
         }
     }
@@ -196,12 +262,13 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
      * @throws IOException if there is an error reading the file
      */
     public static HttpRequest.BodyPublisher ofFileUpload(Path path) throws IOException {
-        var boundary = "----WebKitFormBoundary";
-        var fileBytes = Files.readAllBytes(path);
-        var byteArrays = new ArrayList<byte[]>();
+        final var boundary = "----WebKitFormBoundary";
+        final var fileBytes = Files.readAllBytes(path);
+        final var byteArrays = new ArrayList<byte[]>();
 
         byteArrays.add(("--" + boundary + "\r\nContent-Disposition: form-data; name=\"file\"; filename=\""
-                + path.getFileName() + "\"\r\nContent-Type: application/json\r\n\r\n").getBytes(StandardCharsets.UTF_8));
+                + path.getFileName() + "\"\r\nContent-Type: application/json\r\n\r\n").getBytes(
+                        StandardCharsets.UTF_8));
         byteArrays.add(fileBytes);
         byteArrays.add(("\r\n--" + boundary + "--\r\n").getBytes(StandardCharsets.UTF_8));
 
@@ -210,26 +277,26 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public void loadUsersFromCloud() {
-        if (userFILE_KEY.isEmpty()) {
+        if (userFileKey.isEmpty()) {
             System.err.println("User File key is empty. Cannot download user file.");
         }
 
-        System.out.println("Downloading User file from File.io with key: " + userFILE_KEY);
+        System.out.println("Downloading User file from File.io with key: " + userFileKey);
         try {
-            String downloadUrl = FILE_IO_API_URL + "/" + URLEncoder.encode(userFILE_KEY, StandardCharsets.UTF_8);
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
+            final String downloadUrl = FILE_IO_API_URL + "/" + URLEncoder.encode(userFileKey, StandardCharsets.UTF_8);
+            final HttpClient client = HttpClient.newHttpClient();
+            final HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(downloadUrl))
                     .GET()
                     .build();
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == STATUS_CODE_OK) {
                 System.out.println("User File downloaded successfully.");
 
                 // Log the entire JSON content received
-                String jsonContent = response.body();
+                final String jsonContent = response.body();
 
                 // Parse the downloaded JSON content
                 users = parseDownloadedUsers(jsonContent);
@@ -240,11 +307,13 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
                 // Upload the updated JSON file immediately
                 uploadFileToFileIo();
 
-            } else {
+            }
+            else {
                 System.err.println("Failed to download User file. Status code: " + response.statusCode());
             }
-        } catch (IOException | InterruptedException e) {
-            System.err.println("Error during user file download: " + e.getMessage());
+        }
+        catch (IOException | InterruptedException ex) {
+            System.err.println("Error during user file download: " + ex.getMessage());
             Thread.currentThread().interrupt();
         }
     }
@@ -258,27 +327,29 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     private Map<String, User> parseDownloadedUsers(String jsonContent) {
         System.out.println("Parsing downloaded users from JSON content...");
 
-        Gson gson = new Gson();
-        Map<String, User> parsedUsers = new HashMap<>();
+        final Gson gson = new Gson();
+        final Map<String, User> parsedUsers = new HashMap<>();
 
         try {
             // Parse the JSON into a map of raw JSON objects
-            Map<String, JsonObject> rawUsers = gson.fromJson(jsonContent, new TypeToken<Map<String, JsonObject>>() {}.getType());
+            final Map<String, JsonObject> rawUsers = gson.fromJson(
+                    jsonContent, new TypeToken<Map<String, JsonObject>>() { }.getType()
+            );
 
             if (rawUsers != null && !rawUsers.isEmpty()) {
                 for (Map.Entry<String, JsonObject> entry : rawUsers.entrySet()) {
-                    String username = entry.getKey();
-                    JsonObject userObject = entry.getValue();
+                    final String userName = entry.getKey();
+                    final JsonObject userObject = entry.getValue();
 
                     // Extract necessary fields from the JSON object
-                    String password = userObject.get("password").getAsString();
-                    JsonArray likedRecipesArray = userObject.getAsJsonArray("likedRecipes");
-                    JsonArray dislikedRecipesArray = userObject.getAsJsonArray("dislikedRecipes");
-                    JsonArray favoriteRecipesArray = userObject.getAsJsonArray("favoriteRecipes");
+                    final String password = userObject.get("password").getAsString();
+                    final JsonArray likedRecipesArray = userObject.getAsJsonArray("likedRecipes");
+                    final JsonArray dislikedRecipesArray = userObject.getAsJsonArray("dislikedRecipes");
+                    final JsonArray favoriteRecipesArray = userObject.getAsJsonArray("favoriteRecipes");
 
                     // Use UserFactory to create the User object
-                    UserFactory userFactory = new CommonUserFactory();
-                    User user = userFactory.create(username, password);
+                    final UserFactory userFactory = new CommonUserFactory();
+                    final User user = userFactory.create(userName, password);
 
                     // Populate additional fields (e.g., liked/disliked recipes, favorite recipes)
                     for (JsonElement recipe : likedRecipesArray) {
@@ -287,28 +358,38 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
                     for (JsonElement recipe : dislikedRecipesArray) {
                         user.addDislikedRecipe(recipe.getAsString());
                     }
-                    String[] favoriteRecipes = new String[favoriteRecipesArray.size()];
+
+                    // Populate favorite recipes
+                    final String[] favoriterecipes = new String[favoriteRecipesArray.size()];
                     for (int i = 0; i < favoriteRecipesArray.size(); i++) {
-                        favoriteRecipes[i] = favoriteRecipesArray.get(i).isJsonNull() ? null : favoriteRecipesArray.get(i).getAsString();
+                        final JsonElement recipeElement = favoriteRecipesArray.get(i);
+                        if (recipeElement.isJsonNull()) {
+                            favoriterecipes[i] = null;
+                        }
+                        else {
+                            favoriterecipes[i] = recipeElement.getAsString();
+                        }
                     }
-                    user.setFavoriteRecipes(favoriteRecipes);
+                    user.setFavoriteRecipes(favoriterecipes);
 
                     // Add the constructed user to the map
-                    parsedUsers.put(username, user);
+                    parsedUsers.put(userName, user);
                 }
                 System.out.println("Successfully parsed users:");
-                parsedUsers.forEach((key, value) -> System.out.println("User: " + key + ", Details: " + value));
-            } else {
+                parsedUsers.forEach((key, value) -> {
+                    System.out.println("User: " + key + ", Details: " + value);
+                });
+            }
+            else {
                 System.out.println("No users found in the JSON content.");
             }
-        } catch (JsonSyntaxException | IllegalStateException e) {
-            System.err.println("Error parsing JSON content: " + e.getMessage());
+        }
+        catch (JsonSyntaxException | IllegalStateException ex) {
+            System.err.println("Error parsing JSON content: " + ex.getMessage());
         }
 
         return parsedUsers;
     }
-
-
 
     @Override
     public boolean existsByName(String identifier) {
@@ -318,7 +399,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public void save(User user) {
         users.put(user.getName(), user);
-        if (!userFILE_KEY.isEmpty()) {
+        if (!userFileKey.isEmpty()) {
             deleteFileFromFileIo();
         }
         writeUsersToFile(users);
@@ -326,8 +407,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     }
 
     @Override
-    public User get(String username) {
-        return users.get(username);
+    public User get(String userName) {
+        return users.get(userName);
     }
 
     @Override

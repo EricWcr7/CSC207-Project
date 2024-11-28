@@ -111,7 +111,16 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         return recipeFileKey;
     }
 
-    // Helper method to process nodes
+    /**
+     * Processes a JSON array of nodes to find a specific file object by its name and retrieves its key.
+     * This method iterates over a given JSON array and searches for a node object that matches the specified file name.
+     * If a matching node is found, it checks for the presence of a key and assigns its value to the `recipeFileKey`
+     * field.
+     * If no key is found, a message is logged to indicate that the file object exists but lacks a key.
+     *
+     * @param nodesArray the JSON array containing node objects to process
+     * @param fileName   the name of the file to search for in the node objects
+     */
     private void processNodes(JsonArray nodesArray, String fileName) {
         for (JsonElement nodeElement : nodesArray) {
             if (nodeElement.isJsonObject()) {
@@ -162,11 +171,6 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         }
     }
 
-    /**
-     * Fetches all recipes from the API by iterating over keywords (a-z) using the 'f' parameter.
-     *
-     * @return a list of all CommonRecipe objects
-     */
     @Override
     public List<Recipe> fetchAllRecipes() {
         System.out.println("Starting to fetch all recipes from API...");
@@ -413,9 +417,6 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         return HttpRequest.BodyPublishers.ofByteArrays(byteArrays);
     }
 
-    /**
-     * Downloads the recipes file from the cloud, processes it, and updates the local JSON file.
-     */
     @Override
     public void loadRecipesFromCloud() {
         // Check if the file key is empty; if it is, the method cannot proceed

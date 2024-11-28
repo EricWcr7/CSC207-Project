@@ -14,7 +14,6 @@ public class Main {
         final Integer width = 800;
         final Integer height = 600;
         final AppBuilder appBuilder = new AppBuilder();
-        // TODO: add the Logout Use Case to the app using the appBuilder
         final JFrame application = appBuilder
                 .addLoginView()
                 .addSignupView()
