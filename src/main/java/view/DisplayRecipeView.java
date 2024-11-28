@@ -17,6 +17,9 @@ import interface_adapter.like_and_dislike.like_a_recipe.LikeRecipeController;
  * The View for when the user is displaying a recipe.
  */
 public class DisplayRecipeView extends JPanel implements PropertyChangeListener {
+    private static final String FONT_ARIAL = "Arial";
+    private static final int FONT_SIZE_DEFAULT = 14;
+
     private final String viewName = "display the recipe";
     private DisplayRecipeViewModel displayRecipeViewmodel;
 
@@ -44,7 +47,6 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
     private final JLabel likeCount;
     private final JLabel dislikeCount;
 
-
     public DisplayRecipeView(DisplayRecipeViewModel displayRecipeViewModel) {
         this.displayRecipeViewmodel = displayRecipeViewModel;
         this.displayRecipeViewmodel.addPropertyChangeListener(this);
@@ -55,8 +57,10 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
         ingredientsArea.setEditable(false);
         instructionArea = new JTextArea(instructions);
         instructionArea.setEditable(false);
-        instructionArea.setLineWrap(true); // 启用自动换行
-        instructionArea.setWrapStyleWord(true); // 按单词换行，而不是在字符中间
+        // 启用自动换行
+        instructionArea.setLineWrap(true);
+        // 按单词换行，而不是在字符中间
+        instructionArea.setWrapStyleWord(true);
 
         returnToSearchMenu = new JButton("Return to Search View ");
 
@@ -72,32 +76,34 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // Panel for recipe details
-        JPanel recipePanel = new JPanel();
-        recipePanel.setLayout(new BoxLayout(recipePanel, BoxLayout.Y_AXIS)); // Vertical layout for recipe details
-        recipePanel.setAlignmentX(Component.LEFT_ALIGNMENT); // Align it to the left
+        final JPanel recipePanel = new JPanel();
+        // Vertical layout for recipe details
+        recipePanel.setLayout(new BoxLayout(recipePanel, BoxLayout.Y_AXIS));
+        // Align it to the left
+        recipePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Dish name
-        JLabel dishNameLabel = new JLabel("Dish Name: ");
-        dishNameLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        final JLabel dishNameLabel = new JLabel("Dish Name: ");
+        dishNameLabel.setFont(new Font(FONT_ARIAL, Font.BOLD, FONT_SIZE_DEFAULT));
         recipePanel.add(dishNameLabel);
 
-        JLabel dishNameValue = new JLabel(dishName);
+        final JLabel dishNameValue = new JLabel(dishName);
         recipePanel.add(dishNameValue);
 
         // Ingredients
-        JLabel ingredientsLabel = new JLabel("Ingredients: ");
-        ingredientsLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        final JLabel ingredientsLabel = new JLabel("Ingredients: ");
+        ingredientsLabel.setFont(new Font(FONT_ARIAL, Font.BOLD, FONT_SIZE_DEFAULT));
         recipePanel.add(ingredientsLabel);
         recipePanel.add(ingredientsArea);
 
         // Instructions
-        JLabel instructionsLabel = new JLabel("Instructions: ");
-        instructionsLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        final JLabel instructionsLabel = new JLabel("Instructions: ");
+        instructionsLabel.setFont(new Font(FONT_ARIAL, Font.BOLD, FONT_SIZE_DEFAULT));
         recipePanel.add(instructionsLabel);
         recipePanel.add(instructionArea);
 
         // Panel for buttons (aligned horizontally)
-        JPanel buttonsPanel = new JPanel();
+        final JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         buttonsPanel.add(returnToSearchMenu);
         buttonsPanel.add(createButtonWithLabel(likeButton, likeCount));
@@ -277,8 +283,10 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
 
     private JPanel createButtonWithLabel(JButton button, JLabel label) {
         final JPanel panel = new JPanel(new BorderLayout());
-        panel.add(button, BorderLayout.WEST); // 按钮在左侧
-        panel.add(label, BorderLayout.EAST); // 数字在右侧
+        // 按钮在左侧
+        panel.add(button, BorderLayout.WEST);
+        // 数字在右侧
+        panel.add(label, BorderLayout.EAST);
         return panel;
     }
 
