@@ -145,44 +145,43 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
 
     /**
      * Deletes a file from File.io using its unique file key.
-     * This method constructs a DELETE request to the File.io API with the provided file key.
-     * If the file key is empty, the method logs an error and exits without making a request.
-     * On a successful deletion, it logs a success message. If the deletion fails, it logs
-     * the HTTP status code and response body. Any exceptions during the process are caught
-     * and logged, with the thread being interrupted in case of an `InterruptedException`.
+     * This method constructs and sends a DELETE request to the File.io API to remove a file identified
+     * by its key. If the file key is empty, it logs an error and does not attempt to send the request.
+     * In the case of a successful deletion, a success message is logged. If the deletion fails, the
+     * method logs the HTTP status code and response body. Any exceptions during the process are caught
+     * and logged, with the thread being interrupted for an InterruptedException.
      * Preconditions:
-     * - `userFileKey` must be set to a valid file key.
-     *
-     * @throws IOException          if an I/O error occurs when sending or receiving the request
-     * @throws InterruptedException if the operation is interrupted during execution
+     * - The `userFileKey` field must be initialized with a valid file key.
      */
     public void deleteFileFromFileIo() {
-        if (userFileKey.isEmpty()) {
-            System.err.println("User File key is empty. Cannot delete file.");
-            return;
-        }
+        if (!userFileKey.isEmpty()) {
+            System.out.println("Deleting User file from File.io with User File key: " + userFileKey);
+            try {
+                final String deleteUrl = FILE_IO_API_URL + "/" + URLEncoder.encode(userFileKey, StandardCharsets.UTF_8);
+                final HttpClient client = HttpClient.newHttpClient();
+                final HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(deleteUrl))
+                        .DELETE()
+                        .header(AUTHORIZATION, BEARER + API_KEY)
+                        .build();
 
-        System.out.println("Deleting User file from File.io with User File key: " + userFileKey);
-        try {
-            String deleteUrl = FILE_IO_API_URL + "/" + URLEncoder.encode(userFileKey, StandardCharsets.UTF_8);
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(deleteUrl))
-                    .DELETE()
-                    .header(AUTHORIZATION, BEARER + API_KEY)
-                    .build();
+                final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if (response.statusCode() == STATUS_CODE_OK) {
-                System.out.println("User File deleted successfully: " + response.body());
-            } else {
-                System.err.println("Failed to delete User file. Status code: " + response.statusCode());
-                System.err.println("Response body: " + response.body());
+                if (response.statusCode() == STATUS_CODE_OK) {
+                    System.out.println("User File deleted successfully: " + response.body());
+                }
+                else {
+                    System.err.println("Failed to delete User file. Status code: " + response.statusCode());
+                    System.err.println("Response body: " + response.body());
+                }
             }
-        } catch (IOException | InterruptedException e) {
-            System.err.println("Error during User file deletion: " + e.getMessage());
-            Thread.currentThread().interrupt();
+            catch (IOException | InterruptedException ex) {
+                System.err.println("Error during User file deletion: " + ex.getMessage());
+                Thread.currentThread().interrupt();
+            }
+        }
+        else {
+            System.err.println("User File key is empty. Cannot delete file.");
         }
     }
 
