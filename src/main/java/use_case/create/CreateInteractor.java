@@ -14,14 +14,16 @@ public class CreateInteractor implements CreateInputBoundary {
     private final CreateDataAccessInterface recipeDataAccessObject;
     private boolean recipesLoaded;
     private final RecipeFactory recipeFactory;
+    private final CreateUserDataAccessInterface userDataAccessObject;
 
     public CreateInteractor(CreateOutputBoundary createPresenter,
                             RecipeFactory recipeFactory,
-                            CreateDataAccessInterface recipeDataAccessInterface) {
+                            CreateDataAccessInterface recipeDataAccessInterface,
+                             CreateUserDataAccessInterface userDataAccessInterface) {
         this.createPresenter = createPresenter;
         this.recipeDataAccessObject = recipeDataAccessInterface;
         this.recipeFactory = recipeFactory;
-        recipesLoaded = false;
+        this.userDataAccessObject = userDataAccessInterface;
     }
 
     /**
@@ -43,6 +45,7 @@ public class CreateInteractor implements CreateInputBoundary {
             final Recipe recipeCreated = recipeFactory.createRecipe(id, createInputData.getDishname(), category,
                     createInputData.getInstruction(), createInputData.getIngredient(), 0, 0);
             recipeDataAccessObject.saveRecipe(recipeCreated);
+            userDataAccessObject.addCreatedRecipe(recipeCreated);
             final List<Recipe> updatedRecipe = recipeDataAccessObject.getCachedRecipes();
             recipeDataAccessObject.writeRecipesToFile(updatedRecipe);
             recipeDataAccessObject.deleteFileFromFileIo();

@@ -22,6 +22,7 @@ import entity.Recipe;
 import entity.User;
 import entity.UserFactory;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.create.CreateUserDataAccessInterface;
 import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
 import use_case.like_and_dislike_a_recipe.UserLikeAndDislikeDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
@@ -39,7 +40,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         UserLikeAndDislikeDataAccessInterface,
         FavoriteRecipeDataAccessInterface,
         ShoppingListDataAccessInterface,
-        LogoutUserDataAccessInterface {
+        LogoutUserDataAccessInterface,
+        CreateUserDataAccessInterface {
 
     private static final String FILE_IO_API_URL = "https://file.io";
     private static final String API_KEY = "35F52QF.ZQV4A4E-ASHMAQD-QSPTZ93-NHYCJT6";
@@ -424,4 +426,9 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         uploadFileToFileIo();
     }
 
+    @Override
+    public void addCreatedRecipe(Recipe recipe) {
+        final User currentUser = get(getCurrentUsername());
+        currentUser.addCreatedRecipe(recipe);
+    }
 }

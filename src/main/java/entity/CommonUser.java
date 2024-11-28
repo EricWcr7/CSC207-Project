@@ -39,6 +39,7 @@ public class CommonUser implements User {
     @Override
     public void addCreatedRecipe(Recipe recipe) {
         recipeCreated.add(recipe);
+        System.out.println("recipe added successfully");
     }
 
     @Override
