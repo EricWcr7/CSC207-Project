@@ -71,9 +71,12 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
     @Override
     public String findFileOnFileIo(String fileName) {
         try {
+            // Initialize recipeFileKey to null for a single return statement at the end
+            recipeFileKey = null;
+
             // Properly format the search URL with the provided file name
-            final String searchUrl = FILE_IO_API_URL + "/?search=" + URLEncoder.encode(fileName,
-                    StandardCharsets.UTF_8);
+            final String searchUrl = FILE_IO_API_URL + "/?search=" + URLEncoder.encode(
+                    fileName, StandardCharsets.UTF_8);
             final HttpClient client = HttpClient.newHttpClient();
             final HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(searchUrl))
@@ -85,33 +88,11 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
             final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == STATUS_CODE_OK) {
-                // Parse the response to find if the file exists
-                System.out.println("File.io search response: " + response.body());
-                final JsonElement jsonResponse = JsonParser.parseString(response.body());
-                final JsonObject responseObject = jsonResponse.getAsJsonObject();
-
-                // Correctly handle the response with "nodes" instead of "files"
+                // Parse the response
+                final JsonObject responseObject = JsonParser.parseString(response.body()).getAsJsonObject();
                 if (responseObject.has(NODES) && responseObject.get(NODES).isJsonArray()) {
                     final JsonArray nodesArray = responseObject.getAsJsonArray(NODES);
-
-                    for (JsonElement nodeElement : nodesArray) {
-                        if (nodeElement.isJsonObject()) {
-                            final JsonObject nodeObject = nodeElement.getAsJsonObject();
-
-                            if (nodeObject.has(NAME) && nodeObject.get(NAME).getAsString().equals(
-                                    fileName)) {
-                                if (nodeObject.has(KEY)) {
-                                    // Correctly index to get the key
-                                    recipeFileKey = nodeObject.get(KEY).getAsString();
-                                    System.out.println(
-                                            "File '" + fileName + "' found on File.io with key: " + recipeFileKey);
-                                }
-                                else {
-                                    System.out.println("File object found, but no key present for file: " + fileName);
-                                }
-                            }
-                        }
-                    }
+                    processNodes(nodesArray, fileName);
                 }
                 else {
                     System.out.println("No 'nodes' array found in the response. Response: " + response.body());
@@ -125,7 +106,29 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
             System.err.println("Error while searching for file on File.io: " + ex.getMessage());
             Thread.currentThread().interrupt();
         }
+
+        // Single return statement
         return recipeFileKey;
+    }
+
+    // Helper method to process nodes
+    private void processNodes(JsonArray nodesArray, String fileName) {
+        for (JsonElement nodeElement : nodesArray) {
+            if (nodeElement.isJsonObject()) {
+                final JsonObject nodeObject = nodeElement.getAsJsonObject();
+
+                if (nodeObject.has(NAME) && nodeObject.get(NAME).getAsString().equals(fileName)) {
+                    if (nodeObject.has(KEY)) {
+                        recipeFileKey = nodeObject.get(KEY).getAsString();
+                        System.out.println("File '" + fileName + "' found on File.io with key: " + recipeFileKey);
+                    }
+                    else {
+                        System.out.println("File object found, but no key present for file: " + fileName);
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     @Override
