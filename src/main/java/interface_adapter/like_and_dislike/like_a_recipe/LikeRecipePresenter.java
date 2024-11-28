@@ -5,6 +5,9 @@ import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import use_case.like_and_dislike_a_recipe.like.LikeRecipeOutputBoundary;
 import use_case.like_and_dislike_a_recipe.like.LikeRecipeOutputData;
 
+/**
+ * The Presenter for the Like a Recipe Use Case.
+ */
 public class LikeRecipePresenter implements LikeRecipeOutputBoundary {
     private final DisplayRecipeViewModel displayRecipeViewModel;
 
