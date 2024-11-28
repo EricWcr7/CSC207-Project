@@ -3,13 +3,18 @@ package interface_adapter.create;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The CreateState class represents the state of the "Create Recipe" view.
+ * It holds the data entered by the user, including the dish name, instructions,
+ * ingredients, and error messages. This class serves as a container for managing
+ * the input state of the recipe creation process.
+ */
 public class CreateState {
     private String dishName = "";
     private String instructions = "";
-    private Map<String, String> ingredients = new HashMap<>(); // Key: Ingredient Name, Value: Amount
+    private Map<String, String> ingredients = new HashMap<>();
     private String dishNameError;
 
-    // Getters and Setters
     public String getDishName() {
         return dishName;
     }
@@ -30,6 +35,15 @@ public class CreateState {
         return ingredients;
     }
 
+    /**
+     * Adds a single ingredient and its corresponding amount to the recipe.
+     * The ingredient name and amount are trimmed of whitespace before being added.
+     * If either the name or amount is null, empty, or consists only of whitespace,
+     * the ingredient will not be added.
+     *
+     * @param name   the name of the ingredient to add. Must not be null or empty.
+     * @param amount the quantity or measurement of the ingredient. Must not be null or empty.
+     */
     public void addIngredient(String name, String amount) {
         if (name != null && !name.trim().isEmpty() && amount != null && !amount.trim().isEmpty()) {
             ingredients.put(name.trim(), amount.trim());

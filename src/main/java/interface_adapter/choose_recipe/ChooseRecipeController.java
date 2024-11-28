@@ -8,7 +8,6 @@ import java.util.List;
 
 public class ChooseRecipeController {
 
-//    private final ChooseRecipeViewModel viewModel;
     private final ChooseRecipeInputBoundary chooseRecipeInteractor;
 
     public ChooseRecipeController(ChooseRecipeInputBoundary chooseRecipeInteractor) {
