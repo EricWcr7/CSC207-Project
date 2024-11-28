@@ -282,36 +282,63 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         for (int i = 0; i < mealsArray.size(); i++) {
             final JsonObject mealObject = mealsArray.get(i).getAsJsonObject();
 
-            final String id = mealObject.has(IDMEAL) && !mealObject.get(IDMEAL).isJsonNull()
-                    ? mealObject.get(IDMEAL).getAsString() : "";
-            final String name = mealObject.has(STRMEAL) && !mealObject.get(STRMEAL).isJsonNull()
-                    ? mealObject.get(STRMEAL).getAsString() : "";
-            final String category = mealObject.has(STRCATEGORY) && !mealObject.get(STRCATEGORY).isJsonNull()
-                    ? mealObject.get(STRCATEGORY).getAsString() : "";
-            final String instructions = mealObject.has(
-                    STRINSTRUCTIONS) && !mealObject.get(STRINSTRUCTIONS).isJsonNull()
-                    ? mealObject.get(STRINSTRUCTIONS).getAsString() : "";
+            // Process basic recipe fields
+            final String id = getJsonFieldAsString(mealObject, IDMEAL);
+            final String name = getJsonFieldAsString(mealObject, STRMEAL);
+            final String category = getJsonFieldAsString(mealObject, STRCATEGORY);
+            final String instructions = getJsonFieldAsString(mealObject, STRINSTRUCTIONS);
 
-            final Map<String, String> ingredientMeasureMap = new HashMap<>();
-            for (int j = 1; j <= TWENTY; j++) {
-                final String ingredientKey = "strIngredient" + j;
-                final String measureKey = "strMeasure" + j;
+            // Process ingredient and measure map
+            final Map<String, String> ingredientMeasureMap = extractIngredientMeasureMap(mealObject);
 
-                final String ingredient = mealObject.has(ingredientKey) && !mealObject.get(ingredientKey).isJsonNull()
-                        ? mealObject.get(ingredientKey).getAsString() : "";
-                final String measure = mealObject.has(measureKey) && !mealObject.get(measureKey).isJsonNull()
-                        ? mealObject.get(measureKey).getAsString() : "";
-
-                if (!ingredient.isEmpty()) {
-                    ingredientMeasureMap.put(ingredient, measure);
-                }
-            }
+            // Create a recipe using the factory
             final RecipeFactory recipeFactory = new CommonRecipeFactory();
-            final Recipe recipe = recipeFactory.createRecipe(id, name, category, instructions, ingredientMeasureMap,
-                    0, 0);
+            final Recipe recipe = recipeFactory.createRecipe(id, name, category, instructions, ingredientMeasureMap, 0, 0);
             recipes.add(recipe);
         }
+
         return recipes;
+    }
+
+    /**
+     * Retrieves the value of a JSON field as a string, handling null values.
+     *
+     * @param jsonObject the JsonObject to check
+     * @param fieldName  the name of the field
+     * @return the field value as a string, or an empty string if not present or null
+     */
+    private String getJsonFieldAsString(JsonObject jsonObject, String fieldName) {
+        String result = "";
+
+        if (jsonObject.has(fieldName) && !jsonObject.get(fieldName).isJsonNull()) {
+            result = jsonObject.get(fieldName).getAsString();
+        }
+
+        return result;
+    }
+
+    /**
+     * Extracts the ingredient and measure map from a meal JsonObject.
+     *
+     * @param mealObject the JsonObject containing meal data
+     * @return a map of ingredients to their corresponding measures
+     */
+    private Map<String, String> extractIngredientMeasureMap(JsonObject mealObject) {
+        final Map<String, String> ingredientMeasureMap = new HashMap<>();
+
+        for (int j = 1; j <= TWENTY; j++) {
+            final String ingredientKey = "strIngredient" + j;
+            final String measureKey = "strMeasure" + j;
+
+            final String ingredient = getJsonFieldAsString(mealObject, ingredientKey);
+            final String measure = getJsonFieldAsString(mealObject, measureKey);
+
+            if (!ingredient.isEmpty()) {
+                ingredientMeasureMap.put(ingredient, measure);
+            }
+        }
+
+        return ingredientMeasureMap;
     }
 
     @Override
