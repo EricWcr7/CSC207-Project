@@ -12,10 +12,14 @@ public interface FavoriteRecipeOutputBoundary {
     void prepareSuccessView(FavoriteRecipeOutputData outputData);
 
     /**
-     * Prepares the failure view for the Login Use Case.
+     * Prepares the failure view for the FavoriteRecipe Use Case.
      * @param errorMessage the explanation of the failure
      */
     void prepareFailureView(String errorMessage);
 
+    /**
+     * Prepares the switchToShoppingListView for the FavoriteRecipe Use Case.
+     * @param outputData the output data
+     */
     void switchToShoppingListView(FavoriteRecipeOutputData outputData);
 }

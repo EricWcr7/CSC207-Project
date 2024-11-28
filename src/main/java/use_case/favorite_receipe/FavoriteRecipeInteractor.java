@@ -1,9 +1,9 @@
 package use_case.favorite_receipe;
 
+import java.util.Arrays;
+
 import entity.User;
 import use_case.shopping_list.ShoppingListDataAccessInterface;
-
-import java.util.Arrays;
 
 /**
  * The FavoriteRecipe Interactor.
@@ -28,8 +28,10 @@ public class FavoriteRecipeInteractor implements FavoriteRecipeInputBoundary {
         final User user = favoriteRecipeDataAccessObject.get(username);
         user.setFavoriteRecipes(favoriteRecipes);
         favoriteRecipeDataAccessObject.updateUserFavoriteRecipes(user);
-        System.out.println("Current account in InMemoryUserDataAccessObject: " + favoriteRecipeDataAccessObject.get(username).getName());
-        System.out.println("Current favoriteRecipes in InMemoryUserDataAccessObject: " + Arrays.toString(favoriteRecipeDataAccessObject.get(username).getFavoriteRecipes()));
+        System.out.println("Current account in InMemoryUserDataAccessObject: "
+                + favoriteRecipeDataAccessObject.get(username).getName());
+        System.out.println("Current favoriteRecipes in InMemoryUserDataAccessObject: "
+                + Arrays.toString(favoriteRecipeDataAccessObject.get(username).getFavoriteRecipes()));
     }
 
     @Override

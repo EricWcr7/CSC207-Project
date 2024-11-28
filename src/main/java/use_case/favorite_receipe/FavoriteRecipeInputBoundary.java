@@ -6,10 +6,14 @@ package use_case.favorite_receipe;
 public interface FavoriteRecipeInputBoundary {
 
     /**
-     * Executes the login use case.
+     * Executes the FavoriteRecipe use case.
      * @param favoriteRecipeInputData the input data
      */
     void execute(FavoriteRecipeInputData favoriteRecipeInputData);
 
+    /**
+     * Executes the switchToShoppingListView method in FavoriteRecipe use case.
+     * @param favoriteRecipeInputData the input data
+     */
     void switchToShoppingListView(FavoriteRecipeInputData favoriteRecipeInputData);
 }
