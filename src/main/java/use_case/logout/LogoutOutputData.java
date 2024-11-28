@@ -1,7 +1,10 @@
 package use_case.logout;
 
 /**
- * Output Data for the Logout Use Case.
+ * Represents the output data for the Logout Use Case.
+ * This class encapsulates the result of a user's logout request, including the username of the user
+ * and a flag indicating whether the logout process failed. It serves as a data transfer object
+ * between the interactor and the presenter.
  */
 public class LogoutOutputData {
 
@@ -9,15 +12,24 @@ public class LogoutOutputData {
     private boolean useCaseFailed;
 
     public LogoutOutputData(String username, boolean useCaseFailed) {
-        // TODO: save the parameters in the instance variables.
         this.username = username;
         this.useCaseFailed = useCaseFailed;
     }
 
+    /**
+     * Gets the username of the user attempting to log out.
+     *
+     * @return the username of the user
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Checks whether the logout process failed.
+     *
+     * @return {@code true} if the logout process failed, {@code false} otherwise
+     */
     public boolean isUseCaseFailed() {
         return useCaseFailed;
     }

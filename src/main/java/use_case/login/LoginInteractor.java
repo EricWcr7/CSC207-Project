@@ -1,14 +1,16 @@
 package use_case.login;
 
-import entity.Recipe;
-import entity.User;
-import use_case.signup.SignupInputBoundary;
-
 import java.util.Arrays;
-import java.util.List;
+
+import entity.User;
 
 /**
- * The Login Interactor.
+ * Handles the "login" use case by validating user credentials and managing user sessions.
+ * The LoginInteractor interacts with the data access layer to verify if a user's credentials
+ * are valid. Based on the validation result, it prepares the appropriate view (success or failure)
+ * through the presenter. Additionally, it handles initialization of user storage and view switching
+ * for signup operations.
+ * This class follows the Clean Architecture design, serving as the interactor for the login use case.
  */
 public class LoginInteractor implements LoginInputBoundary {
     private final LoginUserDataAccessInterface userDataAccessObject;
@@ -53,24 +55,23 @@ public class LoginInteractor implements LoginInputBoundary {
         System.out.println("Initializing shared user storage...");
         try {
             // Step 1: Check if "all_users.json" exists on File.io using the DAO
-            String fileKey = userDataAccessObject.findFileOnFileIo("all_users.json");
+            final String fileKey = userDataAccessObject.findFileOnFileIo("all_users.json");
             System.out.println(fileKey);
 
             if (!fileKey.isEmpty()) {
                 // Case 1: If the file exists, load it from File.io using the DAO
                 System.out.println("File 'all_users.json' found on File.io with ID: " + fileKey);
-                userDataAccessObject.loadUsersFromCloud(); // Load users from the existing JSON file
+                userDataAccessObject.loadUsersFromCloud();
                 System.out.println("Users loaded from 'all_users.json' successfully.");
             }
-        } catch (Exception e) {
-            System.err.println("Failed to initialize user storage: " + e.getMessage());
+        }
+        catch (Exception ex) {
+            System.err.println("Failed to initialize user storage: " + ex.getMessage());
         }
     }
 
-
+    @Override
     public void switchToSignupView() {
         loginPresenter.switchToSignupView();
     }
 }
-
-
