@@ -15,7 +15,7 @@ public class DeleteInteractor implements DeleteInputBoundary {
     private final DeleteOutputBoundary deletePresenter;
 
     // DAO for interacting with recipe data storage (e.g., local and cloud JSON files)
-    private final RecipeDataAccessObject recipeDataAccessObject;
+    private final DeleteDataAccessInterface recipeDataAccessObject;
 
     /**
      * Constructor for DeleteInteractor.
