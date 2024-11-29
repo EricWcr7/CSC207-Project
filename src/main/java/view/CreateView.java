@@ -1,5 +1,26 @@
 package view;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+
+import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -7,19 +28,6 @@ import interface_adapter.BackToEditView.BackToEditViewController;
 import interface_adapter.create.CreateController;
 import interface_adapter.create.CreateState;
 import interface_adapter.create.CreateViewModel;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * The CreateView class represents the "Create Recipe" view in the application.
@@ -50,14 +58,14 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         this.createViewModel.addPropertyChangeListener(this);
         this.setLayout(new BorderLayout());
         final JLabel titleLabel = new JLabel("Create recipe", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, CreateViewModel.FONT_SIZE));
         this.add(titleLabel, BorderLayout.NORTH);
         final JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         final JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         final JLabel nameLabel = new JLabel("Dish name:");
-        nameField = new JTextField(20);
-        nameField.setPreferredSize(new Dimension(300, 25));
+        nameField = new JTextField(CreateViewModel.INSTRUCTIONS_AREA_COLUMNS);
+        nameField.setPreferredSize(new Dimension(CreateViewModel.NAME_FIELD_WIDTH, CreateViewModel.NAME_FIELD_HEIGHT));
         namePanel.add(nameLabel);
         namePanel.add(nameField);
         nameField.getDocument().addDocumentListener(new DocumentListener() {
@@ -90,7 +98,8 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         // Scroll pane to make the ingredients panel scrollable
         final JScrollPane introScrollPane = new JScrollPane(introPanel);
         introScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        introScrollPane.setPreferredSize(new Dimension(400, 150));
+        introScrollPane.setPreferredSize(new Dimension(CreateViewModel.INGREDIENT_SCROLL_WIDTH,
+                CreateViewModel.INGREDIENT_SCROLL_HEIGHT));
 
         // Panel for adding dynamic input rows
         ingredientRowsPanel.setLayout(new BoxLayout(ingredientRowsPanel, BoxLayout.Y_AXIS));
@@ -100,13 +109,13 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         final JButton addIngredientButton = new JButton("Add Ingredient");
         addIngredientButton.addActionListener(evt -> addIngredientRow());
 
-        introPanel.add(Box.createVerticalStrut(10)); // Add spacing
+        introPanel.add(Box.createVerticalStrut(CreateViewModel.BUTTON_GAP));
         introPanel.add(addIngredientButton);
 
         // Instructions panel
         final JPanel cookPanel = new JPanel(new BorderLayout());
         final JLabel cookLabel = new JLabel("Instructions:");
-        cookArea = new JTextArea(3, 20);
+        cookArea = new JTextArea(CreateViewModel.INSTRUCTIONS_AREA_ROWS, CreateViewModel.INSTRUCTIONS_AREA_COLUMNS);
         cookArea.setLineWrap(true);
         cookArea.setWrapStyleWord(true);
         cookPanel.add(cookLabel, BorderLayout.NORTH);
@@ -139,9 +148,9 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         // Add sub-panels to mainPanel
         mainPanel.add(dishNameErrorField);
         mainPanel.add(namePanel);
-        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(Box.createVerticalStrut(CreateViewModel.BUTTON_GAP));
         mainPanel.add(introScrollPane);
-        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(Box.createVerticalStrut(CreateViewModel.BUTTON_GAP));
         mainPanel.add(cookPanel);
 
         this.add(mainPanel, BorderLayout.CENTER);
@@ -187,7 +196,7 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         final JTextField ingredientAmountField = new JTextField(10);
         final JButton deleteButton = new JButton("Delete");
 
-        deleteButton.addActionListener(e -> {
+        deleteButton.addActionListener(event -> {
             ingredientRowsPanel.remove(newRow);
             updateIngredientsState();
             ingredientRowsPanel.revalidate();
@@ -391,51 +400,32 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
                 // Attempt to read the existing "new_recipes.json" file
                 reader = new FileReader("new_recipes.json");
                 jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
-                // Parse the JSON content
                 recipesArray = jsonObject.getAsJsonArray("recipes");
-                // Get the "recipes" array
                 reader.close();
-                // Close the file reader
             }
-            catch (IOException e) {
-                // If the file does not exist, create a new JSON structure
+            catch (IOException ioException) {
                 jsonObject = new JsonObject();
-                // Create the root JSON object
                 recipesArray = new JsonArray();
-                // Create an empty JSON array for recipes
                 jsonObject.add("recipes", recipesArray);
-                // Add the array to the root object
             }
-
-            // Create a new JSON object to represent the recipe
             final JsonObject newRecipe = new JsonObject();
             newRecipe.addProperty("name", dishName);
-            // Add the dish name to the recipe
             newRecipe.addProperty("instructions", instructions);
-            // Add the instructions to the recipe
 
-            // Add the ingredients as a JSON object
             final JsonObject ingredientsObject = new JsonObject();
             for (String ingredient : ingredients.keySet()) {
                 ingredientsObject.addProperty(ingredient, ingredients.get(ingredient));
-                // Add each ingredient and its quantity
             }
             newRecipe.add("ingredients", ingredientsObject);
-            // Add the ingredients object to the recipe
 
-            // Add the new recipe to the recipes array
             recipesArray.add(newRecipe);
 
-            // Write the updated JSON structure back to the file
             final FileWriter writer = new FileWriter("new_recipes.json");
             writer.write(jsonObject.toString());
-            // Convert the JSON structure to a string
             writer.close();
-            // Close the file writer
         }
-        catch (IOException e) {
-            e.printStackTrace();
-            // Print the error stack trace for debugging
+        catch (IOException ioException) {
+            ioException.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error saving to new_recipes.json!");
         }
     }
