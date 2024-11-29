@@ -27,7 +27,6 @@ public class Main {
                 .addShoppingListView()
                 .addSignupUseCase()
                 .addLoginUseCase()
-                .addChangePasswordUseCase()
                 .addLogoutUseCase()
                 .addRecipeSearchUseCase()
                 .addChooseRecipeUseCase()

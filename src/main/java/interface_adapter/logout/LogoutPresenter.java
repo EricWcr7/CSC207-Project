@@ -1,13 +1,10 @@
 package interface_adapter.logout;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.recipe_search.RecipeSearchViewModel;
 import use_case.logout.LogoutOutputBoundary;
-import use_case.logout.LogoutOutputData;
 
 /**
  * The Presenter for the Logout Use Case.

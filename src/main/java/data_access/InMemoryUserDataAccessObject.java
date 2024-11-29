@@ -26,7 +26,6 @@ import entity.CommonUserFactory;
 import entity.Recipe;
 import entity.User;
 import entity.UserFactory;
-import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.create_recipe.CreateRecipeUserDataAccessInterface;
 import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
 import use_case.like_and_dislike_a_recipe.UserLikeAndDislikeDataAccessInterface;
@@ -41,7 +40,6 @@ import use_case.signup.SignupUserDataAccessInterface;
  */
 public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
-        ChangePasswordUserDataAccessInterface,
         UserLikeAndDislikeDataAccessInterface,
         FavoriteRecipeDataAccessInterface,
         ShoppingListUserDataAccessInterface,
@@ -409,15 +407,6 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public User get(String userName) {
         return users.get(userName);
-    }
-
-    @Override
-    public void changePassword(User user) {
-        // Replace the old entry with the new password
-        users.put(user.getName(), user);
-        deleteFileFromFileIo();
-        writeUsersToFile(users);
-        uploadFileToFileIo();
     }
 
     @Override
