@@ -1,4 +1,4 @@
-package interface_adapter.create;
+package interface_adapter.create_recipe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import java.util.Map;
  * ingredients, and error messages. This class serves as a container for managing
  * the input state of the recipe creation process.
  */
-public class CreateState {
+public class CreateRecipeState {
     private String dishName = "";
     private String instructions = "";
     private Map<String, String> ingredients = new HashMap<>();

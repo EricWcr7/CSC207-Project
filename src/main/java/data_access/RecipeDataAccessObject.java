@@ -27,7 +27,7 @@ import entity.Recipe;
 import entity.RecipeFactory;
 import entity.User;
 import use_case.choose_recipe.ChooseRecipeDataAccessInterface;
-import use_case.create.CreateDataAccessInterface;
+import use_case.create_recipe.CreateRecipeDataAccessInterface;
 import use_case.delete.DeleteDataAccessInterface;
 import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeDataAccessInterface;
 import use_case.recipe_search.RecipeSearchDataAccessInterface;
@@ -39,7 +39,7 @@ import use_case.shopping_list.ShoppingListDataAccessInterface;
 public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         ChooseRecipeDataAccessInterface,
         LikeAndDislikeRecipeDataAccessInterface,
-        CreateDataAccessInterface,
+        CreateRecipeDataAccessInterface,
         ShoppingListDataAccessInterface,
         DeleteDataAccessInterface {
 

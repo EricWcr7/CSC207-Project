@@ -21,9 +21,9 @@ import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuPresenter;
 import interface_adapter.change_password.*;
 import interface_adapter.choose_recipe.*;
-import interface_adapter.create.CreateController;
-import interface_adapter.create.CreatePresenter;
-import interface_adapter.create.CreateViewModel;
+import interface_adapter.create_recipe.CreateRecipeController;
+import interface_adapter.create_recipe.CreateRecipeRecipePresenter;
+import interface_adapter.create_recipe.CreateRecipeViewModel;
 import interface_adapter.delete.DeleteController;
 import interface_adapter.delete.DeletePresenter;
 import interface_adapter.delete.DeleteViewModel;
@@ -55,9 +55,9 @@ import use_case.change_password.*;
 import use_case.choose_recipe.ChooseRecipeInputBoundary;
 import use_case.choose_recipe.ChooseRecipeInteractor;
 import use_case.choose_recipe.ChooseRecipeOutputBoundary;
-import use_case.create.CreateInputBoundary;
-import use_case.create.CreateInteractor;
-import use_case.create.CreateOutputBoundary;
+import use_case.create_recipe.CreateRecipeInputBoundary;
+import use_case.create_recipe.CreateRecipeInteractor;
+import use_case.create_recipe.CreateRecipeOutputBoundary;
 import use_case.delete.DeleteInputBoundary;
 import use_case.delete.DeleteInteractor;
 import use_case.delete.DeleteOutputBoundary;
@@ -111,7 +111,7 @@ public class AppBuilder {
     private EditView editView;
     private EditViewModel editViewModel;
     private CreateView createView;
-    private CreateViewModel createViewModel;
+    private CreateRecipeViewModel createRecipeViewModel;
     private ShoppingListView shoppingListView;
     private ShoppingListViewModel shoppingListViewModel;
     private DeleteViewModel deleteViewModel;
@@ -286,8 +286,8 @@ public class AppBuilder {
      * @return the current {@link AppBuilder} instance, allowing for method chaining
      */
     public AppBuilder addCreateView() {
-        createViewModel = new CreateViewModel();
-        createView = new CreateView(createViewModel, editView);
+        createRecipeViewModel = new CreateRecipeViewModel();
+        createView = new CreateView(createRecipeViewModel, editView);
         System.out.println("Adding Create View with name: " + createView.getViewName());
         cardPanel.add(createView, createView.getViewName());
         return this;
@@ -425,7 +425,7 @@ public class AppBuilder {
      */
     public AppBuilder addBackToEditViewUsecase() {
         final BackToEditViewOutputBoundary backToEditViewOutputBoundary = new BackToEditViewPresenter(viewManagerModel,
-                editViewModel, createViewModel);
+                editViewModel, createRecipeViewModel);
 
         final BackToEditViewInputBoundary backToEditViewInteractor =
                 new BackToEditViewInteractor(backToEditViewOutputBoundary);
@@ -529,7 +529,7 @@ public class AppBuilder {
      * @return the current {@link AppBuilder} instance, allowing for method chaining
      */
     public AppBuilder addEditUseCase() {
-        final EditOutputBoundary editOutputBoundary = new EditPresenter(viewManagerModel, createViewModel, editViewModel);
+        final EditOutputBoundary editOutputBoundary = new EditPresenter(viewManagerModel, createRecipeViewModel, editViewModel);
 
         final EditInputBoundary editInteractor = new EditInteractor(editOutputBoundary);
         final EditController editController = new EditController(editInteractor);
@@ -546,11 +546,11 @@ public class AppBuilder {
      * @return the current {@link AppBuilder} instance, allowing for method chaining
      */
     public AppBuilder addCreateUseCase() {
-        final CreateOutputBoundary createOutputBoundary = new CreatePresenter(viewManagerModel, recipeSearchViewModel, createViewModel);
-        final CreateInputBoundary createInteractor = new CreateInteractor(createOutputBoundary, recipeFactory, recipeDataAccessObject, userDataAccessObject);
+        final CreateRecipeOutputBoundary createRecipeOutputBoundary = new CreateRecipeRecipePresenter(viewManagerModel, recipeSearchViewModel, createRecipeViewModel);
+        final CreateRecipeInputBoundary createInteractor = new CreateRecipeInteractor(createRecipeOutputBoundary, recipeFactory, recipeDataAccessObject, userDataAccessObject);
 
-        final CreateController createController = new CreateController(createInteractor);
-        createView.setCreateController(createController);
+        final CreateRecipeController createRecipeController = new CreateRecipeController(createInteractor);
+        createView.setCreateController(createRecipeController);
         return this;
     }
 

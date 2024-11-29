@@ -1,4 +1,4 @@
-package use_case.create;
+package use_case.create_recipe;
 
 import entity.Recipe;
 
@@ -6,7 +6,7 @@ import entity.Recipe;
  * The CreateUserDataAccessInterface defines the contract for managing user-created recipes
  * in the data access layer. It provides methods for storing and managing recipes created by the user.
  */
-public interface CreateUserDataAccessInterface {
+public interface CreateRecipeUserDataAccessInterface {
 
     /**
      * Adds a newly created recipe to the data storage.

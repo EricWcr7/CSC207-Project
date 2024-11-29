@@ -1,8 +1,8 @@
 package interface_adapter.BackToEditView;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.create.CreateState;
-import interface_adapter.create.CreateViewModel;
+import interface_adapter.create_recipe.CreateRecipeState;
+import interface_adapter.create_recipe.CreateRecipeViewModel;
 import interface_adapter.edit.EditViewModel;
 import use_case.backToEditView.BackToEditViewOutputBoundary;
 
@@ -12,25 +12,25 @@ public class BackToEditViewPresenter implements BackToEditViewOutputBoundary {
 
     private ViewManagerModel viewManagerModel;
     private EditViewModel editViewModel;
-    private CreateViewModel createViewModel;
+    private CreateRecipeViewModel createRecipeViewModel;
 
     public BackToEditViewPresenter(ViewManagerModel viewManagerModel,
                                    EditViewModel editViewModel,
-                                   CreateViewModel createViewModel) {
+                                   CreateRecipeViewModel createRecipeViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.editViewModel = editViewModel;
-        this.createViewModel = createViewModel;
+        this.createRecipeViewModel = createRecipeViewModel;
     }
 
     @Override
     public void backToEditRecipeView() {
-        final CreateState currentState = createViewModel.getState();
+        final CreateRecipeState currentState = createRecipeViewModel.getState();
         currentState.setDishNameError("");
         currentState.setDishName("");
         currentState.setInstructions("");
         currentState.setIngredients(new HashMap<String, String>());
-        this.createViewModel.setState(currentState);
-        this.createViewModel.firePropertyChanged("Back to search");
+        this.createRecipeViewModel.setState(currentState);
+        this.createRecipeViewModel.firePropertyChanged("Back to search");
 
         this.viewManagerModel.setState(editViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
