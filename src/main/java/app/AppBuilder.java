@@ -12,7 +12,7 @@ import data_access.FavoriteRecipeDataAccessObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import data_access.InMemoryRecipeUserDataAccessObject;
-import data_access.RecipeRecipeDataAccessObject;
+import data_access.RecipeDataAccessObject;
 import entity.*;
 import interface_adapter.*;
 import interface_adapter.BackToEditView.BackToEditViewController;
@@ -91,7 +91,7 @@ public class AppBuilder {
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private final InMemoryRecipeUserDataAccessObject userDataAccessObject = new InMemoryRecipeUserDataAccessObject();
-    private final RecipeRecipeDataAccessObject recipeDataAccessObject = new RecipeRecipeDataAccessObject();
+    private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
     private final FavoriteRecipeDataAccessObject favoriteRecipeDataAccessObject = new FavoriteRecipeDataAccessObject();
 
     private SignupView signupView;

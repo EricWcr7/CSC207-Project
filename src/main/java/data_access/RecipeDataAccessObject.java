@@ -36,7 +36,7 @@ import use_case.shopping_list.ShoppingListDataAccessInterface;
 /**
  * DAO for the RecipeSearch Use Case.
  */
-public class RecipeRecipeDataAccessObject implements RecipeSearchDataAccessInterface,
+public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         ChooseRecipeDataAccessInterface,
         LikeAndDislikeRecipeDataAccessInterface,
         CreateRecipeDataAccessInterface,
