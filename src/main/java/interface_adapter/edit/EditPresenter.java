@@ -1,26 +1,26 @@
 package interface_adapter.edit;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.create.CreateViewModel;
+import interface_adapter.create_recipe.CreateRecipeViewModel;
 import use_case.edit.EditOutputBoundary;
 
 public class EditPresenter implements EditOutputBoundary {
     private final EditViewModel editViewModel;
-    private final CreateViewModel createViewModel;
+    private final CreateRecipeViewModel createRecipeViewModel;
     private final ViewManagerModel viewManagerModel;
 
     public EditPresenter(ViewManagerModel viewManagerModel,
-                         CreateViewModel createViewModel,
+                         CreateRecipeViewModel createRecipeViewModel,
                          EditViewModel editViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.editViewModel = editViewModel;
-        this.createViewModel = createViewModel;
+        this.createRecipeViewModel = createRecipeViewModel;
     }
 
 
     @Override
     public void showCreateView() {
-        viewManagerModel.setState(createViewModel.getViewName());
+        viewManagerModel.setState(createRecipeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 }

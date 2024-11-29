@@ -1,10 +1,10 @@
-package interface_adapter.create;
+package interface_adapter.create_recipe;
 
 import java.util.HashMap;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.recipe_search.RecipeSearchViewModel;
-import use_case.create.CreateOutputBoundary;
+import use_case.create_recipe.CreateRecipeOutputBoundary;
 
 /**
  * The CreatePresenter class serves as the presenter in the "Create Recipe" use case.
@@ -12,36 +12,36 @@ import use_case.create.CreateOutputBoundary;
  * based on the outcome of the recipe creation process. It implements the
  *  CreateOutputBoundary interface to handle success and failure scenarios.
  */
-public class CreatePresenter implements CreateOutputBoundary {
+public class CreateRecipeRecipePresenter implements CreateRecipeOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final RecipeSearchViewModel recipeSearchViewModel;
-    private final CreateViewModel createViewModel;
+    private final CreateRecipeViewModel createRecipeViewModel;
 
-    public CreatePresenter(ViewManagerModel viewManagerModel, RecipeSearchViewModel recipeSearchViewModel,
-                           CreateViewModel createViewModel) {
+    public CreateRecipeRecipePresenter(ViewManagerModel viewManagerModel, RecipeSearchViewModel recipeSearchViewModel,
+                                       CreateRecipeViewModel createRecipeViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.recipeSearchViewModel = recipeSearchViewModel;
-        this.createViewModel = createViewModel;
+        this.createRecipeViewModel = createRecipeViewModel;
     }
 
     @Override
     public void prepareSuccessView() {
-        final CreateState currentState = createViewModel.getState();
+        final CreateRecipeState currentState = createRecipeViewModel.getState();
         currentState.setDishNameError("");
         currentState.setDishName("");
         currentState.setInstructions("");
         currentState.setIngredients(new HashMap<String, String>());
-        this.createViewModel.setState(currentState);
-        this.createViewModel.firePropertyChanged("create recipe");
+        this.createRecipeViewModel.setState(currentState);
+        this.createRecipeViewModel.firePropertyChanged("create recipe");
         viewManagerModel.setState(recipeSearchViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailureView() {
-        final CreateState currentState = createViewModel.getState();
+        final CreateRecipeState currentState = createRecipeViewModel.getState();
         currentState.setDishNameError("Recipe Name already exists, please choose another one");
-        createViewModel.firePropertyChanged("dishNameError");
+        createRecipeViewModel.firePropertyChanged("dishNameError");
     }
 
 }

@@ -1,4 +1,4 @@
-package use_case.create;
+package use_case.create_recipe;
 
 import java.util.List;
 
@@ -9,17 +9,17 @@ import entity.RecipeFactory;
  * Interactor class for the Create Use Case.
  * Handles the business logic for creating a new recipe.
  */
-public class CreateInteractor implements CreateInputBoundary {
-    private final CreateOutputBoundary createPresenter;
-    private final CreateDataAccessInterface recipeDataAccessObject;
+public class CreateRecipeInteractor implements CreateRecipeInputBoundary {
+    private final CreateRecipeOutputBoundary createPresenter;
+    private final CreateRecipeDataAccessInterface recipeDataAccessObject;
     private boolean recipesLoaded;
     private final RecipeFactory recipeFactory;
-    private final CreateUserDataAccessInterface userDataAccessObject;
+    private final CreateRecipeUserDataAccessInterface userDataAccessObject;
 
-    public CreateInteractor(CreateOutputBoundary createPresenter,
-                            RecipeFactory recipeFactory,
-                            CreateDataAccessInterface recipeDataAccessInterface,
-                             CreateUserDataAccessInterface userDataAccessInterface) {
+    public CreateRecipeInteractor(CreateRecipeOutputBoundary createPresenter,
+                                  RecipeFactory recipeFactory,
+                                  CreateRecipeDataAccessInterface recipeDataAccessInterface,
+                                  CreateRecipeUserDataAccessInterface userDataAccessInterface) {
         this.createPresenter = createPresenter;
         this.recipeDataAccessObject = recipeDataAccessInterface;
         this.recipeFactory = recipeFactory;
@@ -27,7 +27,7 @@ public class CreateInteractor implements CreateInputBoundary {
     }
 
     @Override
-    public void execute(CreateInputData createInputData) {
+    public void execute(CreateRecipeInputData createRecipeInputData) {
         if (!recipesLoaded) {
             System.out.println("Loading recipes from cloud");
             recipeDataAccessObject.loadRecipesFromCloud();
@@ -36,9 +36,9 @@ public class CreateInteractor implements CreateInputBoundary {
         // type need to be fixed later
         final String id = recipeDataAccessObject.getMaxId() + 1;
         final String category = "created by user";
-        if (!recipeDataAccessObject.isNameInRecipes(createInputData.getDishname())) {
-            final Recipe recipeCreated = recipeFactory.createRecipe(id, createInputData.getDishname(), category,
-                    createInputData.getInstruction(), createInputData.getIngredient(), 0, 0);
+        if (!recipeDataAccessObject.isNameInRecipes(createRecipeInputData.getDishname())) {
+            final Recipe recipeCreated = recipeFactory.createRecipe(id, createRecipeInputData.getDishname(), category,
+                    createRecipeInputData.getInstruction(), createRecipeInputData.getIngredient(), 0, 0);
             recipeDataAccessObject.saveRecipe(recipeCreated);
             userDataAccessObject.addCreatedRecipe(recipeCreated);
             final List<Recipe> updatedRecipe = recipeDataAccessObject.getCachedRecipes();

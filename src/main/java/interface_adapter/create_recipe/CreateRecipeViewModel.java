@@ -1,4 +1,4 @@
-package interface_adapter.create;
+package interface_adapter.create_recipe;
 
 import interface_adapter.ViewModel;
 
@@ -7,7 +7,7 @@ import interface_adapter.ViewModel;
  * for the "Create Recipe" view in the application. It initializes the view model
  * with a default state and provides constants for the UI labels and dimensions.
  */
-public class CreateViewModel extends ViewModel<CreateState> {
+public class CreateRecipeViewModel extends ViewModel<CreateRecipeState> {
 
     public static final String TITLE_LABEL = "Create Recipe";
     public static final String DISH_NAME_LABEL = "Dish Name:";
@@ -26,8 +26,8 @@ public class CreateViewModel extends ViewModel<CreateState> {
     public static final int FONT_SIZE = 16;
     public static final int BUTTON_GAP = 10;
 
-    public CreateViewModel() {
+    public CreateRecipeViewModel() {
         super("Create recipe");
-        setState(new CreateState());
+        setState(new CreateRecipeState());
     }
 }
