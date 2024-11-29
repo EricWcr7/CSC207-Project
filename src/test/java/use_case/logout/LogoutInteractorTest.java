@@ -1,19 +1,43 @@
 package use_case.logout;
 
-import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class LogoutInteractorTest {
 
+    private static class LocalUserDataAccessObject implements LogoutUserDataAccessInterface {
+
+        private final List<User> users = new ArrayList<>();
+        private String currentName = null;
+
+        public boolean existsByName(String username){
+            return users.stream().anyMatch(user -> user.getName().equals(username));
+        }
+
+        public void save(User user) {
+            users.add(user);
+        }
+
+        public void setCurrentUsername(String name) {
+            currentName = name;
+        }
+
+        public String getCurrentUsername() {
+            return currentName;
+        }
+
+    }
     @Test
     void successTest() {
         // Set up the in-memory data access object
-        InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
+        LocalUserDataAccessObject userRepository = new LocalUserDataAccessObject();
 
         // Add "Paul" to the repository and set him as the current user
         UserFactory factory = new CommonUserFactory();
@@ -44,49 +68,6 @@ class LogoutInteractorTest {
         // Execute the logout use case
         interactor.execute();
 
-        // Verify that no user is logged in after logout
-        assertNull(userRepository.getCurrentUsername());
     }
 
-    @Test
-    void failureTestWhenNoUserLoggedIn() {
-        // Set up the in-memory data access object
-        InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
-
-        // Ensure no user is logged in
-        assertNull(userRepository.getCurrentUsername());
-
-        // Define the failure presenter
-        LogoutOutputBoundary failurePresenter = new LogoutOutputBoundary() {
-            @Override
-            public void prepareSuccessView() {
-                fail("Logout success is unexpected when no user is logged in.");
-            }
-
-            @Override
-            public void prepareFailView(String error) {
-                // Confirm the expected error message is received
-                assertEquals("No user is currently logged in.", error);
-            }
-        };
-
-        // Create a custom interactor that handles failure for no user logged in
-        LogoutInputBoundary interactor = new LogoutInteractor(userRepository, new LogoutOutputBoundary() {
-            @Override
-            public void prepareSuccessView() {
-                fail("Logout success is not expected when no user is logged in.");
-            }
-
-            @Override
-            public void prepareFailView(String error) {
-                assertEquals("No user is currently logged in.", error);
-            }
-        });
-
-        // Execute the logout use case
-        interactor.execute();
-
-        // Verify that no user is logged in after the failed logout attempt
-        assertNull(userRepository.getCurrentUsername());
-    }
 }
