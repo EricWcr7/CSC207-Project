@@ -1,4 +1,4 @@
-package use_case.create;
+package use_case.create_recipe;
 
 import java.util.Map;
 
@@ -6,7 +6,7 @@ import java.util.Map;
  * Data transfer object for the Create Use Case.
  * Represents the input data required to create a new recipe.
  */
-public class CreateInputData {
+public class CreateRecipeInputData {
 
     // The name of the dish to be created
     private final String dishname;
@@ -27,7 +27,7 @@ public class CreateInputData {
      * @param ingredient  A map of ingredients and their respective quantities
      *      (e.g., {"Pasta": "200g", "Tomato Sauce": "100ml"}).
      */
-    public CreateInputData(String dishname, String instruction, Map<String, String> ingredient) {
+    public CreateRecipeInputData(String dishname, String instruction, Map<String, String> ingredient) {
         this.dishname = dishname;
         // Assign the dish name
         this.instruction = instruction;

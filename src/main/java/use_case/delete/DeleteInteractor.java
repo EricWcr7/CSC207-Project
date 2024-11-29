@@ -2,7 +2,7 @@ package use_case.delete;
 
 import java.util.List;
 
-import data_access.RecipeDataAccessObject;
+import data_access.RecipeRecipeDataAccessObject;
 import entity.Recipe;
 
 /**
@@ -23,7 +23,7 @@ public class DeleteInteractor implements DeleteInputBoundary {
      * @param deletePresenter         The output boundary (presenter) for the Delete Use Case.
      * @param recipeDataAccessObject  The data access object for interacting with recipes.
      */
-    public DeleteInteractor(DeleteOutputBoundary deletePresenter, RecipeDataAccessObject recipeDataAccessObject) {
+    public DeleteInteractor(DeleteOutputBoundary deletePresenter, RecipeRecipeDataAccessObject recipeDataAccessObject) {
         this.deletePresenter = deletePresenter;
         // Assign presenter for handling output
         this.recipeDataAccessObject = recipeDataAccessObject;

@@ -1,4 +1,4 @@
-package use_case.create;
+package use_case.create_recipe;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import entity.Recipe;
 /**
  * DAO for the Like a Recipe Case, accessing and updating recipe data with "like" functionality.
  */
-public interface CreateDataAccessInterface {
+public interface CreateRecipeDataAccessInterface {
 
     /**
      * Delete File From FileIo.

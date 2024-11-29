@@ -25,9 +25,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import interface_adapter.BackToEditView.BackToEditViewController;
-import interface_adapter.create.CreateController;
-import interface_adapter.create.CreateState;
-import interface_adapter.create.CreateViewModel;
+import interface_adapter.create_recipe.CreateRecipeController;
+import interface_adapter.create_recipe.CreateRecipeState;
+import interface_adapter.create_recipe.CreateRecipeViewModel;
 
 /**
  * The CreateView class represents the "Create Recipe" view in the application.
@@ -40,8 +40,8 @@ import interface_adapter.create.CreateViewModel;
  */
 public class CreateView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "Create recipe";
-    private final CreateViewModel createViewModel;
-    private CreateController createController;
+    private final CreateRecipeViewModel createRecipeViewModel;
+    private CreateRecipeController createRecipeController;
     private BackToEditViewController backToEditViewController;
 
     private final JButton back;
@@ -52,27 +52,27 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
     private JLabel dishNameErrorField = new JLabel();
     private final EditView editView;
 
-    public CreateView(CreateViewModel createViewModel, EditView editView) {
-        this.createViewModel = createViewModel;
+    public CreateView(CreateRecipeViewModel createRecipeViewModel, EditView editView) {
+        this.createRecipeViewModel = createRecipeViewModel;
         this.editView = editView;
-        this.createViewModel.addPropertyChangeListener(this);
+        this.createRecipeViewModel.addPropertyChangeListener(this);
         this.setLayout(new BorderLayout());
         final JLabel titleLabel = new JLabel("Create recipe", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, CreateViewModel.FONT_SIZE));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, CreateRecipeViewModel.FONT_SIZE));
         this.add(titleLabel, BorderLayout.NORTH);
         final JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         final JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         final JLabel nameLabel = new JLabel("Dish name:");
-        nameField = new JTextField(CreateViewModel.INSTRUCTIONS_AREA_COLUMNS);
-        nameField.setPreferredSize(new Dimension(CreateViewModel.NAME_FIELD_WIDTH, CreateViewModel.NAME_FIELD_HEIGHT));
+        nameField = new JTextField(CreateRecipeViewModel.INSTRUCTIONS_AREA_COLUMNS);
+        nameField.setPreferredSize(new Dimension(CreateRecipeViewModel.NAME_FIELD_WIDTH, CreateRecipeViewModel.NAME_FIELD_HEIGHT));
         namePanel.add(nameLabel);
         namePanel.add(nameField);
         nameField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
-                final CreateState currentState = createViewModel.getState();
+                final CreateRecipeState currentState = createRecipeViewModel.getState();
                 currentState.setDishName(nameField.getText().trim());
-                createViewModel.setState(currentState);
+                createRecipeViewModel.setState(currentState);
             }
 
             @Override
@@ -98,8 +98,8 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         // Scroll pane to make the ingredients panel scrollable
         final JScrollPane introScrollPane = new JScrollPane(introPanel);
         introScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        introScrollPane.setPreferredSize(new Dimension(CreateViewModel.INGREDIENT_SCROLL_WIDTH,
-                CreateViewModel.INGREDIENT_SCROLL_HEIGHT));
+        introScrollPane.setPreferredSize(new Dimension(CreateRecipeViewModel.INGREDIENT_SCROLL_WIDTH,
+                CreateRecipeViewModel.INGREDIENT_SCROLL_HEIGHT));
 
         // Panel for adding dynamic input rows
         ingredientRowsPanel.setLayout(new BoxLayout(ingredientRowsPanel, BoxLayout.Y_AXIS));
@@ -109,13 +109,13 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         final JButton addIngredientButton = new JButton("Add Ingredient");
         addIngredientButton.addActionListener(evt -> addIngredientRow());
 
-        introPanel.add(Box.createVerticalStrut(CreateViewModel.BUTTON_GAP));
+        introPanel.add(Box.createVerticalStrut(CreateRecipeViewModel.BUTTON_GAP));
         introPanel.add(addIngredientButton);
 
         // Instructions panel
         final JPanel cookPanel = new JPanel(new BorderLayout());
         final JLabel cookLabel = new JLabel("Instructions:");
-        cookArea = new JTextArea(CreateViewModel.INSTRUCTIONS_AREA_ROWS, CreateViewModel.INSTRUCTIONS_AREA_COLUMNS);
+        cookArea = new JTextArea(CreateRecipeViewModel.INSTRUCTIONS_AREA_ROWS, CreateRecipeViewModel.INSTRUCTIONS_AREA_COLUMNS);
         cookArea.setLineWrap(true);
         cookArea.setWrapStyleWord(true);
         cookPanel.add(cookLabel, BorderLayout.NORTH);
@@ -124,9 +124,9 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         // Add listener to update instructions in state
         cookArea.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
-                final CreateState currentState = createViewModel.getState();
+                final CreateRecipeState currentState = createRecipeViewModel.getState();
                 currentState.setInstructions(cookArea.getText().trim());
-                createViewModel.setState(currentState);
+                createRecipeViewModel.setState(currentState);
             }
 
             @Override
@@ -148,9 +148,9 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         // Add sub-panels to mainPanel
         mainPanel.add(dishNameErrorField);
         mainPanel.add(namePanel);
-        mainPanel.add(Box.createVerticalStrut(CreateViewModel.BUTTON_GAP));
+        mainPanel.add(Box.createVerticalStrut(CreateRecipeViewModel.BUTTON_GAP));
         mainPanel.add(introScrollPane);
-        mainPanel.add(Box.createVerticalStrut(CreateViewModel.BUTTON_GAP));
+        mainPanel.add(Box.createVerticalStrut(CreateRecipeViewModel.BUTTON_GAP));
         mainPanel.add(cookPanel);
 
         this.add(mainPanel, BorderLayout.CENTER);
@@ -170,12 +170,12 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
             }
         });
         confirm.addActionListener(evt -> {
-            if (createController != null) {
-                final CreateState currentState = createViewModel.getState();
+            if (createRecipeController != null) {
+                final CreateRecipeState currentState = createRecipeViewModel.getState();
                 final String dishName = currentState.getDishName();
                 final String instructions = currentState.getInstructions();
                 final HashMap<String, String> ingredients = new HashMap<>(currentState.getIngredients());
-                createController.execute(dishName, instructions, ingredients);
+                createRecipeController.execute(dishName, instructions, ingredients);
 
                 // Add the newly created recipe to the "new_recipes.json" file for persistent storage
                 // This ensures the newly added recipe is saved locally
@@ -257,7 +257,7 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
     }
 
     private void updateIngredientsState() {
-        final CreateState currentState = createViewModel.getState();
+        final CreateRecipeState currentState = createRecipeViewModel.getState();
 
         currentState.getIngredients().clear();
 
@@ -274,7 +274,7 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         }
 
         // Update ViewModel with the new state
-        createViewModel.setState(currentState);
+        createRecipeViewModel.setState(currentState);
     }
 
     @Override
@@ -285,7 +285,7 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         final String propertyName = evt.getPropertyName();
-        final CreateState state = (CreateState) evt.getNewValue();
+        final CreateRecipeState state = (CreateRecipeState) evt.getNewValue();
 
         switch (propertyName) {
             case "dishNameError":
@@ -366,10 +366,10 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
      * Sets the CreateController for the view. The CreateController is responsible for
      * handling actions related to creating new recipes.
      *
-     * @param createController the CreateController instance to be associated with this view.
+     * @param createRecipeController the CreateController instance to be associated with this view.
      */
-    public void setCreateController(CreateController createController) {
-        this.createController = createController;
+    public void setCreateController(CreateRecipeController createRecipeController) {
+        this.createRecipeController = createRecipeController;
     }
 
     /**

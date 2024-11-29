@@ -1,4 +1,4 @@
-package use_case.create;
+package use_case.create_recipe;
 
 import entity.CommonRecipeFactory;
 import entity.Recipe;
@@ -16,7 +16,7 @@ class CreateInteractorTest {
     /**
      * A local implementation of CreateDataAccessInterface for testing purposes.
      */
-    private static class LocalRecipeDataAccessObject implements CreateDataAccessInterface {
+    private static class LocalRecipeRecipeDataAccessObject implements CreateRecipeDataAccessInterface {
         private final List<Recipe> recipes = new ArrayList<>();
         private String maxId = "0";
 
@@ -62,7 +62,7 @@ class CreateInteractorTest {
     /**
      * A local implementation of CreateUserDataAccessInterface for testing purposes.
      */
-    private static class LocalUserDataAccessObject implements CreateUserDataAccessInterface {
+    private static class LocalRecipeUserDataAccessObject implements CreateRecipeUserDataAccessInterface {
         private final List<Recipe> createdRecipes = new ArrayList<>();
 
         @Override
@@ -91,12 +91,12 @@ class CreateInteractorTest {
         String instructions = "Place a pizza stone in the oven and heat to 500ºF. " +
                 "Dust a baking sheet with cornmeal.";
 
-        CreateInputData inputData = new CreateInputData(recipeName, instructions, ingredients);
+        CreateRecipeInputData inputData = new CreateRecipeInputData(recipeName, instructions, ingredients);
 
-        LocalRecipeDataAccessObject recipeRepository = new LocalRecipeDataAccessObject();
-        LocalUserDataAccessObject userRepository = new LocalUserDataAccessObject();
+        LocalRecipeRecipeDataAccessObject recipeRepository = new LocalRecipeRecipeDataAccessObject();
+        LocalRecipeUserDataAccessObject userRepository = new LocalRecipeUserDataAccessObject();
 
-        CreateOutputBoundary createPresenter = new CreateOutputBoundary() {
+        CreateRecipeOutputBoundary createPresenter = new CreateRecipeOutputBoundary() {
             @Override
             public void prepareSuccessView() {
                 assertTrue(true, "Recipe creation succeeded.");
@@ -109,7 +109,7 @@ class CreateInteractorTest {
         };
 
         RecipeFactory recipeFactory = new CommonRecipeFactory();
-        CreateInteractor interactor = new CreateInteractor(
+        CreateRecipeInteractor interactor = new CreateRecipeInteractor(
                 createPresenter,
                 recipeFactory,
                 recipeRepository,
@@ -131,8 +131,8 @@ class CreateInteractorTest {
         String recipeName = "Pizza Express Margherita";
         String instructions = "Existing recipe instructions.";
 
-        LocalRecipeDataAccessObject recipeRepository = new LocalRecipeDataAccessObject();
-        LocalUserDataAccessObject userRepository = new LocalUserDataAccessObject();
+        LocalRecipeRecipeDataAccessObject recipeRepository = new LocalRecipeRecipeDataAccessObject();
+        LocalRecipeUserDataAccessObject userRepository = new LocalRecipeUserDataAccessObject();
 
         RecipeFactory recipeFactory = new CommonRecipeFactory();
         Recipe existingRecipe = recipeFactory.createRecipe(
@@ -146,7 +146,7 @@ class CreateInteractorTest {
         );
         recipeRepository.saveRecipe(existingRecipe);
 
-        CreateOutputBoundary failurePresenter = new CreateOutputBoundary() {
+        CreateRecipeOutputBoundary failurePresenter = new CreateRecipeOutputBoundary() {
             @Override
             public void prepareSuccessView() {
                 fail("Recipe creation succeeded unexpectedly.");
@@ -158,14 +158,14 @@ class CreateInteractorTest {
             }
         };
 
-        CreateInteractor interactor = new CreateInteractor(
+        CreateRecipeInteractor interactor = new CreateRecipeInteractor(
                 failurePresenter,
                 recipeFactory,
                 recipeRepository,
                 userRepository
         );
 
-        CreateInputData inputData = new CreateInputData(recipeName, "Some new instructions", ingredients);
+        CreateRecipeInputData inputData = new CreateRecipeInputData(recipeName, "Some new instructions", ingredients);
         interactor.execute(inputData);
 
         List<Recipe> recipes = recipeRepository.getCachedRecipes();

@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
-import interface_adapter.create.CreateController;
 import interface_adapter.delete.DeleteController;
 import interface_adapter.edit.EditController;
 import interface_adapter.edit.EditViewModel;
