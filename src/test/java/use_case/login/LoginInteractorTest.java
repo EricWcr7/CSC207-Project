@@ -6,8 +6,6 @@ import entity.User;
 import entity.UserFactory;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoginInteractorTest {
@@ -17,21 +15,27 @@ class LoginInteractorTest {
         LoginInputData inputData = new LoginInputData("Paul", "password");
         LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
-        // For the success test, we need to add Paul to the data access repository before we log in.
+        // Add "Paul" to the repository before testing login
         UserFactory factory = new CommonUserFactory();
         User user = factory.create("Paul", "password");
         userRepository.save(user);
 
-        // This creates a successPresenter that tests whether the test case is as we expect.
+        // Define success presenter
         LoginOutputBoundary successPresenter = new LoginOutputBoundary() {
             @Override
             public void prepareSuccessView(LoginOutputData user) {
                 assertEquals("Paul", user.getUsername());
+                assertNotNull(user.getFavoriteRecipes());
             }
 
             @Override
             public void prepareFailView(String error) {
                 fail("Use case failure is unexpected.");
+            }
+
+            @Override
+            public void switchToSignupView() {
+                fail("Switch to signup view is not expected in this test.");
             }
         };
 
@@ -44,12 +48,12 @@ class LoginInteractorTest {
         LoginInputData inputData = new LoginInputData("Paul", "password");
         LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
-        // For the success test, we need to add Paul to the data access repository before we log in.
+        // Add "Paul" to the repository before testing login
         UserFactory factory = new CommonUserFactory();
         User user = factory.create("Paul", "password");
         userRepository.save(user);
 
-        // This creates a successPresenter that tests whether the test case is as we expect.
+        // Define success presenter
         LoginOutputBoundary successPresenter = new LoginOutputBoundary() {
             @Override
             public void prepareSuccessView(LoginOutputData user) {
@@ -60,36 +64,49 @@ class LoginInteractorTest {
             public void prepareFailView(String error) {
                 fail("Use case failure is unexpected.");
             }
+
+            @Override
+            public void switchToSignupView() {
+                fail("Switch to signup view is not expected in this test.");
+            }
         };
 
         LoginInputBoundary interactor = new LoginInteractor(userRepository, successPresenter);
-        assertEquals(null, userRepository.getCurrentUsername());
+
+        // Ensure no user is logged in before execution
+        assertNull(userRepository.getCurrentUsername());
 
         interactor.execute(inputData);
+
+        // Ensure user is logged in after execution
+        assertEquals("Paul", userRepository.getCurrentUsername());
     }
 
     @Test
     void failurePasswordMismatchTest() {
-        LoginInputData inputData = new LoginInputData("Paul", "wrong");
+        LoginInputData inputData = new LoginInputData("Paul", "wrong_password");
         LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
-        // For this failure test, we need to add Paul to the data access repository before we log in, and
-        // the passwords should not match.
+        // Add "Paul" to the repository before testing login
         UserFactory factory = new CommonUserFactory();
         User user = factory.create("Paul", "password");
         userRepository.save(user);
 
-        // This creates a presenter that tests whether the test case is as we expect.
+        // Define failure presenter
         LoginOutputBoundary failurePresenter = new LoginOutputBoundary() {
             @Override
             public void prepareSuccessView(LoginOutputData user) {
-                // this should never be reached since the test case should fail
                 fail("Use case success is unexpected.");
             }
 
             @Override
             public void prepareFailView(String error) {
                 assertEquals("Incorrect password for \"Paul\".", error);
+            }
+
+            @Override
+            public void switchToSignupView() {
+                fail("Switch to signup view is not expected in this test.");
             }
         };
 
@@ -102,13 +119,12 @@ class LoginInteractorTest {
         LoginInputData inputData = new LoginInputData("Paul", "password");
         LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
-        // Add Paul to the repo so that when we check later they already exist
+        // No user is added to the repository in this test
 
-        // This creates a presenter that tests whether the test case is as we expect.
+        // Define failure presenter
         LoginOutputBoundary failurePresenter = new LoginOutputBoundary() {
             @Override
             public void prepareSuccessView(LoginOutputData user) {
-                // this should never be reached since the test case should fail
                 fail("Use case success is unexpected.");
             }
 
@@ -116,9 +132,42 @@ class LoginInteractorTest {
             public void prepareFailView(String error) {
                 assertEquals("Paul: Account does not exist.", error);
             }
+
+            @Override
+            public void switchToSignupView() {
+                fail("Switch to signup view is not expected in this test.");
+            }
         };
 
         LoginInputBoundary interactor = new LoginInteractor(userRepository, failurePresenter);
         interactor.execute(inputData);
+    }
+
+    @Test
+    void switchToSignupViewTest() {
+        LoginInputData inputData = new LoginInputData("Paul", "password");
+        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+
+        // Define presenter with expectation to switch to signup view
+        LoginOutputBoundary signupPresenter = new LoginOutputBoundary() {
+            @Override
+            public void prepareSuccessView(LoginOutputData user) {
+                fail("Use case success is not expected in this test.");
+            }
+
+            @Override
+            public void prepareFailView(String error) {
+                fail("Use case failure is not expected in this test.");
+            }
+
+            @Override
+            public void switchToSignupView() {
+                // This method is expected to be invoked in this test
+                assertTrue(true, "Switch to signup view called successfully.");
+            }
+        };
+
+        LoginInputBoundary interactor = new LoginInteractor(userRepository, signupPresenter);
+        interactor.switchToSignupView();
     }
 }

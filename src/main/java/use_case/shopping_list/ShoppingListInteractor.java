@@ -25,44 +25,41 @@ public class ShoppingListInteractor implements ShoppingListInputBoundary {
         final String[] recipeNames = shoppingListInputData.getRecipeNames();
         System.out.println("Recipe names: " + Arrays.toString(recipeNames));
         final Map<String, String> ingredientsMap = new HashMap<>();
+
         for (String recipeName : recipeNames) {
             if (recipeName == null || "null".equals(recipeName)) {
                 continue;
-                // Skip null or "null" recipe names
             }
-            else {
-                final Recipe recipe = recipeDataAccessObject.getOneRecipe(recipeName);
-                final String stringIngredients = recipe.getIngredients();
-                // Get ingredients as a formatted string
+            final Recipe recipe = recipeDataAccessObject.getOneRecipe(recipeName);
 
-                // Parse the string into a Map
-                final String[] lines = stringIngredients.split("\n");
-                // Split by newline to get each ingredient
-                for (String line : lines) {
-                    final String[] parts = line.split(": ");
-                    // Split each line by ": " to separate ingredient and measurement
-                    if (parts.length == 2) {
-                        // Ensure it has both ingredient and measurement
-                        final String ingredient = parts[0].trim();
-                        // Trim to clean up any whitespace
-                        final String measurement = parts[1].trim();
+            if (recipe == null) {
+                System.err.println("Recipe not found: " + recipeName);
+                continue;
+            }
 
-                        // Check if the ingredient already exists in the map
-                        if (ingredientsMap.containsKey(ingredient)) {
-                            // Combine existing measurement with the new one
-                            final String existingMeasurement = ingredientsMap.get(ingredient);
-                            final String combinedMeasurement = combineMeasurements(existingMeasurement, measurement);
-                            ingredientsMap.put(ingredient, combinedMeasurement);
-                        }
-                        else {
-                            ingredientsMap.put(ingredient, measurement);
-                        }
+            final String stringIngredients = recipe.getIngredients();
+            final String[] lines = stringIngredients.split("\n");
+            for (String line : lines) {
+                final String[] parts = line.split(": ");
+                if (parts.length == 2) {
+                    final String ingredient = parts[0].trim();
+                    final String measurement = parts[1].trim();
+
+                    // Combine measurements for the same ingredient
+                    if (ingredientsMap.containsKey(ingredient)) {
+                        final String existingMeasurement = ingredientsMap.get(ingredient);
+                        final String combinedMeasurement = combineMeasurements(existingMeasurement, measurement);
+                        ingredientsMap.put(ingredient, combinedMeasurement);
+                    }
+                    else {
+                        ingredientsMap.put(ingredient, measurement);
                     }
                 }
             }
         }
-        final ShoppingListOutputData shoppingListOutputData = new ShoppingListOutputData(username, recipeNames,
-                ingredientsMap);
+
+        final ShoppingListOutputData shoppingListOutputData = new ShoppingListOutputData(
+                username, recipeNames, ingredientsMap);
         shoppingListPresenter.presentShoppingList(shoppingListOutputData);
     }
 
