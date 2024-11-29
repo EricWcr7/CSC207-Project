@@ -1,6 +1,6 @@
 package use_case.login;
 
-import data_access.InMemoryRecipeUserDataAccessObject;
+import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
@@ -13,7 +13,7 @@ class LoginInteractorTest {
     @Test
     void successTest() {
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryRecipeUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // Add "Paul" to the repository before testing login
         UserFactory factory = new CommonUserFactory();
@@ -46,7 +46,7 @@ class LoginInteractorTest {
     @Test
     void successUserLoggedInTest() {
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryRecipeUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // Add "Paul" to the repository before testing login
         UserFactory factory = new CommonUserFactory();
@@ -85,7 +85,7 @@ class LoginInteractorTest {
     @Test
     void failurePasswordMismatchTest() {
         LoginInputData inputData = new LoginInputData("Paul", "wrong_password");
-        LoginUserDataAccessInterface userRepository = new InMemoryRecipeUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // Add "Paul" to the repository before testing login
         UserFactory factory = new CommonUserFactory();
@@ -117,7 +117,7 @@ class LoginInteractorTest {
     @Test
     void failureUserDoesNotExistTest() {
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryRecipeUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // No user is added to the repository in this test
 
@@ -146,7 +146,7 @@ class LoginInteractorTest {
     @Test
     void switchToSignupViewTest() {
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryRecipeUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // Define presenter with expectation to switch to signup view
         LoginOutputBoundary signupPresenter = new LoginOutputBoundary() {

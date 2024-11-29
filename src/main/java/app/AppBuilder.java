@@ -11,7 +11,7 @@ import javax.swing.WindowConstants;
 import data_access.FavoriteRecipeDataAccessObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import data_access.InMemoryRecipeUserDataAccessObject;
+import data_access.InMemoryUserDataAccessObject;
 import data_access.RecipeDataAccessObject;
 import entity.*;
 import interface_adapter.*;
@@ -90,7 +90,7 @@ public class AppBuilder {
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    private final InMemoryRecipeUserDataAccessObject userDataAccessObject = new InMemoryRecipeUserDataAccessObject();
+    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
     private final FavoriteRecipeDataAccessObject favoriteRecipeDataAccessObject = new FavoriteRecipeDataAccessObject();
 

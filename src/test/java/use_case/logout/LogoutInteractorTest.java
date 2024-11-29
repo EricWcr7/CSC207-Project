@@ -1,6 +1,6 @@
 package use_case.logout;
 
-import data_access.InMemoryRecipeUserDataAccessObject;
+import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
@@ -13,7 +13,7 @@ class LogoutInteractorTest {
     @Test
     void successTest() {
         // Set up the in-memory data access object
-        InMemoryRecipeUserDataAccessObject userRepository = new InMemoryRecipeUserDataAccessObject();
+        InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
 
         // Add "Paul" to the repository and set him as the current user
         UserFactory factory = new CommonUserFactory();
@@ -51,7 +51,7 @@ class LogoutInteractorTest {
     @Test
     void failureTestWhenNoUserLoggedIn() {
         // Set up the in-memory data access object
-        InMemoryRecipeUserDataAccessObject userRepository = new InMemoryRecipeUserDataAccessObject();
+        InMemoryUserDataAccessObject userRepository = new InMemoryUserDataAccessObject();
 
         // Ensure no user is logged in
         assertNull(userRepository.getCurrentUsername());

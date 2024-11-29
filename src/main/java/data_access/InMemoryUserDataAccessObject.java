@@ -39,7 +39,7 @@ import use_case.signup.SignupUserDataAccessInterface;
  * In-memory implementation of the DAO for storing user data. This implementation does
  * NOT persist data between runs of the program.
  */
-public class InMemoryRecipeUserDataAccessObject implements SignupUserDataAccessInterface,
+public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         UserLikeAndDislikeDataAccessInterface,
