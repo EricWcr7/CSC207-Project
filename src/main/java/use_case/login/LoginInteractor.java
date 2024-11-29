@@ -53,20 +53,14 @@ public class LoginInteractor implements LoginInputBoundary {
     @Override
     public void initializeUserStorage() {
         System.out.println("Initializing shared user storage...");
-        try {
-            // Step 1: Check if "all_users.json" exists on File.io using the DAO
-            final String fileKey = userDataAccessObject.findFileOnFileIo("all_users.json");
-            System.out.println(fileKey);
+        final String fileKey = userDataAccessObject.findFileOnFileIo("all_users.json");
+        System.out.println(fileKey);
 
-            if (!fileKey.isEmpty()) {
-                // Case 1: If the file exists, load it from File.io using the DAO
-                System.out.println("File 'all_users.json' found on File.io with ID: " + fileKey);
-                userDataAccessObject.loadUsersFromCloud();
-                System.out.println("Users loaded from 'all_users.json' successfully.");
-            }
-        }
-        catch (Exception ex) {
-            System.err.println("Failed to initialize user storage: " + ex.getMessage());
+        if (!fileKey.isEmpty()) {
+            // Case 1: If the file exists, load it from File.io using the DAO
+            System.out.println("File 'all_users.json' found on File.io with ID: " + fileKey);
+            userDataAccessObject.loadUsersFromCloud();
+            System.out.println("Users loaded from 'all_users.json' successfully.");
         }
     }
 
