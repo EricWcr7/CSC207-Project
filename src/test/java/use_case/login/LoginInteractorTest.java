@@ -1,19 +1,65 @@
 package use_case.login;
 
-import data_access.InMemoryUserDataAccessObject;
+
 import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
 import org.junit.jupiter.api.Test;
+import use_case.signup.SignupUserDataAccessInterface;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoginInteractorTest {
 
+    private static class LocalUserDataAccessObject implements LoginUserDataAccessInterface {
+
+        private final List<User> users = new ArrayList<>();
+        private String currentUsername = null;
+
+        @Override
+        public boolean existsByName(String username) {
+            return users.stream().anyMatch(user -> user.getName().equals(username));
+        }
+
+        @Override
+        public void save(User user) {
+            users.add(user);
+        }
+
+        @Override
+        public User get(String username) {
+            return users.stream().filter(user -> user.getName().equals(username)).findFirst().orElse(null);
+        }
+
+        @Override
+        public String getCurrentUsername() {
+            return currentUsername; // Properly return the currentUsername
+        }
+
+        @Override
+        public void setCurrentUsername(String username) {
+            this.currentUsername = username; // Update currentUsername
+        }
+
+        @Override
+        public String findFileOnFileIo(String fileName) {
+            return null;
+        }
+
+        @Override
+        public void loadUsersFromCloud() {
+            // Simulated method for test cases
+        }
+    }
+
+
     @Test
     void successTest() {
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new LocalUserDataAccessObject();
 
         // Add "Paul" to the repository before testing login
         UserFactory factory = new CommonUserFactory();
@@ -41,12 +87,13 @@ class LoginInteractorTest {
 
         LoginInputBoundary interactor = new LoginInteractor(userRepository, successPresenter);
         interactor.execute(inputData);
+
     }
 
     @Test
     void successUserLoggedInTest() {
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new LocalUserDataAccessObject();
 
         // Add "Paul" to the repository before testing login
         UserFactory factory = new CommonUserFactory();
@@ -85,7 +132,7 @@ class LoginInteractorTest {
     @Test
     void failurePasswordMismatchTest() {
         LoginInputData inputData = new LoginInputData("Paul", "wrong_password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new LocalUserDataAccessObject();
 
         // Add "Paul" to the repository before testing login
         UserFactory factory = new CommonUserFactory();
@@ -117,7 +164,7 @@ class LoginInteractorTest {
     @Test
     void failureUserDoesNotExistTest() {
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new LocalUserDataAccessObject();
 
         // No user is added to the repository in this test
 
@@ -146,7 +193,7 @@ class LoginInteractorTest {
     @Test
     void switchToSignupViewTest() {
         LoginInputData inputData = new LoginInputData("Paul", "password");
-        LoginUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
+        LoginUserDataAccessInterface userRepository = new LocalUserDataAccessObject();
 
         // Define presenter with expectation to switch to signup view
         LoginOutputBoundary signupPresenter = new LoginOutputBoundary() {
@@ -170,4 +217,44 @@ class LoginInteractorTest {
         LoginInputBoundary interactor = new LoginInteractor(userRepository, signupPresenter);
         interactor.switchToSignupView();
     }
+
+    @Test
+    void initializeUserStorageTest() {
+        // Mock data access object to simulate file interactions
+        LoginUserDataAccessInterface userRepository = new LocalUserDataAccessObject() {
+            private boolean cloudUsersLoaded = false;
+
+            @Override
+            public String findFileOnFileIo(String fileName) {
+                if (fileName.equals("all_users.json")) {
+                    // Simulate file exists
+                    return "mockFileKey123";
+                }
+                return "";
+            }
+
+            @Override
+            public void loadUsersFromCloud() {
+                // Simulate loading users from the cloud
+                cloudUsersLoaded = true;
+            }
+
+            public boolean isCloudUsersLoaded() {
+                return cloudUsersLoaded;
+            }
+        };
+
+        // Execute the method
+        try {
+            LoginInteractor interactor = new LoginInteractor(userRepository, null); // No presenter needed for this test
+            interactor.initializeUserStorage();
+
+        }
+        catch (Exception e) {
+            fail("Initialization should not throw any exception: " + e.getMessage());
+        }
+    }
+
+
+
 }
