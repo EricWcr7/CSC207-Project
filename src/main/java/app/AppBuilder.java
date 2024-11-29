@@ -19,7 +19,7 @@ import interface_adapter.BackToEditView.BackToEditViewController;
 import interface_adapter.BackToEditView.BackToEditViewPresenter;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuPresenter;
-import interface_adapter.change_password.*;
+import interface_adapter.loggedin.*;
 import interface_adapter.choose_recipe.*;
 import interface_adapter.create_recipe.CreateRecipeController;
 import interface_adapter.create_recipe.CreateRecipeRecipePresenter;
@@ -51,7 +51,6 @@ import use_case.backToEditView.BackToEditViewOutputBoundary;
 import use_case.returnToSearchMenu.ReturnToSearchMenuInputBoundary;
 import use_case.returnToSearchMenu.ReturnToSearchMenuInteractor;
 import use_case.returnToSearchMenu.ReturnToSearchMenuOutputBoundary;
-import use_case.change_password.*;
 import use_case.choose_recipe.ChooseRecipeInputBoundary;
 import use_case.choose_recipe.ChooseRecipeInteractor;
 import use_case.choose_recipe.ChooseRecipeOutputBoundary;
@@ -342,27 +341,6 @@ public class AppBuilder {
 
         final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
-        return this;
-    }
-
-    /**
-     * Configures and adds the "Change Password" use case to the application.
-     * This method initializes the components required for handling password changes,
-     * including the presenter, interactor, and controller. It assigns the controller
-     * to the logged-in view, enabling users to update their password securely.
-     *
-     * @return the current {@link AppBuilder} instance, allowing for method chaining
-     */
-    public AppBuilder addChangePasswordUseCase() {
-        final ChangePasswordOutputBoundary changePasswordOutputBoundary =
-                new ChangePasswordPresenter(loggedInViewModel);
-
-        final ChangePasswordInputBoundary changePasswordInteractor =
-                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
-
-        final ChangePasswordController changePasswordController =
-                new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
         return this;
     }
 
