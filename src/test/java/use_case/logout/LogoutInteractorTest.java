@@ -1,11 +1,9 @@
 package use_case.logout;
 
-import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
 import org.junit.jupiter.api.Test;
-import use_case.signup.SignupUserDataAccessInterface;
 
 import java.util.ArrayList;
 import java.util.List;
