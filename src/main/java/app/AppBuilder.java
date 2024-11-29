@@ -346,27 +346,6 @@ public class AppBuilder {
     }
 
     /**
-     * Configures and adds the "Change Password" use case to the application.
-     * This method initializes the components required for handling password changes,
-     * including the presenter, interactor, and controller. It assigns the controller
-     * to the logged-in view, enabling users to update their password securely.
-     *
-     * @return the current {@link AppBuilder} instance, allowing for method chaining
-     */
-    public AppBuilder addChangePasswordUseCase() {
-        final ChangePasswordOutputBoundary changePasswordOutputBoundary =
-                new ChangePasswordPresenter(loggedInViewModel);
-
-        final ChangePasswordInputBoundary changePasswordInteractor =
-                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
-
-        final ChangePasswordController changePasswordController =
-                new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
-        return this;
-    }
-
-    /**
      * Configures and adds the "Logout" use case to the application.
      * This method sets up the components needed for handling user logout,
      * including the presenter, interactor, and controller. It connects the controller
