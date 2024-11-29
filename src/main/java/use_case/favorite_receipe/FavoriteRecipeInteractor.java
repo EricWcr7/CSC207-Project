@@ -3,7 +3,7 @@ package use_case.favorite_receipe;
 import java.util.Arrays;
 
 import entity.User;
-import use_case.shopping_list.ShoppingListDataAccessInterface;
+import use_case.shopping_list.ShoppingListUserDataAccessInterface;
 
 /**
  * The FavoriteRecipe Interactor.
@@ -11,11 +11,11 @@ import use_case.shopping_list.ShoppingListDataAccessInterface;
 public class FavoriteRecipeInteractor implements FavoriteRecipeInputBoundary {
     private final FavoriteRecipeOutputBoundary favoriteRecipePresenter;
     private final FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject;
-    private final ShoppingListDataAccessInterface inMemoryUserDataAccessObject;
+    private final ShoppingListUserDataAccessInterface inMemoryUserDataAccessObject;
 
     public FavoriteRecipeInteractor(FavoriteRecipeOutputBoundary favoriteRecipePresenter,
                                     FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject,
-                                    ShoppingListDataAccessInterface inMemoryUserDataAccessObject) {
+                                    ShoppingListUserDataAccessInterface inMemoryUserDataAccessObject) {
         this.favoriteRecipePresenter = favoriteRecipePresenter;
         this.favoriteRecipeDataAccessObject = favoriteRecipeDataAccessObject;
         this.inMemoryUserDataAccessObject = inMemoryUserDataAccessObject;

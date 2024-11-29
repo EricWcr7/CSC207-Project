@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class ShoppingListInteractorTest {
 
     /**
-     * A local implementation of ShoppingListDataAccessInterface for testing purposes.
+     * A local implementation of ShoppingListUserDataAccessInterface for testing purposes.
      */
-    private static class LocalShoppingListDataAccessObject implements ShoppingListDataAccessInterface {
+    private static class LocalShoppingListUserDataAccessObject implements ShoppingListUserDataAccessInterface {
         private final List<Recipe> cachedRecipes = new ArrayList<>();
 
         @Override
@@ -73,7 +73,7 @@ class ShoppingListInteractorTest {
                 "Tomato Sauce: 2 cups\nLettuce: 1 head", saladIngredients, 5, 1);
 
         // Use Local DAO
-        LocalShoppingListDataAccessObject dao = new LocalShoppingListDataAccessObject();
+        LocalShoppingListUserDataAccessObject dao = new LocalShoppingListUserDataAccessObject();
         dao.addRecipe(pastaRecipe);
         dao.addRecipe(saladRecipe);
 
@@ -121,7 +121,7 @@ class ShoppingListInteractorTest {
                 "Chop vegetables and mix.", saladIngredients, 5, 1);
 
         // Use Local DAO
-        LocalShoppingListDataAccessObject dao = new LocalShoppingListDataAccessObject();
+        LocalShoppingListUserDataAccessObject dao = new LocalShoppingListUserDataAccessObject();
         dao.addRecipe(pastaRecipe);
         dao.addRecipe(saladRecipe);
 
@@ -155,7 +155,7 @@ class ShoppingListInteractorTest {
         ShoppingListInputData inputData = new ShoppingListInputData(username, recipeNames);
 
         // Use Local DAO
-        LocalShoppingListDataAccessObject dao = new LocalShoppingListDataAccessObject();
+        LocalShoppingListUserDataAccessObject dao = new LocalShoppingListUserDataAccessObject();
 
         // Create a presenter that validates the output
         ShoppingListOutputBoundary successPresenter = new ShoppingListOutputBoundary() {
@@ -189,7 +189,7 @@ class ShoppingListInteractorTest {
                 "Boil pasta and add sauce.", pastaIngredients, 10, 2);
 
         // Use Local DAO
-        LocalShoppingListDataAccessObject dao = new LocalShoppingListDataAccessObject();
+        LocalShoppingListUserDataAccessObject dao = new LocalShoppingListUserDataAccessObject();
         dao.addRecipe(pastaRecipe);
 
         // Create a presenter that validates the output

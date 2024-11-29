@@ -11,12 +11,12 @@ import entity.Recipe;
  */
 public class ShoppingListInteractor implements ShoppingListInputBoundary {
     private final ShoppingListOutputBoundary shoppingListPresenter;
-    private final ShoppingListDataAccessInterface recipeDataAccessObject;
+    private final ShoppingListRecipeDataAccessInterface recipeDataAccessObject;
 
     public ShoppingListInteractor(ShoppingListOutputBoundary shoppingListPresenter,
-                                  ShoppingListDataAccessInterface shoppingListDataAccessObject) {
+                                  ShoppingListRecipeDataAccessInterface shoppingListRecipeDataAccessInterface) {
         this.shoppingListPresenter = shoppingListPresenter;
-        this.recipeDataAccessObject = shoppingListDataAccessObject;
+        this.recipeDataAccessObject = shoppingListRecipeDataAccessInterface;
     }
 
     @Override

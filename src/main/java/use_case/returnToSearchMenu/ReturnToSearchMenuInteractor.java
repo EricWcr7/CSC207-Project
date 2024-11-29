@@ -1,7 +1,7 @@
 package use_case.returnToSearchMenu;
 
 import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
-import use_case.shopping_list.ShoppingListDataAccessInterface;
+import use_case.shopping_list.ShoppingListUserDataAccessInterface;
 
 /**
  * The ReturnToSearchMenu Interactor.
@@ -9,11 +9,11 @@ import use_case.shopping_list.ShoppingListDataAccessInterface;
 public class ReturnToSearchMenuInteractor implements ReturnToSearchMenuInputBoundary {
     private ReturnToSearchMenuOutputBoundary returnToSearchMenuPresenter;
     private final FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject;
-    private final ShoppingListDataAccessInterface shoppingListDataAccessObject;
+    private final ShoppingListUserDataAccessInterface shoppingListDataAccessObject;
 
     public ReturnToSearchMenuInteractor(ReturnToSearchMenuOutputBoundary returnToSearchMenuPresenter,
                                         FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject,
-                                        ShoppingListDataAccessInterface shoppingListDataAccessObject) {
+                                        ShoppingListUserDataAccessInterface shoppingListDataAccessObject) {
         this.returnToSearchMenuPresenter = returnToSearchMenuPresenter;
         this.favoriteRecipeDataAccessObject = favoriteRecipeDataAccessObject;
         this.shoppingListDataAccessObject = shoppingListDataAccessObject;

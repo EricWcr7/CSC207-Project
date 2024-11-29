@@ -31,7 +31,7 @@ import use_case.create.CreateDataAccessInterface;
 import use_case.delete.DeleteDataAccessInterface;
 import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeDataAccessInterface;
 import use_case.recipe_search.RecipeSearchDataAccessInterface;
-import use_case.shopping_list.ShoppingListDataAccessInterface;
+import use_case.shopping_list.ShoppingListRecipeDataAccessInterface;
 
 /**
  * DAO for the RecipeSearch Use Case.
@@ -40,7 +40,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         ChooseRecipeDataAccessInterface,
         LikeAndDislikeRecipeDataAccessInterface,
         CreateDataAccessInterface,
-        ShoppingListDataAccessInterface,
+        ShoppingListRecipeDataAccessInterface,
         DeleteDataAccessInterface {
 
     private static final String API_URL = "https://www.themealdb.com/api/json/v1/1/search.php?f=";
@@ -616,21 +616,6 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         // Use the removeIf method to remove any recipe whose name matches the given recipe name
         // The comparison is case-insensitive
         cachedRecipes.removeIf(recipe -> recipe.getName().equalsIgnoreCase(recipeName));
-    }
-
-    @Override
-    public String getUsername() {
-        return "";
-    }
-
-    @Override
-    public String[] getFavoriteRecipes() {
-        return new String[0];
-    }
-
-    @Override
-    public User get(String username) {
-        return null;
     }
 
     /**

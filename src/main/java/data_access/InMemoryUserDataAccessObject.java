@@ -32,7 +32,7 @@ import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
 import use_case.like_and_dislike_a_recipe.UserLikeAndDislikeDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
-import use_case.shopping_list.ShoppingListDataAccessInterface;
+import use_case.shopping_list.ShoppingListUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 /**
@@ -44,7 +44,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         ChangePasswordUserDataAccessInterface,
         UserLikeAndDislikeDataAccessInterface,
         FavoriteRecipeDataAccessInterface,
-        ShoppingListDataAccessInterface,
+        ShoppingListUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         CreateUserDataAccessInterface {
 
@@ -409,11 +409,6 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public User get(String userName) {
         return users.get(userName);
-    }
-
-    @Override
-    public Recipe getOneRecipe(String dishName) {
-        return null;
     }
 
     @Override

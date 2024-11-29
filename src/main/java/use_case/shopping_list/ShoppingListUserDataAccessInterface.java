@@ -1,12 +1,11 @@
 package use_case.shopping_list;
 
-import entity.Recipe;
 import entity.User;
 
 /**
  * DAO for the ShoppingList Use Case.
  */
-public interface ShoppingListDataAccessInterface {
+public interface ShoppingListUserDataAccessInterface {
 
     /**
      * Return the Username.
@@ -26,11 +25,4 @@ public interface ShoppingListDataAccessInterface {
      * @return User when this method execute.
      */
     User get(String username);
-
-    /**
-     * Return the Recipe.
-     * @param dishName the username.
-     * @return Recipe when this method execute.
-     */
-    Recipe getOneRecipe(String dishName);
 }
