@@ -56,7 +56,7 @@ class SignupInteractorTest {
 
             @Override
             public void prepareFailView(String error) {
-                assertEquals("Passwords don't match.", error);
+                assertEquals("Passwords don't match", error);
             }
 
             @Override
@@ -89,7 +89,7 @@ class SignupInteractorTest {
 
             @Override
             public void prepareFailView(String error) {
-                assertEquals("User already exists.", error);
+                assertEquals("User already exists", error);
             }
 
             @Override
