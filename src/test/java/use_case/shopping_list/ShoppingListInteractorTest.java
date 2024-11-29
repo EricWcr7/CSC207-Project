@@ -19,7 +19,6 @@ class ShoppingListInteractorTest {
      * A local implementation of ShoppingListUserDataAccessInterface for testing purposes.
      */
     private static class LocalShoppingListUserDataAccessObject implements ShoppingListUserDataAccessInterface {
-        private final List<Recipe> cachedRecipes = new ArrayList<>();
 
         @Override
         public String getUsername() {
@@ -35,6 +34,13 @@ class ShoppingListInteractorTest {
         public User get(String username) {
             return null;
         }
+    }
+
+    /**
+     * A local implementation of ShoppingListUserDataAccessInterface for testing purposes.
+     */
+    private static class LocalShoppingListRecipeDataAccessObject implements ShoppingListRecipeDataAccessInterface {
+        private final List<Recipe> cachedRecipes = new ArrayList<>();
 
         @Override
         public Recipe getOneRecipe(String dishName) {
@@ -73,7 +79,7 @@ class ShoppingListInteractorTest {
                 "Tomato Sauce: 2 cups\nLettuce: 1 head", saladIngredients, 5, 1);
 
         // Use Local DAO
-        LocalShoppingListUserDataAccessObject dao = new LocalShoppingListUserDataAccessObject();
+        LocalShoppingListRecipeDataAccessObject dao = new LocalShoppingListRecipeDataAccessObject();
         dao.addRecipe(pastaRecipe);
         dao.addRecipe(saladRecipe);
 
@@ -121,7 +127,7 @@ class ShoppingListInteractorTest {
                 "Chop vegetables and mix.", saladIngredients, 5, 1);
 
         // Use Local DAO
-        LocalShoppingListUserDataAccessObject dao = new LocalShoppingListUserDataAccessObject();
+        LocalShoppingListRecipeDataAccessObject dao = new LocalShoppingListRecipeDataAccessObject();
         dao.addRecipe(pastaRecipe);
         dao.addRecipe(saladRecipe);
 
@@ -155,7 +161,7 @@ class ShoppingListInteractorTest {
         ShoppingListInputData inputData = new ShoppingListInputData(username, recipeNames);
 
         // Use Local DAO
-        LocalShoppingListUserDataAccessObject dao = new LocalShoppingListUserDataAccessObject();
+        LocalShoppingListRecipeDataAccessObject dao = new LocalShoppingListRecipeDataAccessObject();
 
         // Create a presenter that validates the output
         ShoppingListOutputBoundary successPresenter = new ShoppingListOutputBoundary() {
@@ -189,7 +195,7 @@ class ShoppingListInteractorTest {
                 "Boil pasta and add sauce.", pastaIngredients, 10, 2);
 
         // Use Local DAO
-        LocalShoppingListUserDataAccessObject dao = new LocalShoppingListUserDataAccessObject();
+        LocalShoppingListRecipeDataAccessObject dao = new LocalShoppingListRecipeDataAccessObject();
         dao.addRecipe(pastaRecipe);
 
         // Create a presenter that validates the output
@@ -212,6 +218,3 @@ class ShoppingListInteractorTest {
         interactor.execute(inputData);
     }
 }
-
-
-
