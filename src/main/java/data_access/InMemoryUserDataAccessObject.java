@@ -496,15 +496,19 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public void addCreatedRecipe(Recipe recipe) {
+        // 获取当前用户
         final User currentUser = get(getCurrentUsername());
-        currentUser.addCreatedRecipe(recipe);
-        save(currentUser);
-        users.put(currentUser.getName(), currentUser);
-        deleteFileFromFileIo();
-        writeUsersToFile(users);
-        uploadFileToFileIo();
 
+        // 将新菜肴添加到用户的 createdRecipes 列表
+        currentUser.addCreatedRecipe(recipe);
+
+        // 保存用户更新的数据到内存和本地文件
+        save(currentUser);
+
+        // 同步到云端（一次性删除旧文件并上传新文件）
+        syncUsersToCloud();
     }
+
 
     @Override
     public boolean removeUserCreatedRecipe(String username, String recipeName) {
