@@ -39,6 +39,10 @@ public class ShoppingListInteractor implements ShoppingListInputBoundary {
             }
 
             final String stringIngredients = recipe.getIngredients();
+            if (stringIngredients.trim().isEmpty()) {
+                continue;
+            }
+
             final String[] lines = stringIngredients.split("\n");
             for (String line : lines) {
                 final String[] parts = line.split(": ");
