@@ -3,7 +3,6 @@ package use_case.shopping_list;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import entity.Recipe;
 
@@ -68,11 +67,14 @@ public class ShoppingListInteractor implements ShoppingListInputBoundary {
      * @return the string with the first letter of each word capitalized
      */
     private String capitalizeFirstLetter(String text) {
-        if (text == null || text.isEmpty()) {
-            return text;
+        String result = text;
+        if (text != null && !text.isEmpty()) {
+            final String[] words = text.split(" ");
+            for (int i = 0; i < words.length; i++) {
+                words[i] = words[i].substring(0, 1).toUpperCase() + words[i].substring(1);
+            }
+            result = String.join(" ", words);
         }
-        return Arrays.stream(text.split(" "))
-                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1))
-                .collect(Collectors.joining(" "));
+        return result;
     }
 }
