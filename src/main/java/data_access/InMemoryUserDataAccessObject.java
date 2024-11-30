@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -28,7 +29,7 @@ import entity.Recipe;
 import entity.User;
 import entity.UserFactory;
 import use_case.create_recipe.CreateRecipeUserDataAccessInterface;
-import use_case.delete.DUserDataAccessInterface;
+import use_case.delete.DeleteUserDataAccessInterface;
 import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
 import use_case.like_and_dislike_a_recipe.UserLikeAndDislikeDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
@@ -47,7 +48,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         ShoppingListUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         CreateRecipeUserDataAccessInterface,
-        DUserDataAccessInterface {
+        DeleteUserDataAccessInterface {
 
     private static final String FILE_IO_API_URL = "https://file.io";
     private static final String API_KEY = "35F52QF.ZQV4A4E-ASHMAQD-QSPTZ93-NHYCJT6";
@@ -496,74 +497,57 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public void addCreatedRecipe(Recipe recipe) {
-
         final User currentUser = get(getCurrentUsername());
-
         currentUser.addCreatedRecipe(recipe);
+        deleteFileFromFileIo();
+        writeUsersToFile(users);
+        uploadFileToFileIo();
 
-        save(currentUser);
     }
 
-
     @Override
-    public boolean removeUserCreatedRecipe(String username, String recipeName) {
-        try {
+    public void deleteRecipeForUser(String username, String recipeName) {
+        // Step 1: Load the latest users from the cloud
+        loadUsersFromCloud();
 
-            try (FileReader reader = new FileReader(FILE_PATH)) {
-                JsonObject allUsers = JsonParser.parseReader(reader).getAsJsonObject();
+        // Step 2: Find the user by username
+        if (users.containsKey(username)) {
+            User user = users.get(username);
+            boolean recipeDeleted = false;
 
-                JsonObject userJson = allUsers.getAsJsonObject(username);
-                if (userJson == null) {
-                    System.err.println("User not found: " + username);
-                    return false;
+            // Step 3: Find and delete the recipe from user's recipeCreated list
+            Iterator<Recipe> iterator = user.getRecipeCreated().iterator();
+            while (iterator.hasNext()) {
+                Recipe recipe = iterator.next();
+                if (recipe.getName().equalsIgnoreCase(recipeName)) {
+                    iterator.remove(); // Remove the recipe from the list
+                    recipeDeleted = true;
+                    System.out.println("Recipe '" + recipeName + "' found and deleted from user '" + username + "'.");
+                    break;
                 }
-
-                JsonArray recipeCreatedArray = userJson.getAsJsonArray("recipeCreated");
-                if (recipeCreatedArray == null || recipeCreatedArray.size() == 0) {
-                    System.err.println("No recipes found for user: " + username);
-                    return false;
-                }
-
-                boolean recipeFound = false;
-                for (int i = 0; i < recipeCreatedArray.size(); i++) {
-                    JsonObject recipe = recipeCreatedArray.get(i).getAsJsonObject();
-                    if (recipe.get("name").getAsString().equals(recipeName)) {
-                        recipeCreatedArray.remove(i);
-                        recipeFound = true;
-                        break;
-                    }
-                }
-
-                if (!recipeFound) {
-                    System.err.println("Recipe not found: " + recipeName);
-                    return false;
-                }
-
-                try (FileWriter writer = new FileWriter(FILE_PATH)) {
-                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                    gson.toJson(allUsers, writer);
-                }
-
-                System.out.println("Successfully removed recipe '" + recipeName + "' for user '" + username + "'.");
-                return true;
-
             }
-        } catch (IOException e) {
-            System.err.println("Error accessing all_users.json: " + e.getMessage());
-            return false;
+
+            // Step 4: Save the updated users to file and upload to the cloud
+            if (recipeDeleted) {
+                // Update the user in the users map
+                users.put(username, user);
+
+                // Write updated users map back to file
+                writeUsersToFile(users);
+
+                // Upload the updated file to the cloud
+                uploadFileToFileIo();
+
+                System.out.println("User's recipe list updated successfully and uploaded to cloud.");
+            } else {
+                System.err.println("Recipe '" + recipeName + "' not found in user's created recipes. Deletion failed.");
+            }
+        } else {
+            System.err.println("User '" + username + "' not found in all_users.json.");
         }
     }
 
-    @Override
-    public void syncUsersToCloud() {
-        try {
-            System.out.println("Starting cloud sync for all_users.json...");
-            deleteFileFromFileIo();
-            uploadFileToFileIo();
-            System.out.println("Cloud sync successful.");
-        } catch (Exception e) {
-            System.err.println("Error during cloud sync: " + e.getMessage());
-        }
-    }
+
+
 
 }

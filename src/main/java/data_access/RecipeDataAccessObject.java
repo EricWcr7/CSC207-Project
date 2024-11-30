@@ -11,10 +11,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -573,49 +570,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         this.cachedRecipes.add(recipe);
     }
 
-    @Override
-    public boolean removeRecipeFromLocalFile(String filePath, String recipeName) {
-        boolean result = false;
 
-        try (FileReader reader = new FileReader(filePath)) {
-            // Parse the JSON file into a JsonObject
-            final JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
-
-            // Retrieve the "recipes" array from the JsonObject
-            final JsonArray recipesArray = jsonObject.getAsJsonArray("recipes");
-
-            // Iterate through the array to find the recipe with the matching name
-            for (int i = 0; i < recipesArray.size(); i++) {
-                final JsonObject recipe = recipesArray.get(i).getAsJsonObject();
-
-                // Check if the recipe name matches (case-insensitive comparison)
-                if (recipe.get(NAME).getAsString().equalsIgnoreCase(recipeName)) {
-                    // Remove the recipe from the array
-                    recipesArray.remove(i);
-
-                    // Update the file with the modified JSON
-                    try (FileWriter writer = new FileWriter(filePath)) {
-                        writer.write(jsonObject.toString());
-                        result = true;
-                    }
-                    break;
-                }
-            }
-        }
-        catch (IOException ex) {
-            // Print the stack trace for debugging purposes in case of an error
-            ex.printStackTrace();
-        }
-
-        return result;
-    }
-
-    @Override
-    public void removeRecipeByName(String recipeName) {
-        // Use the removeIf method to remove any recipe whose name matches the given recipe name
-        // The comparison is case-insensitive
-        cachedRecipes.removeIf(recipe -> recipe.getName().equalsIgnoreCase(recipeName));
-    }
 
     /**
      * Processes a {@link JsonArray} of recipe data, converting each valid JSON object
@@ -764,6 +719,48 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
             result = recipeObject.get(fieldName).getAsInt();
         }
         return result;
+    }
+
+    @Override
+    public void deleteRecipeFromAllRecipes(String recipeName) {
+        try {
+            // Step 1: Load the latest recipes from the cloud
+            loadRecipesFromCloud();
+
+            // Step 2: Read the JSON file into a JsonArray
+            List<Recipe> updatedRecipesList = new ArrayList<>();
+            boolean recipeDeleted = false;
+
+            // Iterate over the cachedRecipes list and remove the matching recipe
+            Iterator<Recipe> iterator = cachedRecipes.iterator();
+            while (iterator.hasNext()) {
+                Recipe recipe = iterator.next();
+                if (recipe.getName().equalsIgnoreCase(recipeName)) {
+                    iterator.remove();  // Remove the recipe from the list
+                    recipeDeleted = true;
+                    System.out.println("Recipe '" + recipeName + "' found and deleted.");
+                } else {
+                    updatedRecipesList.add(recipe);  // Add to the updated list
+                }
+            }
+
+            // Step 3: If the recipe was deleted, update the file
+            if (recipeDeleted) {
+                // Write the updated recipe list to the JSON file
+                writeRecipesToFile(updatedRecipesList);
+
+                // Step 4: Upload the updated file to the cloud
+                uploadFileToFileIo();
+
+                System.out.println("Recipe list updated successfully and uploaded to the cloud.");
+            } else {
+                System.err.println("Recipe '" + recipeName + "' not found in all_recipes.json.");
+            }
+
+        } catch (Exception e) {
+            System.err.println("An error occurred while deleting the recipe: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 

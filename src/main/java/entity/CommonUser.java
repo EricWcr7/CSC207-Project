@@ -13,7 +13,7 @@ public class CommonUser implements User {
     private final ArrayList<Recipe> recipeCreated;
     private String[] favoriteRecipes;
     private final int six = 6;
-    // List to store liked, disliked recipes, might use these instead of a  DAO
+    // List to store liked, disliked recipes, might use these instead of a DAO
     private final List<String> likedRecipes;
     private final List<String> dislikedRecipes;
 
@@ -39,7 +39,12 @@ public class CommonUser implements User {
     @Override
     public void addCreatedRecipe(Recipe recipe) {
         recipeCreated.add(recipe);
-        System.out.println("recipe added successfully");
+        System.out.println("Recipe added successfully");
+    }
+
+    @Override
+    public List<Recipe> getRecipeCreated() {
+        return new ArrayList<>(recipeCreated);
     }
 
     @Override

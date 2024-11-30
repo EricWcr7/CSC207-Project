@@ -10,21 +10,33 @@ public class DeleteController {
         this.deleteInputBoundary = deleteInputBoundary;
     }
 
-    public void deleteRecipe(String recipeName) {
-        if (recipeName == null || recipeName.isEmpty()) {
-            throw new IllegalArgumentException("Recipe name cannot be null or empty.");
-        }
 
-        // 从 Session 获取当前用户的用户名
-        String username = util.Session.getCurrentUser().getName();
-        if (username == null || username.isEmpty()) {
-            throw new IllegalStateException("No user is currently logged in.");
-        }
+    /**
+     * Deletes a recipe from all_recipes.json based on the recipe name.
+     *
+     * @param recipeName The name of the recipe to delete.
+     */
+    public void deleteRecipeFromAllRecipes(String recipeName) {
+        DeleteInputData inputData = new DeleteInputData(recipeName);
+        deleteInputBoundary.deleteRecipe(inputData);
+    }
 
-        // 创建包含用户名和菜谱名的 DeleteInputData
-        DeleteInputData inputData = new DeleteInputData(username, recipeName);
+    /**
+     * Deletes a recipe from all_users.json for the current user based on the recipe name.
+     *
+     * @param recipeName The name of the recipe to delete.
+     */
+    public void deleteRecipeFromUserCreatedRecipes(String recipeName) {
+        DeleteInputData inputData = new DeleteInputData(recipeName);
+        deleteInputBoundary.deleteUserRecipe(inputData);
+    }
 
-        // 调用输入边界执行删除逻辑
-        deleteInputBoundary.execute(inputData);
+    /**
+     * Gets the current user's name from the session.
+     *
+     * @return The name of the currently logged-in user.
+     */
+    private String getCurrentUserName() {
+        return util.Session.getCurrentUser().getName();
     }
 }
