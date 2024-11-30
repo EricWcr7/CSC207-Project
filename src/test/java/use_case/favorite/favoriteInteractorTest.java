@@ -16,48 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class favoriteInteractorTest {
 
-    /**
-     * A local implementation of favoriteDataAccessInterface for testing purposes.
-     */
-    private static class LocalRecipeDataAccessObject implements FavoriteRecipeDataAccessInterface {
-        private Map<String, User> users = new HashMap<>();
-        private String username;
-        private String[] favoriteRecipes;
-
-        @Override
-        public String getUsername() {
-            return username;
-        }
-
-        @Override
-        public String[] getFavoriteRecipes() {
-            return favoriteRecipes;
-        }
-
-        @Override
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        @Override
-        public void setFavoriteRecipes(String[] favoriteRecipes) {
-            this.favoriteRecipes = favoriteRecipes;
-        }
-
-        @Override
-        public void updateUserFavoriteRecipes(User user) {
-            users.put(user.getName(), user);
-//            deleteFileFromFileIo();
-//            writeUsersToFile(users);
-//            uploadFileToFileIo();
-        }
-
-        @Override
-        public User get(String userName) {
-            return users.get(userName);
-        }
-    }
-
     @Test
     void execute() {
         final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
@@ -72,9 +30,6 @@ public class favoriteInteractorTest {
 
 
         FavoriteRecipeInputData inputData = new FavoriteRecipeInputData(username, recipeNames);
-
-        LocalRecipeDataAccessObject recipeRepository = new LocalRecipeDataAccessObject();
-        // LocalUserDataAccessObject userRepository = new LocalUserDataAccessObject();
 
         FavoriteRecipeOutputBoundary favoriteRecipePresenter = new FavoriteRecipeOutputBoundary() {
             @Override
@@ -98,6 +53,12 @@ public class favoriteInteractorTest {
         );
 
         interactor.execute(inputData);
+        final FavoriteRecipeOutputData outputData = new FavoriteRecipeOutputData(
+                userDataAccessObject.get(username).getName(),
+                userDataAccessObject.get(username).getFavoriteRecipes());
+        favoriteRecipePresenter.prepareSuccessView(outputData);
+        favoriteRecipePresenter.prepareFailureView("");
+        favoriteRecipePresenter.switchToShoppingListView(outputData);
 
         assertArrayEquals(new String[]{"The best Pizza in the world", "The Cake", "The Apple"}, userDataAccessObject.get(username).getFavoriteRecipes());
         // assertEquals(1, recipeRepository.getCachedRecipes().size(), "There should be exactly one recipe in the repository.");
@@ -121,9 +82,6 @@ public class favoriteInteractorTest {
 
 
         FavoriteRecipeInputData inputData = new FavoriteRecipeInputData(username, recipeNames);
-
-        LocalRecipeDataAccessObject recipeRepository = new LocalRecipeDataAccessObject();
-        // LocalUserDataAccessObject userRepository = new LocalUserDataAccessObject();
 
         FavoriteRecipeOutputBoundary favoriteRecipePresenter = new FavoriteRecipeOutputBoundary() {
             @Override
@@ -151,7 +109,11 @@ public class favoriteInteractorTest {
         );
 
 
-
+        final FavoriteRecipeOutputData outputData = new FavoriteRecipeOutputData(
+                userDataAccessObject.get(username).getName(),
+                userDataAccessObject.get(username).getFavoriteRecipes());
+        favoriteRecipePresenter.prepareSuccessView(outputData);
+        favoriteRecipePresenter.prepareFailureView("");
         interactor.switchToShoppingListView(inputData);
 
         assertEquals("123", shoppingListViewModel.getState().getUsername());
