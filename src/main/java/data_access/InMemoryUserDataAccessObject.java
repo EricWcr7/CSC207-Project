@@ -508,30 +508,27 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public boolean removeUserCreatedRecipe(String username, String recipeName) {
         try {
-            // Step 1: 读取 all_users.json 文件
+
             try (FileReader reader = new FileReader(FILE_PATH)) {
                 JsonObject allUsers = JsonParser.parseReader(reader).getAsJsonObject();
 
-                // Step 2: 找到目标用户
                 JsonObject userJson = allUsers.getAsJsonObject(username);
                 if (userJson == null) {
                     System.err.println("User not found: " + username);
                     return false;
                 }
 
-                // Step 3: 获取用户的 recipeCreated 列表
                 JsonArray recipeCreatedArray = userJson.getAsJsonArray("recipeCreated");
                 if (recipeCreatedArray == null || recipeCreatedArray.size() == 0) {
                     System.err.println("No recipes found for user: " + username);
                     return false;
                 }
 
-                // Step 4: 查找并删除匹配的菜肴
                 boolean recipeFound = false;
                 for (int i = 0; i < recipeCreatedArray.size(); i++) {
                     JsonObject recipe = recipeCreatedArray.get(i).getAsJsonObject();
                     if (recipe.get("name").getAsString().equals(recipeName)) {
-                        recipeCreatedArray.remove(i); // 从 JSON 数组中删除
+                        recipeCreatedArray.remove(i);
                         recipeFound = true;
                         break;
                     }
@@ -542,7 +539,6 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
                     return false;
                 }
 
-                // Step 5: 将更新后的数据写回文件
                 try (FileWriter writer = new FileWriter(FILE_PATH)) {
                     Gson gson = new GsonBuilder().setPrettyPrinting().create();
                     gson.toJson(allUsers, writer);
@@ -562,8 +558,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public void syncUsersToCloud() {
         try {
             System.out.println("Starting cloud sync for all_users.json...");
-            deleteFileFromFileIo(); // 删除旧文件
-            uploadFileToFileIo();   // 上传新文件
+            deleteFileFromFileIo();
+            uploadFileToFileIo();
             System.out.println("Cloud sync successful.");
         } catch (Exception e) {
             System.err.println("Error during cloud sync: " + e.getMessage());
