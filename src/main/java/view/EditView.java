@@ -198,14 +198,14 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
                 JsonObject allUsers = JsonParser.parseReader(reader).getAsJsonObject();
                 JsonObject userJson = allUsers.getAsJsonObject(username);
                 if (userJson == null) {
-                    return; // 如果找不到该用户，直接返回
+                    return;
                 }
 
                 JsonArray recipeCreatedArray = userJson.getAsJsonArray("recipeCreated");
                 updateRecipeComboBox(recipeCreatedArray);
             }
         } catch (IOException | JsonSyntaxException e) {
-            return; // 如果有任何错误，简单返回
+            return;
         }
     }
 
@@ -224,8 +224,9 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
                     String recipeName = recipeObject.get("name").getAsString();
                     recipeComboBox.addItem(recipeName);
                 }
-            } else if (recipeElement.isJsonPrimitive()) {
-                // 如果元素是一个字符串
+            }
+            else if (recipeElement.isJsonPrimitive()) {
+
                 recipeComboBox.addItem(recipeElement.getAsString());
             }
         }

@@ -7,7 +7,7 @@ import entity.User;
  * It handles storing and accessing the currently logged-in user's information.
  */
 public class Session {
-    // 保存当前用户信息
+
     private static User currentUser;
 
     /**
