@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
+import java.util.Set;
 
 public class ShoppingListView extends JPanel implements PropertyChangeListener {
     private final String viewName = "The Overall Shopping List";
@@ -79,18 +80,18 @@ public class ShoppingListView extends JPanel implements PropertyChangeListener {
     }
 
     private void updateView() {
-        Map<String, String> ingredients = shoppingListViewModel.getIngredients();
-        System.out.println("Ingredients Map: " + ingredients);
-        shoppingListTextArea.setText(""); // Clear previous text
-        if (ingredients != null) {
-            for (Map.Entry<String, String> entry : ingredients.entrySet()) {
-                shoppingListTextArea.append(entry.getKey() + ": " + entry.getValue() + "\n");
+        Set<String> ingredients = shoppingListViewModel.getIngredients();
+        System.out.println("Ingredients Set: " + ingredients);
+        shoppingListTextArea.setText("");
+        if (ingredients != null && !ingredients.isEmpty()) {
+            for (String ingredient : ingredients) {
+                shoppingListTextArea.append(ingredient + "\n");
             }
-        } else {
+        }
+        else {
             shoppingListTextArea.setText("No ingredients available");
         }
     }
-
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
