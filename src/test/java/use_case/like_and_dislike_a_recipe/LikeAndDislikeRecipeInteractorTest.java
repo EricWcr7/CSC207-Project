@@ -1,12 +1,9 @@
-package use_case.like_and_dislike;
+package use_case.like_and_dislike_a_recipe;
 
 import entity.CommonRecipeFactory;
 import entity.Recipe;
 import entity.RecipeFactory;
 import org.junit.jupiter.api.Test;
-import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeDataAccessInterface;
-import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeInputData;
-import use_case.like_and_dislike_a_recipe.UserLikeAndDislikeDataAccessInterface;
 import use_case.like_and_dislike_a_recipe.dislike.DislikeRecipeInteractor;
 import use_case.like_and_dislike_a_recipe.dislike.DislikeRecipeOutputBoundary;
 import use_case.like_and_dislike_a_recipe.dislike.DislikeRecipeOutputData;
