@@ -495,5 +495,11 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public void addCreatedRecipe(Recipe recipe) {
         final User currentUser = get(getCurrentUsername());
         currentUser.addCreatedRecipe(recipe);
+        save(currentUser);
+        users.put(currentUser.getName(), currentUser);
+        deleteFileFromFileIo();
+        writeUsersToFile(users);
+        uploadFileToFileIo();
+
     }
 }

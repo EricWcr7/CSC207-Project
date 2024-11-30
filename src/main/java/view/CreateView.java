@@ -183,9 +183,7 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
 
                 // If the EditView is available, refresh its dropdown menu to include the newly added recipe
                 // This keeps the UI synchronized with the updated data
-                if (editView != null) {
-                    editView.loadNewRecipes();
-                }
+
             }
         });
     }
