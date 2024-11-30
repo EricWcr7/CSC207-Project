@@ -23,7 +23,7 @@ public interface User {
      * Add created Recipe.
      * @param recipe the created recipe
      */
-    void addCreatedRecipe(Recipe recipe);
+    void addCreatedRecipe(String recipe);
 
     /**
      * Returns the favoriteRecipes of the user.
@@ -67,9 +67,9 @@ public interface User {
     void addDislikedRecipe(String recipeName);
 
     /**
-     * Returns the list of recipes created by the user.
-     * @return the list of created recipes.
+     * Add created Recipe.
+     * @param recipe the created recipe
      */
-    List<Recipe> getRecipeCreated();
+    void removeCreatedRecipe(String recipe);
 
 }

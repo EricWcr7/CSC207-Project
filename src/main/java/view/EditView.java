@@ -134,8 +134,6 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
                 System.out.println("Selected recipe: " + selectedRecipe);
             }
         });
-        Timer timer = new Timer(2000, evt -> loadCreatedRecipes());
-        timer.start();
     }
 
     @Override
@@ -210,7 +208,7 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
     }
 
     private void updateRecipeComboBox(JsonArray recipeCreatedArray) {
-        // 清空下拉框
+
         recipeComboBox.removeAllItems();
 
         if (recipeCreatedArray == null || recipeCreatedArray.size() == 0) {

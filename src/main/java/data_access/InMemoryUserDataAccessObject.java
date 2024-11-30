@@ -498,7 +498,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public void addCreatedRecipe(Recipe recipe) {
         final User currentUser = get(getCurrentUsername());
-        currentUser.addCreatedRecipe(recipe);
+        currentUser.addCreatedRecipe(recipe.getName());
         deleteFileFromFileIo();
         writeUsersToFile(users);
         uploadFileToFileIo();
@@ -506,48 +506,12 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     }
 
     @Override
-    public void deleteRecipeForUser(String username, String recipeName) {
-        // Step 1: Load the latest users from the cloud
-        loadUsersFromCloud();
-
-        // Step 2: Find the user by username
-        if (users.containsKey(username)) {
-            User user = users.get(username);
-            boolean recipeDeleted = false;
-
-            // Step 3: Find and delete the recipe from user's recipeCreated list
-            Iterator<Recipe> iterator = user.getRecipeCreated().iterator();
-            while (iterator.hasNext()) {
-                Recipe recipe = iterator.next();
-                if (recipe.getName().equalsIgnoreCase(recipeName)) {
-                    iterator.remove(); // Remove the recipe from the list
-                    recipeDeleted = true;
-                    System.out.println("Recipe '" + recipeName + "' found and deleted from user '" + username + "'.");
-                    break;
-                }
-            }
-
-            // Step 4: Save the updated users to file and upload to the cloud
-            if (recipeDeleted) {
-                // Update the user in the users map
-                users.put(username, user);
-
-                // Write updated users map back to file
-                writeUsersToFile(users);
-
-                // Upload the updated file to the cloud
-                uploadFileToFileIo();
-
-                System.out.println("User's recipe list updated successfully and uploaded to cloud.");
-            } else {
-                System.err.println("Recipe '" + recipeName + "' not found in user's created recipes. Deletion failed.");
-            }
-        } else {
-            System.err.println("User '" + username + "' not found in all_users.json.");
-        }
+    public void deleteRecipeForUser(String recipeName) {
+        final User currentUser = get(getCurrentUsername());
+        currentUser.removeCreatedRecipe(recipeName);
+        deleteFileFromFileIo();
+        writeUsersToFile(users);
+        uploadFileToFileIo();
     }
-
-
-
 
 }
