@@ -2,7 +2,7 @@ package interface_adapter.shopping_list;
 
 import interface_adapter.ViewModel;
 
-import java.util.Map;
+import java.util.Set;
 
 public class ShoppingListViewModel extends ViewModel<ShoppingListState> {
 
@@ -11,7 +11,7 @@ public class ShoppingListViewModel extends ViewModel<ShoppingListState> {
         setState(new ShoppingListState());
     }
 
-    public Map<String, String> getIngredients() {
+    public Set<String> getIngredients() {
         return getState().getIngredients();
     }
 
@@ -23,3 +23,4 @@ public class ShoppingListViewModel extends ViewModel<ShoppingListState> {
         return getState().getUsername();
     }
 }
+

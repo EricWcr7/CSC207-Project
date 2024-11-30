@@ -1,19 +1,17 @@
 package interface_adapter.shopping_list;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class ShoppingListState {
     private String username;
     private String[] recipeNames;
-    private Map<String, String> ingredients;
+    private Set<String> ingredients;
 
     public void setRecipeNames(String[] recipeNames) {
         this.recipeNames = recipeNames;
     }
 
-    public void setIngredients(Map<String, String> ingredients) {
+    public void setIngredients(Set<String> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -25,7 +23,7 @@ public class ShoppingListState {
         return recipeNames;
     }
 
-    public Map<String, String> getIngredients() {
+    public Set<String> getIngredients() {
         return ingredients;
     }
 
@@ -34,6 +32,9 @@ public class ShoppingListState {
     }
 
     public void clearIngredients() {
-        this.ingredients.clear();
+        if (ingredients != null) {
+            ingredients.clear();
+        }
     }
 }
+
