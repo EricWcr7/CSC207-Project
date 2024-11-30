@@ -20,12 +20,13 @@ public class DeleteInteractor implements DeleteInputBoundary {
     @Override
     public void deleteRecipe(DeleteInputData inputData) {
         try {
-            // 从 all_recipes.json 中删除菜肴
+
             deleteDataAccess.deleteRecipeFromAllRecipes(inputData.getRecipeName());
-            // 删除成功，调用成功回调
+
             deleteOutputBoundary.prepareSuccessView();
-        } catch (Exception e) {
-            // 删除失败，调用失败回调
+        }
+        catch (Exception e) {
+
             deleteOutputBoundary.prepareFailureView();
         }
     }
@@ -33,14 +34,15 @@ public class DeleteInteractor implements DeleteInputBoundary {
     @Override
     public void deleteUserRecipe(DeleteInputData inputData) {
         try {
-            // 获取当前用户的用户名
+
             String username = Session.getCurrentUser().getName();
-            // 调用 deleteUserDataAccess 来删除用户创建的菜肴
+
             deleteUserDataAccess.deleteRecipeForUser(username, inputData.getRecipeName());
-            // 删除成功，调用成功回调
+
             deleteOutputBoundary.prepareSuccessView();
-        } catch (Exception e) {
-            // 删除失败，调用失败回调
+        }
+        catch (Exception e) {
+
             deleteOutputBoundary.prepareFailureView();
         }
     }
