@@ -16,6 +16,7 @@ import java.beans.PropertyChangeListener;
 import java.io.FileReader;
 import java.io.IOException;
 
+
 /**
  * The EditView class represents the graphical user interface for editing recipes.
  * It allows users to add, delete, and navigate recipes via a combo box and buttons.
