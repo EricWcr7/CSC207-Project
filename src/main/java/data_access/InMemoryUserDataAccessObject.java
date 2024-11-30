@@ -496,48 +496,37 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
 
     @Override
     public void addCreatedRecipe(Recipe recipe) {
-        // 获取当前用户
+
         final User currentUser = get(getCurrentUsername());
 
-        // 将新菜肴添加到用户的 createdRecipes 列表
         currentUser.addCreatedRecipe(recipe);
 
-        // 保存用户更新的数据到内存和本地文件
         save(currentUser);
-
-        // 同步到云端（一次性删除旧文件并上传新文件）
-        syncUsersToCloud();
     }
 
 
     @Override
     public boolean removeUserCreatedRecipe(String username, String recipeName) {
         try {
-            // Step 1: 打印调试信息
-            System.out.println("Attempting to remove recipe: " + recipeName + " for user: " + username);
-
-            // Step 2: 读取 all_users.json 文件
+            // Step 1: 读取 all_users.json 文件
             try (FileReader reader = new FileReader(FILE_PATH)) {
                 JsonObject allUsers = JsonParser.parseReader(reader).getAsJsonObject();
 
-                // Step 3: 找到目标用户
+                // Step 2: 找到目标用户
                 JsonObject userJson = allUsers.getAsJsonObject(username);
                 if (userJson == null) {
                     System.err.println("User not found: " + username);
                     return false;
                 }
 
-                // Step 4: 获取用户的 recipeCreated 列表
+                // Step 3: 获取用户的 recipeCreated 列表
                 JsonArray recipeCreatedArray = userJson.getAsJsonArray("recipeCreated");
                 if (recipeCreatedArray == null || recipeCreatedArray.size() == 0) {
                     System.err.println("No recipes found for user: " + username);
                     return false;
                 }
 
-                // Step 5: 打印当前 recipeCreated 列表
-                System.out.println("Current recipes for user: " + recipeCreatedArray);
-
-                // Step 6: 查找并删除匹配的菜肴
+                // Step 4: 查找并删除匹配的菜肴
                 boolean recipeFound = false;
                 for (int i = 0; i < recipeCreatedArray.size(); i++) {
                     JsonObject recipe = recipeCreatedArray.get(i).getAsJsonObject();
@@ -553,17 +542,13 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
                     return false;
                 }
 
-                // Step 7: 打印删除后的 recipeCreated 列表
-                System.out.println("Updated recipes for user: " + recipeCreatedArray);
-
-                // Step 8: 将更新后的数据写回文件
+                // Step 5: 将更新后的数据写回文件
                 try (FileWriter writer = new FileWriter(FILE_PATH)) {
                     Gson gson = new GsonBuilder().setPrettyPrinting().create();
                     gson.toJson(allUsers, writer);
                 }
 
                 System.out.println("Successfully removed recipe '" + recipeName + "' for user '" + username + "'.");
-                syncUsersToCloud(); // 同步到云端
                 return true;
 
             }
@@ -572,7 +557,6 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
             return false;
         }
     }
-
 
     @Override
     public void syncUsersToCloud() {
