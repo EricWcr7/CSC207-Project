@@ -24,10 +24,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import entity.CommonUserFactory;
-import entity.Recipe;
-import entity.User;
-import entity.UserFactory;
+import entity.*;
 import use_case.create_recipe.CreateRecipeUserDataAccessInterface;
 import use_case.delete.DeleteUserDataAccessInterface;
 import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
@@ -348,6 +345,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
                     final JsonArray likedRecipesArray = userObject.getAsJsonArray("likedRecipes");
                     final JsonArray dislikedRecipesArray = userObject.getAsJsonArray("dislikedRecipes");
                     final JsonArray favoriteRecipesArray = userObject.getAsJsonArray("favoriteRecipes");
+                    final JsonArray recipeCreatedArray = userObject.getAsJsonArray("recipeCreated");
 
                     // Use UserFactory to create the User object
                     final UserFactory userFactory = new CommonUserFactory();
@@ -374,6 +372,25 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
                     }
                     user.setFavoriteRecipes(favoriterecipes);
 
+                    // Process recipeCreated
+                    if (recipeCreatedArray != null) {
+                        for (JsonElement recipeElement : recipeCreatedArray) {
+                            final JsonObject recipeObject = recipeElement.getAsJsonObject();
+                            final String id = recipeObject.get("id").getAsString();
+                            final String name = recipeObject.get("name").getAsString();
+                            final String category = recipeObject.get("category").getAsString();
+                            final String instructions = recipeObject.get("instructions").getAsString();
+                            final JsonObject ingredientMeasureMap = recipeObject.getAsJsonObject(
+                                    "ingredientMeasureMap");
+                            final Map<String, String> ingredients = gson.fromJson(ingredientMeasureMap,
+                                    new TypeToken<Map<String, String>>() { }.getType());
+
+                            final RecipeFactory recipeFactory = new CommonRecipeFactory();
+                            final Recipe createdRecipe = recipeFactory.createRecipe(
+                                    id, name, category, instructions, ingredients, 0, 0);
+                            user.addCreatedRecipe(createdRecipe);
+                        }
+                    }
                     // Add the constructed user to the map
                     parsedUsers.put(userName, user);
                 }
