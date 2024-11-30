@@ -1,5 +1,6 @@
 package data_access;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
@@ -27,6 +28,7 @@ import entity.Recipe;
 import entity.User;
 import entity.UserFactory;
 import use_case.create_recipe.CreateRecipeUserDataAccessInterface;
+import use_case.delete.DUserDataAccessInterface;
 import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
 import use_case.like_and_dislike_a_recipe.UserLikeAndDislikeDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
@@ -44,7 +46,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         FavoriteRecipeDataAccessInterface,
         ShoppingListUserDataAccessInterface,
         LogoutUserDataAccessInterface,
-        CreateRecipeUserDataAccessInterface {
+        CreateRecipeUserDataAccessInterface,
+        DUserDataAccessInterface {
 
     private static final String FILE_IO_API_URL = "https://file.io";
     private static final String API_KEY = "35F52QF.ZQV4A4E-ASHMAQD-QSPTZ93-NHYCJT6";
@@ -502,4 +505,81 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         uploadFileToFileIo();
 
     }
+
+    @Override
+    public boolean removeUserCreatedRecipe(String username, String recipeName) {
+        try {
+            // Step 1: 打印调试信息
+            System.out.println("Attempting to remove recipe: " + recipeName + " for user: " + username);
+
+            // Step 2: 读取 all_users.json 文件
+            try (FileReader reader = new FileReader(FILE_PATH)) {
+                JsonObject allUsers = JsonParser.parseReader(reader).getAsJsonObject();
+
+                // Step 3: 找到目标用户
+                JsonObject userJson = allUsers.getAsJsonObject(username);
+                if (userJson == null) {
+                    System.err.println("User not found: " + username);
+                    return false;
+                }
+
+                // Step 4: 获取用户的 recipeCreated 列表
+                JsonArray recipeCreatedArray = userJson.getAsJsonArray("recipeCreated");
+                if (recipeCreatedArray == null || recipeCreatedArray.size() == 0) {
+                    System.err.println("No recipes found for user: " + username);
+                    return false;
+                }
+
+                // Step 5: 打印当前 recipeCreated 列表
+                System.out.println("Current recipes for user: " + recipeCreatedArray);
+
+                // Step 6: 查找并删除匹配的菜肴
+                boolean recipeFound = false;
+                for (int i = 0; i < recipeCreatedArray.size(); i++) {
+                    JsonObject recipe = recipeCreatedArray.get(i).getAsJsonObject();
+                    if (recipe.get("name").getAsString().equals(recipeName)) {
+                        recipeCreatedArray.remove(i); // 从 JSON 数组中删除
+                        recipeFound = true;
+                        break;
+                    }
+                }
+
+                if (!recipeFound) {
+                    System.err.println("Recipe not found: " + recipeName);
+                    return false;
+                }
+
+                // Step 7: 打印删除后的 recipeCreated 列表
+                System.out.println("Updated recipes for user: " + recipeCreatedArray);
+
+                // Step 8: 将更新后的数据写回文件
+                try (FileWriter writer = new FileWriter(FILE_PATH)) {
+                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                    gson.toJson(allUsers, writer);
+                }
+
+                System.out.println("Successfully removed recipe '" + recipeName + "' for user '" + username + "'.");
+                syncUsersToCloud(); // 同步到云端
+                return true;
+
+            }
+        } catch (IOException e) {
+            System.err.println("Error accessing all_users.json: " + e.getMessage());
+            return false;
+        }
+    }
+
+
+    @Override
+    public void syncUsersToCloud() {
+        try {
+            System.out.println("Starting cloud sync for all_users.json...");
+            deleteFileFromFileIo(); // 删除旧文件
+            uploadFileToFileIo();   // 上传新文件
+            System.out.println("Cloud sync successful.");
+        } catch (Exception e) {
+            System.err.println("Error during cloud sync: " + e.getMessage());
+        }
+    }
+
 }

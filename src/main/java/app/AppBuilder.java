@@ -91,6 +91,7 @@ public class AppBuilder {
 
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
+
     private final FavoriteRecipeDataAccessObject favoriteRecipeDataAccessObject = new FavoriteRecipeDataAccessObject();
 
     private SignupView signupView;
@@ -589,7 +590,7 @@ public class AppBuilder {
     public AppBuilder addDeleteUseCase() {
         final DeleteViewModel deleteViewModel = new DeleteViewModel();
         final DeleteOutputBoundary deleteOutputBoundary = new DeletePresenter(deleteViewModel);
-        final DeleteInputBoundary deleteInteractor = new DeleteInteractor(deleteOutputBoundary, recipeDataAccessObject);
+        final DeleteInputBoundary deleteInteractor = new DeleteInteractor(deleteOutputBoundary, recipeDataAccessObject, userDataAccessObject);
         final DeleteController deleteController = new DeleteController(deleteInteractor);
         editView.setDeleteController(deleteController);
         System.out.println("Delete Use Case added successfully.");

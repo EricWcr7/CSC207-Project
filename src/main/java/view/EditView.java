@@ -1,9 +1,6 @@
 package view;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import entity.User;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.delete.DeleteController;
@@ -183,6 +180,23 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
         this.deleteController = deleteController; // Correctly initialize the DeleteController
     }
 
+    private void updateRecipeComboBox(JsonArray recipeCreatedArray) {
+        // 清空下拉框
+        recipeComboBox.removeAllItems();
+
+        // 遍历菜谱列表，加载到下拉框中
+        for (JsonElement recipeElement : recipeCreatedArray) {
+            JsonObject recipe = recipeElement.getAsJsonObject();
+            String recipeName = recipe.get("name").getAsString();
+            recipeComboBox.addItem(recipeName);
+        }
+
+        // 刷新下拉框
+        recipeComboBox.revalidate();
+        recipeComboBox.repaint();
+    }
+
+
     public void loadCreatedRecipes() {
         try {
             // Step 1: 从 Session 中获取当前用户
@@ -208,30 +222,38 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
                 // Step 4: 获取 recipeCreated 列表
                 JsonArray recipeCreatedArray = userJson.getAsJsonArray("recipeCreated");
                 if (recipeCreatedArray == null || recipeCreatedArray.size() == 0) {
-                    JOptionPane.showMessageDialog(this, "You have not created any recipes.");
+                    recipeComboBox.removeAllItems();
+                    recipeComboBox.addItem("No recipes created"); // 默认选项
+                    recipeComboBox.revalidate();
+                    recipeComboBox.repaint();
+
                     return;
                 }
 
-                // Step 5: 将菜谱名称加载到下拉框
-                recipeComboBox.removeAllItems();
-                for (JsonElement recipeElement : recipeCreatedArray) {
-                    JsonObject recipe = recipeElement.getAsJsonObject();
-                    String recipeName = recipe.get("name").getAsString();
-                    recipeComboBox.addItem(recipeName);
+                // Step 5: 更新下拉框
+                updateRecipeComboBox(recipeCreatedArray);
+
+                // 默认选中第一个菜谱
+                if (recipeComboBox.getItemCount() > 0) {
+                    recipeComboBox.setSelectedIndex(0);
                 }
 
-                // 刷新下拉框
-                recipeComboBox.revalidate();
-                recipeComboBox.repaint();
+                // Debug log
+                System.out.println("Loaded recipes for user: " + username);
+                System.out.println("Recipes: " + recipeCreatedArray);
+                System.out.println("Number of recipes: " + recipeCreatedArray.size());
             }
 
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error loading user data from all_users.json!");
+        } catch (JsonSyntaxException e) {
+            JOptionPane.showMessageDialog(this, "User data file format is invalid.");
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "An unexpected error occurred: " + e.getMessage());
         }
     }
+
 
 }

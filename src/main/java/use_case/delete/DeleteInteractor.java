@@ -17,54 +17,59 @@ public class DeleteInteractor implements DeleteInputBoundary {
     // DAO for interacting with recipe data storage (e.g., local and cloud JSON files)
     private final DeleteDataAccessInterface recipeDataAccessObject;
 
+    private final DUserDataAccessInterface deleteUserDataAccessObject;
+
     /**
      * Constructor for DeleteInteractor.
      *
      * @param deletePresenter         The output boundary (presenter) for the Delete Use Case.
      * @param recipeDataAccessObject  The data access object for interacting with recipes.
      */
-    public DeleteInteractor(DeleteOutputBoundary deletePresenter, RecipeDataAccessObject recipeDataAccessObject) {
+    public DeleteInteractor(DeleteOutputBoundary deletePresenter, RecipeDataAccessObject recipeDataAccessObject, DUserDataAccessInterface deleteUserDataAccessObject) {
         this.deletePresenter = deletePresenter;
         // Assign presenter for handling output
         this.recipeDataAccessObject = recipeDataAccessObject;
         // Assign DAO for data operations
+        this.deleteUserDataAccessObject = deleteUserDataAccessObject;
     }
 
     @Override
     public void execute(DeleteInputData inputData) {
-        // Step 1: Extract the recipe name from input data
-        final String recipeName = inputData.getRecipeName();
+        String recipeName = inputData.getRecipeName();
+        String username = inputData.getUsername();
 
-        // Step 2: Attempt to delete the recipe from the local file
+        // Step 1: 删除用户创建的菜肴
+        boolean userRecipeDeleted = deleteUserDataAccessObject.removeUserCreatedRecipe(username, recipeName);
+
+        if (!userRecipeDeleted) {
+            deletePresenter.prepareFailureView();
+            return;
+        }
+
+        // Step 2: 删除 all_recipes.json 中的菜肴
         boolean localDeleted = recipeDataAccessObject.removeRecipeFromLocalFile("new_recipes.json", recipeName);
-        localDeleted = localDeleted;
-        // why you create but not use localDeleted? I just fix checkstyle here.
+        if (!localDeleted) {
+            deletePresenter.prepareFailureView();
+            return;
+        }
 
-        // Step 3: Load recipes from the cloud for further deletion
+        // Step 3: 从云端删除菜肴
         recipeDataAccessObject.loadRecipesFromCloud();
-
-        // Step 4: Check if the recipe exists in the cloud storage
         if (recipeDataAccessObject.isNameInRecipes(recipeName)) {
-            // Step 4.1: Remove the recipe from the cached cloud recipes
             recipeDataAccessObject.removeRecipeByName(recipeName);
 
-            // Step 4.2: Update the local JSON file with the updated list of recipes
-            final List<Recipe> updatedRecipes = recipeDataAccessObject.getCachedRecipes();
+            // 更新云端文件
+            List<Recipe> updatedRecipes = recipeDataAccessObject.getCachedRecipes();
             recipeDataAccessObject.writeRecipesToFile(updatedRecipes);
-
-            // Step 4.3: Synchronize changes with the cloud
             recipeDataAccessObject.deleteFileFromFileIo();
-            // Delete the old cloud file
             recipeDataAccessObject.uploadFileToFileIo();
-            // Upload the updated file to the cloud
 
-            // Step 4.4: Notify the presenter of a successful deletion
+            // 通知 Presenter 删除成功
             deletePresenter.prepareSuccessView();
-        }
-        else {
-            // Step 5: If the recipe does not exist in the cloud, notify the presenter of failure
+        } else {
             deletePresenter.prepareFailureView();
         }
     }
+
 }
 
