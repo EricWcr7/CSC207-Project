@@ -18,7 +18,7 @@
 Meal Master simplifies recipe organization and meal planning by allowing users to manage their favorite recipes, generate shopping lists, and interact with community-generated content.
 
 **Why was this project made?**  
-This system was developed to streamline recipe management and promote collaborative cooking experiences.
+This platform was developed to streamline recipe management and promote collaborative cooking experiences.
 
 ---
 
