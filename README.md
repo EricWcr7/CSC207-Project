@@ -40,7 +40,7 @@ This platform was developed to streamline recipe management and promote collabor
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/EricWcr7/CSC207-Project.git
+   https://github.com/EricWcr7/CSC207-Project.git
 2. **Set Up APIs**:
    There is nothing to do with setting up the APIs.
 3. **Set Up IDE**:
