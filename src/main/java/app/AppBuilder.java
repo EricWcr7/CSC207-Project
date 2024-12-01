@@ -466,7 +466,7 @@ public class AppBuilder {
                 viewManagerModel, favoriteRecipeViewModel, shoppingListViewModel);
 
         final FavoriteRecipeInputBoundary favoriteRecipeInteractor = new FavoriteRecipeInteractor(
-                favoriteRecipeOutputBoundary, userDataAccessObject, userDataAccessObject);
+                favoriteRecipeOutputBoundary, userDataAccessObject);
 
         final FavoriteRecipeController favoriteRecipeController = new FavoriteRecipeController(favoriteRecipeInteractor);
         favoriteRecipeView.setFavoriteRecipeController(favoriteRecipeController);
