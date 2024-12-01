@@ -147,4 +147,101 @@ class ShoppingListInteractorTest {
         ShoppingListInputBoundary interactor = new ShoppingListInteractor(successPresenter, recipeDao, userDao);
         interactor.execute();
     }
+
+    @Test
+    void nullRecipeNameTest() {
+        // Setup
+        String username = "Bob";
+        String[] recipeNames = {null, "null", "MissingRecipe"};
+
+        UserFactory userFactory = new CommonUserFactory();
+        User bob = userFactory.create(username, "password123");
+        bob.setFavoriteRecipes(recipeNames);
+
+        LocalShoppingListUserDataAccessObject userDao = new LocalShoppingListUserDataAccessObject();
+        userDao.addUser(bob);
+        userDao.setCurrentUsername(username);
+
+        LocalShoppingListRecipeDataAccessObject recipeDao = new LocalShoppingListRecipeDataAccessObject();
+
+        ShoppingListOutputBoundary successPresenter = new ShoppingListOutputBoundary() {
+            @Override
+            public void presentShoppingList(ShoppingListOutputData shoppingListOutputData) {
+                assertEquals(username, shoppingListOutputData.getUsername());
+                assertArrayEquals(new String[]{"MissingRecipe"}, shoppingListOutputData.getRecipeNames());
+                assertTrue(shoppingListOutputData.getIngredients().isEmpty());
+            }
+        };
+
+        ShoppingListInputBoundary interactor = new ShoppingListInteractor(successPresenter, recipeDao, userDao);
+        interactor.execute();
+    }
+
+    @Test
+    void missingRecipeTest() {
+        // Setup
+        String username = "Charlie";
+        String[] recipeNames = {"UnknownRecipe"};
+
+        UserFactory userFactory = new CommonUserFactory();
+        User charlie = userFactory.create(username, "password456");
+        charlie.setFavoriteRecipes(recipeNames);
+
+        LocalShoppingListUserDataAccessObject userDao = new LocalShoppingListUserDataAccessObject();
+        userDao.addUser(charlie);
+        userDao.setCurrentUsername(username);
+
+        LocalShoppingListRecipeDataAccessObject recipeDao = new LocalShoppingListRecipeDataAccessObject();
+
+        ShoppingListOutputBoundary successPresenter = new ShoppingListOutputBoundary() {
+            @Override
+            public void presentShoppingList(ShoppingListOutputData shoppingListOutputData) {
+                assertEquals(username, shoppingListOutputData.getUsername());
+                assertArrayEquals(recipeNames, shoppingListOutputData.getRecipeNames());
+                assertTrue(shoppingListOutputData.getIngredients().isEmpty());
+            }
+        };
+
+        ShoppingListInputBoundary interactor = new ShoppingListInteractor(successPresenter, recipeDao, userDao);
+        interactor.execute();
+    }
+
+    @Test
+    void emptyAndWhitespaceIngredientsTest() {
+        // Setup
+        String username = "Dana";
+        String[] recipeNames = {"WhitespaceIngredients", "EmptyIngredients"};
+
+        RecipeFactory recipeFactory = new CommonRecipeFactory();
+
+        Recipe whitespaceRecipe = recipeFactory.createRecipe(
+                "1", "WhitespaceIngredients", "Main", " ", new HashMap<>(), 5, 1);
+        Recipe emptyRecipe = recipeFactory.createRecipe(
+                "2", "EmptyIngredients", "Appetizer", "", new HashMap<>(), 5, 1);
+
+        LocalShoppingListRecipeDataAccessObject recipeDao = new LocalShoppingListRecipeDataAccessObject();
+        recipeDao.addRecipe(whitespaceRecipe);
+        recipeDao.addRecipe(emptyRecipe);
+
+        UserFactory userFactory = new CommonUserFactory();
+        User dana = userFactory.create(username, "password789");
+        dana.setFavoriteRecipes(recipeNames);
+
+        LocalShoppingListUserDataAccessObject userDao = new LocalShoppingListUserDataAccessObject();
+        userDao.addUser(dana);
+        userDao.setCurrentUsername(username);
+
+        ShoppingListOutputBoundary successPresenter = new ShoppingListOutputBoundary() {
+            @Override
+            public void presentShoppingList(ShoppingListOutputData shoppingListOutputData) {
+                assertEquals(username, shoppingListOutputData.getUsername());
+                assertArrayEquals(recipeNames, shoppingListOutputData.getRecipeNames());
+                assertTrue(shoppingListOutputData.getIngredients().isEmpty());
+            }
+        };
+
+        ShoppingListInputBoundary interactor = new ShoppingListInteractor(successPresenter, recipeDao, userDao);
+        interactor.execute();
+    }
+
 }

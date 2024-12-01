@@ -27,14 +27,14 @@ public class ShoppingListInteractor implements ShoppingListInputBoundary {
     public void execute() {
         final String currentUserName = userDataAccessObject.getCurrentUsername();
         final User currentUser = userDataAccessObject.get(currentUserName);
-        final String[] recipeNames = currentUser.getFavoriteRecipes();
-        System.out.println("Recipe names: " + Arrays.toString(recipeNames));
+        final String[] recipeNames = Arrays.stream(currentUser.getFavoriteRecipes())
+                .filter(name -> name != null && !"null".equalsIgnoreCase(name))
+                .toArray(String[]::new);
+
+        System.out.println("Filtered Recipe names: " + Arrays.toString(recipeNames));
         final Map<String, String> ingredientsMap = new HashMap<>();
 
         for (String recipeName : recipeNames) {
-            if (recipeName == null || "null".equals(recipeName)) {
-                continue;
-            }
             final Recipe recipe = recipeDataAccessObject.getOneRecipe(recipeName);
 
             if (recipe == null) {
