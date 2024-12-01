@@ -109,7 +109,7 @@ We welcome feedback on the software to help improve its functionality and user e
 
 - **Google Forms**:
   ```bash
-  [https://forms.gle/rB6JPXrWfYPmu2r58](#)
+  https://forms.gle/rB6JPXrWfYPmu2r58
   ```
 
 ## Contributions
