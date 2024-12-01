@@ -10,17 +10,6 @@ public class DeleteController {
         this.deleteInputBoundary = deleteInputBoundary;
     }
 
-
-//    /**
-//     * Deletes a recipe from all_recipes.json based on the recipe name.
-//     *
-//     * @param recipeName The name of the recipe to delete.
-//     */
-//    public void deleteRecipeFromAllRecipes(String recipeName) {
-//        DeleteInputData inputData = new DeleteInputData(recipeName);
-//        deleteInputBoundary.deleteRecipe(inputData);
-//    }
-
     /**
      * Deletes a recipe from all_users.json for the current user based on the recipe name.
      *
