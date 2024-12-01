@@ -8,8 +8,8 @@ public class ViewManagerModel extends ViewModel<String> {
 
     public ViewManagerModel() {
         super("view manager");
-        this.setState(""); // or "sign up" if that should be the default
-        System.out.println("Initial ViewManagerModel state set to: " + this.getState()); // Debug line
+        this.setState("");
+        System.out.println("Initial ViewManagerModel state set to: " + this.getState());
     }
 
     /**

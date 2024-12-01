@@ -12,7 +12,8 @@ import use_case.edit.EditOutputBoundary;
  */
 public class EditPresenter implements EditOutputBoundary {
 
-    // The ViewModel for the edit functionality, responsible for storing and managing the current state of the edit view.
+    // The ViewModel for the edit functionality, responsible for storing and managing the
+    // current state of the edit view.
     private final EditViewModel editViewModel;
 
     // The ViewModel for the create recipe functionality, used to manage the state and data for the create view.

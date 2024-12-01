@@ -3,11 +3,9 @@ package interface_adapter.edit;
 /**
  * The EditState class is designed to represent the state of the editing process.
  * This class serves as part of the interface adapter layer, following the Clean Architecture principles.
- *
  * Its purpose is to encapsulate and manage the state information specific to the editing functionality.
  * This state can include flags, statuses, or any other information required to track the progress
  * or result of an edit operation.
- *
  * Currently, this class is empty, but it acts as a placeholder for future expansion,
  * where various fields or methods could be added to support more complex state management.
  */

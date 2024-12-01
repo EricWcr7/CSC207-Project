@@ -1,6 +1,5 @@
 package use_case.choose_recipe;
 
-
 /**
  * Represents the output data for the "choose recipe" use case.
  * This class encapsulates the details of a chosen recipe, including the dish name, ingredients, instructions,

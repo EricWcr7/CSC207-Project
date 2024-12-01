@@ -6,7 +6,6 @@ import use_case.edit.EditInputBoundary;
  * The EditController class serves as the controller in the Clean Architecture pattern.
  * It acts as the intermediary between the user interface (view) and the use case interactor,
  * handling user input and invoking appropriate methods on the interactor.
- *
  * This class is responsible for managing actions related to editing and creating new entities (e.g., recipes).
  * It delegates these actions to the EditInputBoundary interface, which ensures that the
  * logic remains decoupled and adheres to the dependency inversion principle.

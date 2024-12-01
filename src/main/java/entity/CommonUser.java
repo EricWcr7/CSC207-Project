@@ -48,8 +48,6 @@ public class CommonUser implements User {
         System.out.println("Recipe added successfully");
     }
 
-
-
     @Override
     public String[] getFavoriteRecipes() {
         return favoriteRecipes;

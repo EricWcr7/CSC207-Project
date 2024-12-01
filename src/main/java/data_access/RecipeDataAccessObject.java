@@ -1,6 +1,5 @@
 package data_access;
 
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
@@ -22,7 +21,6 @@ import com.google.gson.JsonParser;
 import entity.CommonRecipeFactory;
 import entity.Recipe;
 import entity.RecipeFactory;
-import entity.User;
 import use_case.choose_recipe.ChooseRecipeDataAccessInterface;
 import use_case.create_recipe.CreateRecipeDataAccessInterface;
 import use_case.delete.DeleteDataAccessInterface;
@@ -90,13 +88,16 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
                 if (responseObject.has(NODES) && responseObject.get(NODES).isJsonArray()) {
                     final JsonArray nodesArray = responseObject.getAsJsonArray(NODES);
                     processNodes(nodesArray, fileName);
-                } else {
+                }
+                else {
                     System.out.println("No 'nodes' array found in the response. Response: " + response.body());
                 }
-            } else {
+            }
+            else {
                 System.out.println("Failed to get file list from File.io. Status code: " + response.statusCode());
             }
-        } catch (IOException | InterruptedException ex) {
+        }
+        catch (IOException | InterruptedException ex) {
             System.err.println("Error while searching for file on File.io: " + ex.getMessage());
             Thread.currentThread().interrupt();
         }
@@ -124,7 +125,8 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
                     if (nodeObject.has(KEY)) {
                         recipeFileKey = nodeObject.get(KEY).getAsString();
                         System.out.println("File '" + fileName + "' found on File.io with key: " + recipeFileKey);
-                    } else {
+                    }
+                    else {
                         System.out.println("File object found, but no key present for file: " + fileName);
                     }
                     break;
@@ -152,11 +154,13 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
 
             if (response.statusCode() == STATUS_CODE_OK) {
                 System.out.println("File deleted successfully: " + response.body());
-            } else {
+            }
+            else {
                 System.err.println("Failed to delete file. Status code: " + response.statusCode());
                 System.err.println("Response body: " + response.body());
             }
-        } catch (IOException | InterruptedException ex) {
+        }
+        catch (IOException | InterruptedException ex) {
             System.err.println("Error during file deletion: " + ex.getMessage());
             Thread.currentThread().interrupt();
         }
@@ -196,10 +200,12 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
             if (response.statusCode() == STATUS_CODE_OK) {
                 System.out.println("Successful response for keyword: " + keyword);
                 recipes = parseRecipes(response.body());
-            } else {
+            }
+            else {
                 System.err.println("Error: Received HTTP " + response.statusCode() + " for keyword: " + keyword);
             }
-        } catch (IOException | InterruptedException ex) {
+        }
+        catch (IOException | InterruptedException ex) {
             System.err.println("Error fetching recipes for keyword " + keyword + ": " + ex.getMessage());
             Thread.currentThread().interrupt();
         }
@@ -231,27 +237,33 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
                     final JsonArray mealsArray = mealsElement.getAsJsonArray();
                     System.out.println("Number of recipes found in response: " + mealsArray.size());
                     recipes.addAll(processMealsArray(mealsArray));
-                } else if (mealsElement.isJsonObject()) {
+                }
+                else if (mealsElement.isJsonObject()) {
                     // Wrap a single JsonObject in an array if it's an object
                     System.out.println("Single meal object found in response, wrapping in array.");
                     final JsonArray mealsArray = new JsonArray();
                     mealsArray.add(mealsElement.getAsJsonObject());
                     recipes.addAll(processMealsArray(mealsArray));
-                } else if (mealsElement.isJsonNull()) {
+                }
+                else if (mealsElement.isJsonNull()) {
                     // Handle null case gracefully
                     System.out.println("No recipes found for keyword: null response for 'meals'.");
-                } else if (mealsElement.isJsonPrimitive()) {
+                }
+                else if (mealsElement.isJsonPrimitive()) {
                     // Handle unexpected primitive case
                     System.out.println(
                             "Unexpected format for 'meals': JsonPrimitive (likely no recipes found for keyword).");
-                } else {
+                }
+                else {
                     // Log unexpected format for meals
                     System.err.println("Unexpected format for 'meals': " + mealsElement.getClass().getName());
                 }
-            } else {
+            }
+            else {
                 System.out.println("No 'meals' field found in the API response.");
             }
-        } else {
+        }
+        else {
             System.err.println("Unexpected JSON format: Root element is not a JsonObject.");
         }
         return recipes;
@@ -339,7 +351,8 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         try (FileWriter writer = new FileWriter(FILE_PATH)) {
             writer.write(jsonContent);
             System.out.println("All recipes data written to file successfully.");
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             System.err.println("Error while writing to file: " + ex.getMessage());
         }
     }
@@ -366,11 +379,13 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
                 final JsonObject jsonResponse = JsonParser.parseString(response.body()).getAsJsonObject();
                 recipeFileKey = jsonResponse.get(KEY).getAsString();
                 System.out.println("File key set to: " + recipeFileKey);
-            } else {
+            }
+            else {
                 System.err.println("Failed to upload file. Status code: " + response.statusCode());
                 System.err.println("Response body: " + response.body());
             }
-        } catch (IOException | InterruptedException ex) {
+        }
+        catch (IOException | InterruptedException ex) {
             System.err.println("Error during file upload: " + ex.getMessage());
             Thread.currentThread().interrupt();
         }
@@ -434,10 +449,12 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
                 // Upload the updated JSON file immediately
                 uploadFileToFileIo();
 
-            } else {
+            }
+            else {
                 System.err.println("Failed to download file. Status code: " + response.statusCode());
             }
-        } catch (IOException | InterruptedException ex) {
+        }
+        catch (IOException | InterruptedException ex) {
             System.err.println("Error during file download: " + ex.getMessage());
             Thread.currentThread().interrupt();
         }
@@ -454,14 +471,16 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
             System.out.println("JSON is an array. Processing array elements.");
             processedRecipes = processRecipesArray(recipesArray);
             System.out.println("Processed " + processedRecipes.size() + " recipes.");
-        } else if (jsonElement.isJsonObject()) {
+        }
+        else if (jsonElement.isJsonObject()) {
             // If JSON is a single object, wrap it in an array
             System.out.println("JSON is a single object. Wrapping in an array.");
             final JsonArray recipesArray = new JsonArray();
             recipesArray.add(jsonElement.getAsJsonObject());
             processedRecipes = processRecipesArray(recipesArray);
             System.out.println("Processed " + processedRecipes.size() + " recipes.");
-        } else {
+        }
+        else {
             System.err.println("Unexpected JSON format: Not an array or object.");
             System.err.println("JSON content: " + jsonElement.toString());
         }
@@ -664,13 +683,13 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
                 ingredientMeasureMap, likeNumber, dislikeNumber);
     }
 
-    /**
-     * Extracts a map of ingredients and their corresponding measures from the provided {@link JsonObject}.
-     *
-     * @param recipeObject the {@link JsonObject} containing the ingredient-measure data for a recipe.
-     * @return a {@link Map} where the keys are ingredient names and the values are their corresponding measures.
-     * If no valid ingredient-measure data is found, an empty map is returned.
-     */
+        /**
+         * Extracts a map of ingredients and their corresponding measures from the provided {@link JsonObject}.
+         *
+         * @param recipeObject the {@link JsonObject} containing the ingredient-measure data for a recipe.
+         * @return a {@link Map} where the keys are ingredient names and the values are their corresponding measures.
+         * If no valid ingredient-measure data is found, an empty map is returned.
+         */
     private Map<String, String> extractIngredientMeasureMapForRecipes(JsonObject recipeObject) {
         final Map<String, String> ingredientMeasureMap = new HashMap<>();
 
