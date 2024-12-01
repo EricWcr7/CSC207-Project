@@ -41,10 +41,6 @@ public class CreateRecipeInteractor implements CreateRecipeInputBoundary {
                     createRecipeInputData.getInstruction(), createRecipeInputData.getIngredient(), 0, 0);
             recipeDataAccessObject.saveRecipe(recipeCreated);
             userDataAccessObject.addCreatedRecipe(recipeCreated);
-            final List<Recipe> updatedRecipe = recipeDataAccessObject.getCachedRecipes();
-            recipeDataAccessObject.writeRecipesToFile(updatedRecipe);
-            recipeDataAccessObject.deleteFileFromFileIo();
-            recipeDataAccessObject.uploadFileToFileIo();
             createPresenter.prepareSuccessView();
         }
         else {
