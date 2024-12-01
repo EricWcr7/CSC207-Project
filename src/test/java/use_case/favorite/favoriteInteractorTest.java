@@ -48,7 +48,6 @@ public class favoriteInteractorTest {
         RecipeFactory recipeFactory = new CommonRecipeFactory();
         FavoriteRecipeInteractor interactor = new FavoriteRecipeInteractor(
                 favoriteRecipePresenter,
-                userDataAccessObject,
                 userDataAccessObject
         );
 
@@ -100,7 +99,6 @@ public class favoriteInteractorTest {
         RecipeFactory recipeFactory = new CommonRecipeFactory();
         FavoriteRecipeInteractor interactor = new FavoriteRecipeInteractor(
                 favoriteRecipePresenter,
-                userDataAccessObject,
                 userDataAccessObject
         );
 

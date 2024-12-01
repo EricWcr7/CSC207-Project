@@ -3,38 +3,34 @@ package use_case.favorite_receipe;
 import java.util.Arrays;
 
 import entity.User;
-import use_case.shopping_list.ShoppingListUserDataAccessInterface;
 
 /**
  * The FavoriteRecipe Interactor.
  */
 public class FavoriteRecipeInteractor implements FavoriteRecipeInputBoundary {
     private final FavoriteRecipeOutputBoundary favoriteRecipePresenter;
-    private final FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject;
-    private final ShoppingListUserDataAccessInterface inMemoryUserDataAccessObject;
+    private final FavoriteRecipeDataAccessInterface userDataAccessObject;
 
     public FavoriteRecipeInteractor(FavoriteRecipeOutputBoundary favoriteRecipePresenter,
-                                    FavoriteRecipeDataAccessInterface favoriteRecipeDataAccessObject,
-                                    ShoppingListUserDataAccessInterface inMemoryUserDataAccessObject) {
+                                    FavoriteRecipeDataAccessInterface userDataAccessObject) {
         this.favoriteRecipePresenter = favoriteRecipePresenter;
-        this.favoriteRecipeDataAccessObject = favoriteRecipeDataAccessObject;
-        this.inMemoryUserDataAccessObject = inMemoryUserDataAccessObject;
+        this.userDataAccessObject = userDataAccessObject;
     }
 
     @Override
     public void execute(FavoriteRecipeInputData favoriteRecipeInputData) {
         final String username = favoriteRecipeInputData.getUsername();
         final String[] favoriteRecipes = favoriteRecipeInputData.getRecipeNames();
-        final User user = favoriteRecipeDataAccessObject.get(username);
+        final User user = userDataAccessObject.get(username);
         user.setFavoriteRecipes(favoriteRecipes);
-        favoriteRecipeDataAccessObject.updateUserFavoriteRecipes(user);
+        userDataAccessObject.updateUserFavoriteRecipes(user);
         System.out.println("Current account in InMemoryUserDataAccessObject: "
-                + favoriteRecipeDataAccessObject.get(username).getName());
+                + userDataAccessObject.get(username).getName());
         System.out.println("Current favoriteRecipes in InMemoryUserDataAccessObject: "
-                + Arrays.toString(favoriteRecipeDataAccessObject.get(username).getFavoriteRecipes()));
+                + Arrays.toString(userDataAccessObject.get(username).getFavoriteRecipes()));
         final FavoriteRecipeOutputData favoriteRecipeOutputData = new FavoriteRecipeOutputData(
-                inMemoryUserDataAccessObject.get(username).getName(),
-                inMemoryUserDataAccessObject.get(username).getFavoriteRecipes());
+                userDataAccessObject.get(username).getName(),
+                userDataAccessObject.get(username).getFavoriteRecipes());
         favoriteRecipePresenter.updateFavoriteRecipe(favoriteRecipeOutputData);
     }
 
