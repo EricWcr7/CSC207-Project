@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import entity.Recipe;
+import entity.User;
 
 /**
  * The ShoppingList Interactor.
@@ -12,17 +13,21 @@ import entity.Recipe;
 public class ShoppingListInteractor implements ShoppingListInputBoundary {
     private final ShoppingListOutputBoundary shoppingListPresenter;
     private final ShoppingListRecipeDataAccessInterface recipeDataAccessObject;
+    private final ShoppingListUserDataAccessInterface userDataAccessObject;
 
     public ShoppingListInteractor(ShoppingListOutputBoundary shoppingListPresenter,
-                                  ShoppingListRecipeDataAccessInterface shoppingListRecipeDataAccessInterface) {
+                                  ShoppingListRecipeDataAccessInterface shoppingListRecipeDataAccessInterface,
+                                  ShoppingListUserDataAccessInterface shoppingListUserDataAccessObject) {
         this.shoppingListPresenter = shoppingListPresenter;
         this.recipeDataAccessObject = shoppingListRecipeDataAccessInterface;
+        this.userDataAccessObject = shoppingListUserDataAccessObject;
     }
 
     @Override
-    public void execute(ShoppingListInputData shoppingListInputData) {
-        final String username = shoppingListInputData.getUsername();
-        final String[] recipeNames = shoppingListInputData.getRecipeNames();
+    public void execute() {
+        final String currentUserName = userDataAccessObject.getCurrentUsername();
+        final User currentUser = userDataAccessObject.get(currentUserName);
+        final String[] recipeNames = currentUser.getFavoriteRecipes();
         System.out.println("Recipe names: " + Arrays.toString(recipeNames));
         final Map<String, String> ingredientsMap = new HashMap<>();
 
@@ -56,7 +61,7 @@ public class ShoppingListInteractor implements ShoppingListInputBoundary {
         }
 
         final ShoppingListOutputData shoppingListOutputData = new ShoppingListOutputData(
-                username, recipeNames, ingredientsMap.keySet());
+                currentUserName, recipeNames, ingredientsMap.keySet());
         shoppingListPresenter.presentShoppingList(shoppingListOutputData);
     }
 

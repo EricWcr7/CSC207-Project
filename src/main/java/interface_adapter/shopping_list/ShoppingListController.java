@@ -23,12 +23,8 @@ public class ShoppingListController {
      * This method takes the username and the list of recipe names as input, wraps
      * them in a `ShoppingListInputData` object, and passes it to the interactor
      * for processing.
-     *
-     * @param username    the username of the user requesting the shopping list
-     * @param recipeNames an array of recipe names for which the shopping list is generated
      */
-    public void execute(String username, String[] recipeNames) {
-        final ShoppingListInputData inputData = new ShoppingListInputData(username, recipeNames);
-        shoppingListInteractor.execute(inputData);
+    public void execute() {
+        shoppingListInteractor.execute();
     }
 }

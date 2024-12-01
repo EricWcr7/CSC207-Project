@@ -23,8 +23,7 @@ public class FavoriteRecipeController {
         favoriteRecipeInteractor.execute(favoriteRecipeInputData);
     }
 
-    public void switchToShoppingListView(String username, String[] favoriteRecipes) {
-        final FavoriteRecipeInputData favoriteRecipeInputData = new FavoriteRecipeInputData(username, favoriteRecipes);
-        favoriteRecipeInteractor.switchToShoppingListView(favoriteRecipeInputData);
+    public void switchToShoppingListView() {
+        favoriteRecipeInteractor.switchToShoppingListView();
     }
 }

@@ -16,12 +16,9 @@ import use_case.shopping_list.ShoppingListOutputData;
  */
 public class ShoppingListPresenter implements ShoppingListOutputBoundary {
 
-    private final ViewManagerModel viewManagerModel;
     private final ShoppingListViewModel shoppingListViewModel;
 
-    public ShoppingListPresenter(ViewManagerModel viewManagerModel,
-                                 ShoppingListViewModel shoppingListViewModel) {
-        this.viewManagerModel = viewManagerModel;
+    public ShoppingListPresenter(ShoppingListViewModel shoppingListViewModel) {
         this.shoppingListViewModel = shoppingListViewModel;
     }
 

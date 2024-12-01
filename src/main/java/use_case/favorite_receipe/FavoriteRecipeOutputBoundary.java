@@ -19,7 +19,6 @@ public interface FavoriteRecipeOutputBoundary {
 
     /**
      * Prepares the switchToShoppingListView for the FavoriteRecipe Use Case.
-     * @param outputData the output data
      */
-    void switchToShoppingListView(FavoriteRecipeOutputData outputData);
+    void switchToShoppingListView();
 }

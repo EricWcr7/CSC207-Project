@@ -483,11 +483,10 @@ public class AppBuilder {
      * @return the current {@link AppBuilder} instance, allowing for method chaining
      */
     public AppBuilder addShoppingListUseCase() {
-        final ShoppingListOutputBoundary shoppingListPresenter = new ShoppingListPresenter(viewManagerModel,
-                shoppingListViewModel);
+        final ShoppingListOutputBoundary shoppingListPresenter = new ShoppingListPresenter(shoppingListViewModel);
 
         final ShoppingListInputBoundary shoppingListInteractor = new ShoppingListInteractor(shoppingListPresenter,
-                recipeDataAccessObject);
+                recipeDataAccessObject, userDataAccessObject);
 
         final ShoppingListController shoppingListController = new ShoppingListController(shoppingListInteractor);
 
