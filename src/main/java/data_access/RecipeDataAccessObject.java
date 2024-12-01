@@ -11,10 +11,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,6 +22,7 @@ import com.google.gson.JsonParser;
 import entity.CommonRecipeFactory;
 import entity.Recipe;
 import entity.RecipeFactory;
+import entity.User;
 import use_case.choose_recipe.ChooseRecipeDataAccessInterface;
 import use_case.create_recipe.CreateRecipeDataAccessInterface;
 import use_case.delete.DeleteDataAccessInterface;
@@ -573,49 +571,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         this.cachedRecipes.add(recipe);
     }
 
-    @Override
-    public boolean removeRecipeFromLocalFile(String filePath, String recipeName) {
-        boolean result = false;
 
-        try (FileReader reader = new FileReader(filePath)) {
-            // Parse the JSON file into a JsonObject
-            final JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
-
-            // Retrieve the "recipes" array from the JsonObject
-            final JsonArray recipesArray = jsonObject.getAsJsonArray("recipes");
-
-            // Iterate through the array to find the recipe with the matching name
-            for (int i = 0; i < recipesArray.size(); i++) {
-                final JsonObject recipe = recipesArray.get(i).getAsJsonObject();
-
-                // Check if the recipe name matches (case-insensitive comparison)
-                if (recipe.get(NAME).getAsString().equalsIgnoreCase(recipeName)) {
-                    // Remove the recipe from the array
-                    recipesArray.remove(i);
-
-                    // Update the file with the modified JSON
-                    try (FileWriter writer = new FileWriter(filePath)) {
-                        writer.write(jsonObject.toString());
-                        result = true;
-                    }
-                    break;
-                }
-            }
-        }
-        catch (IOException ex) {
-            // Print the stack trace for debugging purposes in case of an error
-            ex.printStackTrace();
-        }
-
-        return result;
-    }
-
-    @Override
-    public void removeRecipeByName(String recipeName) {
-        // Use the removeIf method to remove any recipe whose name matches the given recipe name
-        // The comparison is case-insensitive
-        cachedRecipes.removeIf(recipe -> recipe.getName().equalsIgnoreCase(recipeName));
-    }
 
     /**
      * Processes a {@link JsonArray} of recipe data, converting each valid JSON object
@@ -764,6 +720,17 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
             result = recipeObject.get(fieldName).getAsInt();
         }
         return result;
+    }
+
+    /**
+     * Removes a recipe with the specified name from the cached recipes list.
+     *
+     * @param recipeName The name of the recipe to remove.
+     */
+    public void removeRecipeByName(String recipeName) {
+        // Use the removeIf method to remove any recipe whose name matches the given recipe name
+        // The comparison is case-insensitive
+        cachedRecipes.removeIf(recipe -> recipe.getName().equalsIgnoreCase(recipeName));
     }
 
 }

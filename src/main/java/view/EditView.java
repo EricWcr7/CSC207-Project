@@ -1,8 +1,7 @@
 package view;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import entity.User;
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.delete.DeleteController;
 import interface_adapter.edit.EditController;
@@ -16,6 +15,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.FileReader;
 import java.io.IOException;
+import com.google.gson.JsonSyntaxException;
+
+
 
 /**
  * The EditView class represents the graphical user interface for editing recipes.
@@ -45,6 +47,7 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
     private final JButton back;
     private final JButton addButton;
     private final JButton deleteButton;
+    private final JButton refreshButton;
 
     /**
      * Constructor for the EditView class.
@@ -76,10 +79,13 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
         addButton = new JButton("+");
         back = new JButton("Back");
         deleteButton = new JButton("Delete");
+        refreshButton = new JButton("Refresh");
 
         buttonsPanel.add(addButton);
         buttonsPanel.add(back);
         buttonsPanel.add(deleteButton);
+        buttonsPanel.add(refreshButton);
+
         this.add(buttonsPanel, BorderLayout.SOUTH);
 
         // Add action listeners for buttons
@@ -94,8 +100,9 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
                 // Switch to the create recipe view
                 this.editController.switchToCreate();
                 // Refresh the combo box after adding a new recipe
-                loadNewRecipes();
+
             }
+
         });
 
         deleteButton.addActionListener(evt -> {
@@ -105,12 +112,19 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
             if (selectedRecipe != null && !selectedRecipe.isEmpty()) {
                 // Call the DeleteController to handle the deletion logic
                 deleteController.deleteRecipe(selectedRecipe);
+                deleteController.deleteRecipeFromUserCreatedRecipes(selectedRecipe);
                 // Refresh the combo box after deleting a recipe
-                loadNewRecipes();
+
             } else {
                 // Show an error message if no recipe is selected
                 JOptionPane.showMessageDialog(this, "Please select a recipe to delete!");
             }
+
+        });
+
+        refreshButton.addActionListener(evt -> {
+            loadCreatedRecipes();
+
         });
 
         recipeComboBox.addActionListener(evt -> {
@@ -120,9 +134,6 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
                 System.out.println("Selected recipe: " + selectedRecipe);
             }
         });
-
-        // Load the initial list of recipes into the combo box
-        loadNewRecipes();
     }
 
     @Override
@@ -169,36 +180,57 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
      * @param deleteController The controller to handle recipe deletion logic.
      */
     public void setDeleteController(DeleteController deleteController) {
-        this.deleteController = deleteController; // Correctly initialize the DeleteController
+        this.deleteController = deleteController;
     }
 
-    /**
-     * Loads the list of recipes from the "new_recipes.json" file
-     * and updates the combo box with the recipe names.
-     */
-    public void loadNewRecipes() {
-        try (FileReader reader = new FileReader("new_recipes.json")) {
-            // Parse the JSON file into a JsonObject
-            JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
-            JsonArray recipesArray = jsonObject.getAsJsonArray("recipes");
-
-            // Clear the existing items in the combo box
-            recipeComboBox.removeAllItems();
-
-            // Iterate through the JSON array and add recipe names to the combo box
-            for (int i = 0; i < recipesArray.size(); i++) {
-                JsonObject recipe = recipesArray.get(i).getAsJsonObject();
-                String recipeName = recipe.get("name").getAsString(); // Extract recipe name
-                recipeComboBox.addItem(recipeName); // Add recipe name to the combo box
+    public void loadCreatedRecipes() {
+        try {
+            User currentUser = util.Session.getCurrentUser();
+            if (currentUser == null) {
+                return;
             }
 
-            // Refresh the combo box to reflect the changes
-            recipeComboBox.revalidate();
-            recipeComboBox.repaint();
-        } catch (IOException e) {
-            // Print the stack trace and show an error message if the file cannot be loaded
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error loading recipes from new_recipes.json!");
+            String username = currentUser.getName();
+
+            try (FileReader reader = new FileReader("all_users.json")) {
+                JsonObject allUsers = JsonParser.parseReader(reader).getAsJsonObject();
+                JsonObject userJson = allUsers.getAsJsonObject(username);
+                if (userJson == null) {
+                    return;
+                }
+
+                JsonArray recipeCreatedArray = userJson.getAsJsonArray("recipeCreated");
+                updateRecipeComboBox(recipeCreatedArray);
+            }
+        } catch (IOException | JsonSyntaxException e) {
+            return;
         }
     }
+
+    private void updateRecipeComboBox(JsonArray recipeCreatedArray) {
+
+        recipeComboBox.removeAllItems();
+
+        if (recipeCreatedArray == null || recipeCreatedArray.size() == 0) {
+            return;
+        }
+
+        for (JsonElement recipeElement : recipeCreatedArray) {
+            if (recipeElement.isJsonObject()) {
+                JsonObject recipeObject = recipeElement.getAsJsonObject();
+                if (recipeObject.has("name")) {
+                    String recipeName = recipeObject.get("name").getAsString();
+                    recipeComboBox.addItem(recipeName);
+                }
+            }
+            else if (recipeElement.isJsonPrimitive()) {
+
+                recipeComboBox.addItem(recipeElement.getAsString());
+            }
+        }
+
+        recipeComboBox.revalidate();
+        recipeComboBox.repaint();
+    }
+
 }

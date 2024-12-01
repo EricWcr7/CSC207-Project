@@ -10,10 +10,10 @@ public class CommonUser implements User {
 
     private final String name;
     private final String password;
-    private final ArrayList<Recipe> recipeCreated;
+    private final ArrayList<String> recipeCreated;
     private String[] favoriteRecipes;
     private final int six = 6;
-    // List to store liked, disliked recipes, might use these instead of a  DAO
+    // List to store liked, disliked recipes, might use these instead of a DAO
     private final List<String> likedRecipes;
     private final List<String> dislikedRecipes;
 
@@ -37,10 +37,18 @@ public class CommonUser implements User {
     }
 
     @Override
-    public void addCreatedRecipe(Recipe recipe) {
+    public void addCreatedRecipe(String recipe) {
         recipeCreated.add(recipe);
-        System.out.println("recipe added successfully");
+        System.out.println("Recipe added successfully");
     }
+
+    @Override
+    public void removeCreatedRecipe(String recipe) {
+        recipeCreated.remove(recipe);
+        System.out.println("Recipe added successfully");
+    }
+
+
 
     @Override
     public String[] getFavoriteRecipes() {

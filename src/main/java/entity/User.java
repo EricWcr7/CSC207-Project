@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.List;
+
 /**
  * The representation of a user in our program.
  */
@@ -21,7 +23,7 @@ public interface User {
      * Add created Recipe.
      * @param recipe the created recipe
      */
-    void addCreatedRecipe(Recipe recipe);
+    void addCreatedRecipe(String recipe);
 
     /**
      * Returns the favoriteRecipes of the user.
@@ -63,5 +65,11 @@ public interface User {
      * @param recipeName the name of the recipe to add to the disliked recipes list.
      */
     void addDislikedRecipe(String recipeName);
+
+    /**
+     * Add created Recipe.
+     * @param recipe the created recipe
+     */
+    void removeCreatedRecipe(String recipe);
 
 }
