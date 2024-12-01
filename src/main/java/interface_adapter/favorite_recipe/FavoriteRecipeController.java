@@ -14,7 +14,7 @@ public class FavoriteRecipeController {
     }
 
     /**
-     * Executes the Recipe Search Use Case.
+     * Executes the favorite recipe Use Case.
      * @param username the username
      * @param favoriteRecipes the favoriteRecipe
      */
@@ -23,6 +23,9 @@ public class FavoriteRecipeController {
         favoriteRecipeInteractor.execute(favoriteRecipeInputData);
     }
 
+    /**
+     * Switch To Shopping List View.
+     */
     public void switchToShoppingListView() {
         favoriteRecipeInteractor.switchToShoppingListView();
     }
