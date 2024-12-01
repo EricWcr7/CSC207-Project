@@ -49,16 +49,16 @@ public class DeleteInteractor implements DeleteInputBoundary {
         final String recipeName = inputData.getRecipeName();
 
         // Step 3: Load recipes from the cloud for further deletion
-        recipeDataAccessObject.loadRecipesFromCloud();
+        deleteDataAccess.loadRecipesFromCloud();
 
         // Step 4.1: Remove the recipe from the cached cloud recipes
-        recipeDataAccessObject.removeRecipeByName(recipeName);
+        deleteDataAccess.removeRecipeByName(recipeName);
 
-        List<Recipe> updatedRecipes = recipeDataAccessObject.getCachedRecipes();
-        recipeDataAccessObject.writeRecipesToFile(updatedRecipes);
+        List<Recipe> updatedRecipes = deleteDataAccess.getCachedRecipes();
+        deleteDataAccess.writeRecipesToFile(updatedRecipes);
 
-        recipeDataAccessObject.deleteFileFromFileIo();
-        recipeDataAccessObject.uploadFileToFileIo();
+        deleteDataAccess.deleteFileFromFileIo();
+        deleteDataAccess.uploadFileToFileIo();
 
     }
 }
