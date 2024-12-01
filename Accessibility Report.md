@@ -2,33 +2,35 @@
 
 ## Universal Principles of Design in Relation to Our Project
 
-### **Principle: Affordance**
-Affordance refers to the design elements that indicate their intended functionality. In our recipe management system, we leverage affordance by implementing intuitive user interface components, such as clearly labeled buttons for "Add Recipe," "Generate Shopping List," and "Search." These affordances ensure that users, even those with limited technical expertise, can easily understand and use the application. For example, the shopping list generation button explicitly conveys its purpose, making it straightforward for users to anticipate its functionality.
+### **1. Equitable Use**
+Equitable use ensures that a design is useful and marketable to people with diverse abilities. In our recipe management system, we strive to make the application accessible to as many users as possible, including those with varying levels of experience and physical abilities. For instance:
+- The interface features large, clearly labeled buttons for actions like "Search Recipes" and "Generate Shopping List," making it intuitive for users with limited technical expertise.
+- Recipes are presented in a clean, uncluttered format that avoids overwhelming users with unnecessary visual elements, which benefits users with cognitive disabilities or attention difficulties.
 
-By applying affordance, we aim to minimize confusion and maximize usability for our target audience: cooking enthusiasts and home chefs. Ensuring that the design elements visually and functionally align with user expectations is crucial to achieving this goal.
+By adhering to the principle of equitable use, we aim to provide a design that accommodates the needs of our target audience while remaining usable for individuals with diverse abilities.
 
-### **Principle: Consistency**
-Consistency in design enhances learnability and predictability, reducing the cognitive load on users. Our project maintains consistency through uniform button styles, menu placements, and recurring navigational patterns across the application. For example, the search functionality operates identically across different views, ensuring users don’t have to relearn interactions in different contexts.
+---
 
-Consistency particularly benefits our target audience by allowing them to focus on their primary tasks—finding recipes and generating shopping lists—without being distracted by interface inconsistencies. It also makes the application more accessible to users with cognitive disabilities who rely on predictable design patterns.
+### **2. Simple and Intuitive Use**
+This principle emphasizes that the design should be easy to understand, regardless of the user's experience, knowledge, or language skills. To achieve this:
+- The application uses familiar design patterns, such as dropdown menus for selecting categories and auto-complete functionality in the search bar, to minimize the learning curve for new users.
+- Clear instructions and icons are provided throughout the application to guide users, ensuring that even individuals with minimal technical expertise can navigate the system confidently.
+
+By focusing on simplicity and intuitiveness, we ensure that users, including those with limited digital literacy, can quickly learn and efficiently use the application to organize their recipes and shopping lists.
 
 ---
 
 ## Target Audience
-The primary users of this application are **cooking enthusiasts and home chefs** who wish to efficiently organize and access recipes, manage favorites, and create related shopping lists. These users value simplicity, functionality, and the ability to personalize their recipe management experience.
+The primary users of this application are **cooking enthusiasts and home chefs** who want to efficiently organize recipes, manage favorites, and create shopping lists. These users prioritize functionality, simplicity, and ease of use.
 
 ---
 
 ## Groups That May Face Challenges
-While we have designed the application to be as inclusive as possible, there are certain user groups who may face difficulties:
+Despite our efforts, some groups may face challenges using the application:
+1. **Visually Impaired Users:** Currently, the interface lacks full compatibility with screen readers and high-contrast color modes, which limits accessibility for users with visual impairments.
+2. **Users Without Internet Access:** Some features, such as cloud storage integration, require internet connectivity, excluding users in areas with limited or no access to the internet.
 
-1. **Visually Impaired Users:** The current interface heavily relies on visual elements, and we have yet to implement robust support for screen readers or high-contrast modes.
-2. **Users with Limited Digital Literacy:** Despite our efforts to create an intuitive design, users unfamiliar with digital interfaces may still find the application challenging to navigate.
-3. **Users Without Internet Access:** Some features, such as uploading recipes to cloud storage, require internet connectivity, limiting access for users in areas with unreliable or no internet access.
-
-To address these concerns, future iterations of the application could include accessibility enhancements such as:
-- Integration with screen readers.
-- High-contrast and large-text modes for users with visual impairments.
-- Offline functionality for recipe storage and shopping list generation.
-
-By considering these groups, we aim to make the application more inclusive in future versions.
+### Future Improvements
+To make the application more inclusive, we plan to:
+- Implement screen reader support and high-contrast themes for visually impaired users.
+- Introduce offline functionality for recipe storage and shopping list generation, ensuring accessibility for users in all environments.
