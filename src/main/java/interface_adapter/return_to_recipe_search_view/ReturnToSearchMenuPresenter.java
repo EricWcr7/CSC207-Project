@@ -9,7 +9,6 @@ import interface_adapter.edit.EditViewModel;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import interface_adapter.favorite_recipe.FavoriteRecipeState;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
-import interface_adapter.recipe_search.RecipeSearchState;
 import interface_adapter.recipe_search.RecipeSearchViewModel;
 import interface_adapter.shopping_list.ShoppingListState;
 import interface_adapter.shopping_list.ShoppingListViewModel;
@@ -41,31 +40,6 @@ public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoun
         this.shoppingListViewModel = shoppingListViewModel;
     }
 
-//    @Override
-//    public void prepareSuccessView(ReturnToSearchMenuOutputData recipeSearchOutputData) {
-//        // Check the current view to determine the origin
-//        final String currentState = this.viewManagerModel.getState();
-//
-//        if (currentState.equals(chooseRecipeViewModel.getViewName())) {
-//            // Reset state for ChooseRecipeViewModel
-//            final ChooseRecipeState chooseRecipeState = chooseRecipeViewModel.getState();
-//            chooseRecipeState.setSearchKeyword("");
-//            this.chooseRecipeViewModel.setState(chooseRecipeState);
-//            this.chooseRecipeViewModel.firePropertyChanged();
-//        } else if (currentState.equals(displayRecipeViewModel.getViewName())) {
-//            // Optionally reset DisplayRecipeViewModel state if needed
-//            // e.g., displayRecipeViewModel.clearState();
-//        }
-//
-//        final RecipeSearchState currentState1 = recipeSearchViewModel.getState();
-//        currentState1.setUsername(recipeSearchOutputData.getUsername());
-//        currentState1.setFavoriteRecipes(recipeSearchOutputData.getFavoriteRecipes());
-//        recipeSearchViewModel.setState(currentState1);
-//        // 返回recipeSearch View
-//        this.viewManagerModel.setState(recipeSearchViewModel.getViewName());
-//        this.viewManagerModel.firePropertyChanged();
-//    }
-
     @Override
     public void fromDisplayBackToSearchMenu() {
         final DisplayRecipeState displayState = displayRecipeViewModel.getState();
@@ -93,13 +67,6 @@ public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoun
     @Override
     public void fromFavoriteRecipeBackToSearchMenu() {
         final FavoriteRecipeState favoriteRecipeState = favoriteRecipeViewModel.getState();
-        final RecipeSearchState recipeSearchState = recipeSearchViewModel.getState();
-
-//        recipeSearchState.setUsername(recipeSearchOutputData.getUsername());
-//        recipeSearchState.setFavoriteRecipes(recipeSearchOutputData.getFavoriteRecipes());
-
-        // recipeSearchViewModel.setState(recipeSearchState);
-
         this.favoriteRecipeViewModel.setState(favoriteRecipeState);
         this.favoriteRecipeViewModel.firePropertyChanged();
 
@@ -111,13 +78,6 @@ public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoun
     public void fromShoppingListBackToSearchMenu() {
         final ShoppingListState shoppingListState = shoppingListViewModel.getState();
         shoppingListState.clearIngredients();
-        final RecipeSearchState recipeSearchState = recipeSearchViewModel.getState();
-
-//        recipeSearchState.setUsername(recipeSearchOutputData.getUsername());
-//        recipeSearchState.setFavoriteRecipes(recipeSearchOutputData.getFavoriteRecipes());
-
-        // recipeSearchViewModel.setState(recipeSearchState);
-
         this.shoppingListViewModel.setState(shoppingListState);
         this.shoppingListViewModel.firePropertyChanged();
 

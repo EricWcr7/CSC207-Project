@@ -6,7 +6,6 @@ import interface_adapter.ViewModel;
  * The EditViewModel class extends the generic ViewModel class, specifically using the EditState type.
  * It represents the ViewModel for the editing functionality in the application.
  * This class is part of the interface adapter layer, following the Clean Architecture principles.
- *
  * The ViewModel acts as an intermediary between the application's UI (view) and the use case logic,
  * managing the state and providing a structured way to handle updates and transitions for the edit view.
  */

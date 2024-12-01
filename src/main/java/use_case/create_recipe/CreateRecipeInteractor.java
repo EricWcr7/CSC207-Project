@@ -1,7 +1,5 @@
 package use_case.create_recipe;
 
-import java.util.List;
-
 import entity.Recipe;
 import entity.RecipeFactory;
 
@@ -33,7 +31,6 @@ public class CreateRecipeInteractor implements CreateRecipeInputBoundary {
             recipeDataAccessObject.loadRecipesFromCloud();
             recipesLoaded = true;
         }
-        // type need to be fixed later
         final String id = recipeDataAccessObject.getMaxId() + 1;
         final String category = "created by user";
         if (!recipeDataAccessObject.isNameInRecipes(createRecipeInputData.getDishname())) {
