@@ -12,7 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
+import interface_adapter.return_to_RecipeSearchView.ReturnToSearchMenuController;
 import interface_adapter.choose_recipe.ChooseRecipeController;
 import interface_adapter.choose_recipe.ChooseRecipeState;
 import interface_adapter.choose_recipe.ChooseRecipeViewModel;

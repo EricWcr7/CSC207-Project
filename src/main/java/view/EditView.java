@@ -2,7 +2,7 @@ package view;
 
 import com.google.gson.*;
 import entity.User;
-import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
+import interface_adapter.return_to_RecipeSearchView.ReturnToSearchMenuController;
 import interface_adapter.delete.DeleteController;
 import interface_adapter.edit.EditController;
 import interface_adapter.edit.EditViewModel;

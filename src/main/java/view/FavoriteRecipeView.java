@@ -9,13 +9,12 @@ import java.util.Arrays;
 
 import javax.swing.*;
 
-import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
+import interface_adapter.return_to_RecipeSearchView.ReturnToSearchMenuController;
 import interface_adapter.choose_recipe.ChooseRecipeController;
 import interface_adapter.favorite_recipe.FavoriteRecipeController;
 import interface_adapter.favorite_recipe.FavoriteRecipeState;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
 import interface_adapter.shopping_list.ShoppingListController;
-import interface_adapter.shopping_list.ShoppingListState;
 
 /**
  * The View for when the user is going to see recipes which they add to favorite file.

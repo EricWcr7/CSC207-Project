@@ -1,6 +1,6 @@
-package interface_adapter.BackToEditView;
+package interface_adapter.back_to_EditView;
 
-import use_case.backToEditView.BackToEditViewInputBoundary;
+import use_case.back_to_EditView.BackToEditViewInputBoundary;
 
 /**
  * Controller class responsible for handling the navigation back to the edit view.

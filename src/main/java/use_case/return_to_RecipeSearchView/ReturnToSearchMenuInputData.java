@@ -1,4 +1,4 @@
-package use_case.returnToSearchMenu;
+package use_case.return_to_RecipeSearchView;
 
 /**
  * The ReturnToSearchMenu Data for the Login Use Case.

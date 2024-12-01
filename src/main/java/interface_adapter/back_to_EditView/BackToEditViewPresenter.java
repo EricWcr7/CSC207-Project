@@ -1,10 +1,10 @@
-package interface_adapter.BackToEditView;
+package interface_adapter.back_to_EditView;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_recipe.CreateRecipeState;
 import interface_adapter.create_recipe.CreateRecipeViewModel;
 import interface_adapter.edit.EditViewModel;
-import use_case.backToEditView.BackToEditViewOutputBoundary;
+import use_case.back_to_EditView.BackToEditViewOutputBoundary;
 
 import java.util.HashMap;
 

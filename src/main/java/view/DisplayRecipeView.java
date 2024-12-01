@@ -1,12 +1,11 @@
 package view;
 
-import java.util.Arrays;
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
+import interface_adapter.return_to_RecipeSearchView.ReturnToSearchMenuController;
 import interface_adapter.display_recipe.DisplayRecipeState;
 import interface_adapter.display_recipe.DisplayRecipeViewModel;
 import interface_adapter.favorite_recipe.FavoriteRecipeController;
