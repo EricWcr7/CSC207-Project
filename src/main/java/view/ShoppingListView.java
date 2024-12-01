@@ -20,6 +20,10 @@ import interface_adapter.shopping_list.ShoppingListController;
 import interface_adapter.shopping_list.ShoppingListState;
 import interface_adapter.shopping_list.ShoppingListViewModel;
 
+import java.awt.*;
+
+import javax.swing.*;
+
 /**
  * The ShoppingListView class represents the graphical user interface (GUI) for displaying
  * the shopping list to the user. It extends `JPanel` and listens for property changes in
@@ -36,8 +40,7 @@ public class ShoppingListView extends JPanel implements PropertyChangeListener {
     private ReturnToSearchMenuController returnToSearchMenuController;
     private ShoppingListController shoppingListController;
 
-    private final JTextArea shoppingListTextArea;
-
+    private final JPanel shoppingListPanel;
     private final JButton returnToSearchMenu;
     private final JButton generateShoppingList;
 
@@ -45,105 +48,86 @@ public class ShoppingListView extends JPanel implements PropertyChangeListener {
         this.shoppingListViewModel = shoppingListViewModel;
         this.shoppingListViewModel.addPropertyChangeListener(this);
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        
-        final JPanel shoppingListPanel = new JPanel();
+        setLayout(new BorderLayout(10, 10)); // Add spacing between components
+
+        // Title Panel
+        JLabel titleLabel = new JLabel("Shopping List", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        add(titleLabel, BorderLayout.NORTH);
+
+        // Shopping List Panel
+        shoppingListPanel = new JPanel();
         shoppingListPanel.setLayout(new BoxLayout(shoppingListPanel, BoxLayout.Y_AXIS));
-        shoppingListPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
-        shoppingListTextArea = new JTextArea();
-        shoppingListTextArea.setEditable(false);
-        add(new JScrollPane(shoppingListTextArea), BorderLayout.CENTER);
-        updateView();
-        shoppingListTextArea.setEditable(false);
-        shoppingListTextArea.setEditable(false);
-        shoppingListTextArea.setLineWrap(true);
-        shoppingListTextArea.setWrapStyleWord(true);
-        shoppingListPanel.add(shoppingListTextArea);
-        
+        shoppingListPanel.setBorder(BorderFactory.createTitledBorder("Ingredients"));
+
+        JScrollPane scrollPane = new JScrollPane(shoppingListPanel);
+        add(scrollPane, BorderLayout.CENTER);
+
+        // Button Panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         returnToSearchMenu = new JButton("Return to Search View");
         generateShoppingList = new JButton("Generate Shopping List");
-        
-        final JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(returnToSearchMenu);
         buttonPanel.add(generateShoppingList);
-        
-        add(shoppingListPanel);
-        add(buttonPanel);
+        add(buttonPanel, BorderLayout.SOUTH);
 
-        returnToSearchMenu.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
-                evt -> {
-                    if (evt.getSource().equals(returnToSearchMenu)) {
-                        this.returnToSearchMenuController.fromShoppingListBackToSearchMenu();
-                    }
-                }
-        );
-
-        generateShoppingList.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                if (evt.getSource().equals(generateShoppingList)) {
-                    final ShoppingListState currentState = shoppingListViewModel.getState();
-                    shoppingListController.execute(currentState.getUsername(),
-                            currentState.getRecipeNames());
-                }
+        // Action Listeners
+        returnToSearchMenu.addActionListener(evt -> {
+            if (evt.getSource().equals(returnToSearchMenu)) {
+                this.returnToSearchMenuController.fromShoppingListBackToSearchMenu();
             }
         });
+
+        generateShoppingList.addActionListener(evt -> {
+            if (evt.getSource().equals(generateShoppingList)) {
+                final ShoppingListState currentState = shoppingListViewModel.getState();
+                shoppingListController.execute(currentState.getUsername(), currentState.getRecipeNames());
+            }
+        });
+
+        updateView();
     }
 
     /**
-     * Updates the shopping list text area with the latest ingredients from the view model.
-     * If the ingredient set is empty or null, the text area displays a message indicating
-     * that no ingredients are available. Otherwise, it lists each ingredient in the text area.
+     * Updates the shopping list panel with the latest ingredients from the view model.
+     * If the ingredient set is empty or null, the panel displays a message indicating
+     * that no ingredients are available. Otherwise, it lists each ingredient in a centered label.
      */
     private void updateView() {
+        shoppingListPanel.removeAll(); // Clear the panel
         final Set<String> ingredients = shoppingListViewModel.getIngredients();
-        System.out.println("Ingredients Set: " + ingredients);
-        shoppingListTextArea.setText("");
         if (ingredients != null && !ingredients.isEmpty()) {
             for (String ingredient : ingredients) {
-                shoppingListTextArea.append(ingredient + "\n");
+                JLabel ingredientLabel = new JLabel(ingredient, SwingConstants.CENTER);
+                ingredientLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                ingredientLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                shoppingListPanel.add(ingredientLabel);
             }
+        } else {
+            JLabel noIngredientsLabel = new JLabel("No ingredients available", SwingConstants.CENTER);
+            noIngredientsLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+            noIngredientsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            shoppingListPanel.add(noIngredientsLabel);
         }
-        else {
-            shoppingListTextArea.setText("No ingredients available");
-        }
+        shoppingListPanel.revalidate();
+        shoppingListPanel.repaint();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("Property Change Event received with new state: " + evt.getNewValue());
-        // Update view when DisplayRecipeState changes
         updateView();
     }
 
-    /**
-     * Retrieves the name of this view.
-     *
-     * @return the name of the shopping list view, typically used for identifying the view
-     */
     public String getViewName() {
         return viewName;
     }
 
-    /**
-     * Sets the controller responsible for handling the action of returning to the search menu.
-     *
-     * @param returnToSearchMenuController the controller for managing the return to search menu action
-     */
     public void setReturnToSearchMenuController(ReturnToSearchMenuController returnToSearchMenuController) {
         this.returnToSearchMenuController = returnToSearchMenuController;
     }
 
-    /**
-     * Sets the controller responsible for managing the generation of the shopping list.
-     *
-     * @param shoppingListController the controller for executing the shopping list generation
-     */
     public void setShoppingListController(ShoppingListController shoppingListController) {
         this.shoppingListController = shoppingListController;
     }
 }
-
