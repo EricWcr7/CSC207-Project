@@ -3,7 +3,6 @@ package use_case.favorite_receipe;
 import java.util.Arrays;
 
 import entity.User;
-import use_case.shopping_list.ShoppingListUserDataAccessInterface;
 
 /**
  * The FavoriteRecipe Interactor.
