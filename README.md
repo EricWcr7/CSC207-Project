@@ -7,8 +7,6 @@
 4. [Usage](#usage)
 5. [License](#license)
 6. [Feedback and Contributions](#feedback-and-contributions)
-7. [Group](#group)
-8. [User Stories](#user-stories)
 
 ---
 
