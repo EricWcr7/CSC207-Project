@@ -32,6 +32,10 @@ public class FavoriteRecipeInteractor implements FavoriteRecipeInputBoundary {
                 + favoriteRecipeDataAccessObject.get(username).getName());
         System.out.println("Current favoriteRecipes in InMemoryUserDataAccessObject: "
                 + Arrays.toString(favoriteRecipeDataAccessObject.get(username).getFavoriteRecipes()));
+        final FavoriteRecipeOutputData favoriteRecipeOutputData = new FavoriteRecipeOutputData(
+                inMemoryUserDataAccessObject.get(username).getName(),
+                inMemoryUserDataAccessObject.get(username).getFavoriteRecipes());
+        favoriteRecipePresenter.updateFavoriteRecipe(favoriteRecipeOutputData);
     }
 
     @Override
