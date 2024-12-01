@@ -88,11 +88,11 @@ public class RecipeSearchPresenter implements RecipeSearchOutputBoundary {
 
     @Override
     public void switchToFavoriteRecipeView(RecipeSearchOutputData outputData) {
-        // final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
-        // currentState.setUsername(outputData.getUsername());
-        // currentState.setFavoriteRecipes(outputData.getFavoriteRecipes());
-        // favoriteRecipeViewModel.setState(currentState);
-        // favoriteRecipeViewModel.firePropertyChanged();
+        final FavoriteRecipeState currentState = favoriteRecipeViewModel.getState();
+        currentState.setUsername(outputData.getUsername());
+        currentState.setFavoriteRecipes(outputData.getFavoriteRecipes());
+        favoriteRecipeViewModel.setState(currentState);
+        favoriteRecipeViewModel.firePropertyChanged();
         viewManagerModel.setState(favoriteRecipeViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
