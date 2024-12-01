@@ -1,4 +1,4 @@
-# Recipe Management System
+# Meal Master (Recipe Management Platform)
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -14,10 +14,10 @@
 
 ## Introduction
 
-**Creators**: Madeline and Team
+**Creators**: Jiacan Sun, Qihong Liu, Zenghao Chen, Xiangyu Shen, Yi Fan (Eric) Wang
 
 **What does this project do?**  
-The Recipe Management System simplifies recipe organization and meal planning by allowing users to manage their favorite recipes, generate shopping lists, and interact with community-generated content.
+Meal Master simplifies recipe organization and meal planning by allowing users to manage their favorite recipes, generate shopping lists, and interact with community-generated content.
 
 **Why was this project made?**  
 This system was developed to streamline recipe management and promote collaborative cooking experiences.
@@ -26,12 +26,15 @@ This system was developed to streamline recipe management and promote collaborat
 
 ## Features
 
-- Add, edit, and delete personal recipes.
-- Save favorite recipes for easy access.
-- Generate shopping lists based on selected recipes.
-- Like, dislike, and comment on recipes.
-- Display related dishes dynamically based on search inputs.
-- Seamlessly interact with TheMealDB API for recipe retrieval and File.io API for storage.
+- **User Account Management**: Sign up, log in, and save personalized preferences.
+- **Recipe Search**: Search for recipes by name, displaying related dishes dynamically.
+- **Favorites**: Save favorite recipes for quick access.
+- **Shopping List Generator**: Generate shopping lists based on saved favourite recipes.
+- **Add Recipes**: Add self-designated recipes.
+- **Delete Recipes**: Delete self-designated recipes.
+- **Social Interactions**: Like and dislike on recipes.
+- **API Integration**: Fetch existing high-quality recipes from TheMealDB API and store them in the cloud using File.io API.
+- **Community Interaction**: Share recipes with others and engage with their contributions since the user and recipe databases are stored in File.IO API.
 
 ---
 
