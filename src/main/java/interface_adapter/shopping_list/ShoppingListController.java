@@ -1,7 +1,6 @@
 package interface_adapter.shopping_list;
 
 import use_case.shopping_list.ShoppingListInputBoundary;
-import use_case.shopping_list.ShoppingListInputData;
 
 /**
  * The ShoppingListController is responsible for handling user input related to
