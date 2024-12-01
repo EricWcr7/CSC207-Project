@@ -107,7 +107,10 @@ copies of the Software, and to permit persons to whom the Software is furnished 
 ## Feedback
 We welcome feedback on the software to help improve its functionality and user experience. Here are the ways you can provide feedback:
 
-- **Google Forms**: [https://forms.gle/rB6JPXrWfYPmu2r58](#)
+- **Google Forms**:
+  ```bash
+  [https://forms.gle/rB6JPXrWfYPmu2r58](#)
+  ```
 
 ## Contributions
 We encourage contributions from the community to make the software better. Below are the guidelines and protocols for contributing:
