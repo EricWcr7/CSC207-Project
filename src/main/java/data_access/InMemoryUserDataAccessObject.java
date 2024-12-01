@@ -11,10 +11,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,10 +21,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import entity.CommonUserFactory;
-import entity.Recipe;
-import entity.User;
-import entity.UserFactory;
+import entity.*;
 import use_case.create_recipe.CreateRecipeUserDataAccessInterface;
 import use_case.delete.DeleteUserDataAccessInterface;
 import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
@@ -348,6 +342,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
                     final JsonArray likedRecipesArray = userObject.getAsJsonArray("likedRecipes");
                     final JsonArray dislikedRecipesArray = userObject.getAsJsonArray("dislikedRecipes");
                     final JsonArray favoriteRecipesArray = userObject.getAsJsonArray("favoriteRecipes");
+                    final JsonArray recipeCreatedArray = userObject.getAsJsonArray("recipeCreated");
 
                     // Use UserFactory to create the User object
                     final UserFactory userFactory = new CommonUserFactory();
@@ -374,6 +369,14 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
                     }
                     user.setFavoriteRecipes(favoriterecipes);
 
+                    // Populate created recipes as a list of strings
+                    if (recipeCreatedArray != null) {
+                        for (JsonElement recipeElement : recipeCreatedArray) {
+                            if (!recipeElement.isJsonNull()) {
+                                user.addCreatedRecipe(recipeElement.getAsString());
+                            }
+                        }
+                    }
                     // Add the constructed user to the map
                     parsedUsers.put(userName, user);
                 }
