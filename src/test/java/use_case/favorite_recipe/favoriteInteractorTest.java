@@ -1,12 +1,10 @@
-package use_case.favorite;
+package use_case.favorite_recipe;
 
 import data_access.InMemoryUserDataAccessObject;
 import entity.*;
-import interface_adapter.shopping_list.ShoppingListState;
 import interface_adapter.shopping_list.ShoppingListViewModel;
 import org.junit.jupiter.api.Test;
 
-import use_case.create_recipe.*;
 import use_case.favorite_receipe.*;
 
 import java.util.*;

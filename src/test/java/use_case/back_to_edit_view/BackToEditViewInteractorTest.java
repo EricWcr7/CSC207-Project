@@ -1,8 +1,6 @@
-package use_case.BackToEditViewTest;
+package use_case.back_to_edit_view;
 
 import org.junit.jupiter.api.Test;
-import use_case.back_to_edit_view.BackToEditViewInteractor;
-import use_case.back_to_edit_view.BackToEditViewOutputBoundary;
 
 // A simple test class to achieve 100% coverage for BackToEditViewInteractor.
 class BackToEditViewInteractorTest {
