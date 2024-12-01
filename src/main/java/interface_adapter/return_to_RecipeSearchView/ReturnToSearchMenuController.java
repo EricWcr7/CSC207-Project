@@ -1,6 +1,6 @@
-package interface_adapter.ReturnToSearchMenu;
+package interface_adapter.return_to_RecipeSearchView;
 
-import use_case.returnToSearchMenu.ReturnToSearchMenuInputBoundary;
+import use_case.return_to_RecipeSearchView.ReturnToSearchMenuInputBoundary;
 
 public class ReturnToSearchMenuController {
 

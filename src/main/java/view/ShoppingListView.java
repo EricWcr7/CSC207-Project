@@ -3,8 +3,6 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Set;
@@ -13,11 +11,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
-import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
+import interface_adapter.return_to_RecipeSearchView.ReturnToSearchMenuController;
 import interface_adapter.shopping_list.ShoppingListController;
-import interface_adapter.shopping_list.ShoppingListState;
 import interface_adapter.shopping_list.ShoppingListViewModel;
 
 import java.awt.*;

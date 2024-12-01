@@ -1,4 +1,4 @@
-package use_case.backToEditView;
+package use_case.back_to_EditView;
 
 /**
  * The output boundary for the BackToEditView Use Case.
