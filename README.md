@@ -89,6 +89,8 @@ The Meal Master platform is designed for users to manage their recipes and engag
 
 ---
 
+---
+
 # License
    Copyright (c) 2024 Jiacan Sun, Qihong Liu, Zenghao Chen, Xiangyu Shen, Yi Fan (Eric) Wang
 
@@ -97,4 +99,34 @@ copies of the Software, and to permit persons to whom the Software is furnished 
 
    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
+
+---
+
+# Feedback and Contributions
+
+## Feedback
+We welcome feedback on the software to help improve its functionality and user experience. Here are the ways you can provide feedback:
+
+- **Google Forms**: [https://forms.gle/rB6JPXrWfYPmu2r58](#)
+
+## Contributions
+We encourage contributions from the community to make the software better. Below are the guidelines and protocols for contributing:
+
+### How to Contribute
+1. **Fork the Repository**: Start by creating a fork of the repository. Click the "Fork" button on GitHub and clone it to your local machine.
+2. **Make Changes**: Work on your fork to implement features, fix bugs, or improve documentation.
+3. **Submit a Pull Request (PR)**: Once you're satisfied with your changes, submit a pull request to the main repository.
+
+### Guidelines for a Good Merge Request
+- Clearly describe the changes made and the purpose of the update.
+- Ensure your code adheres to the project's coding standards.
+- Include relevant tests for the feature or bug fix, if applicable.
+- Keep your pull requests small and focused on a single change or issue.
+
+### Contribution Review Protocols
+- All contributions are reviewed by maintainers to ensure they align with the project's goals and coding standards.
+- Discussions on pull requests are encouraged to clarify the changes and resolve potential issues.
+- Once reviewed and approved, the contribution will be merged into the main repository.
+
+Thank you for helping us make this project better!
