@@ -14,22 +14,6 @@ import java.util.Map;
 
 public class ChooseInteractorTest {
 
-    /**
-     * A local implementation of UserLikeAndDislikeDataAccessInterface for testing purposes.
-     */
-    private static class LocalUserDataAccessObject implements ChooseRecipeDataAccessInterface {
-
-        @Override
-        public Recipe getOneRecipe(String dishName) {
-            return null;
-        }
-
-        @Override
-        public void loadRecipesFromCloud() {
-
-        }
-    }
-
     @Test
     void successTest() {
         RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
@@ -53,7 +37,15 @@ public class ChooseInteractorTest {
         Recipe saladRecipe = recipeFactory.createRecipe("1", "Salad", "Side",
                 "Lettuce: 1 head\nCucumber: 1 medium\nTomato Sauce: 2 tablespoons\nOlive Oil: 2 tablespoons\nLemon Juice: 1 tablespoon\nSalt: to taste",
                 saladIngredients, 5, 4);
+        ChooseRecipeOutputBoundary presenter = new ChooseRecipeOutputBoundary() {
+            @Override
+            public void prepareSuccessView(ChooseRecipeOutputData outputData) {
 
+            }
+        };
+        recipeDataAccessObject.saveRecipe(saladRecipe);
+        ChooseRecipeInteractor interactor = new ChooseRecipeInteractor(recipeDataAccessObject, presenter);
+        interactor.execute(inputData);
 
     }
 }
