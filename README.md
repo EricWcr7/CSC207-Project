@@ -34,7 +34,7 @@ This system was developed to streamline recipe management and promote collaborat
 - **Delete Recipes**: Delete self-designated recipes.
 - **Social Interactions**: Like and dislike on recipes.
 - **API Integration**: Fetch existing high-quality recipes from TheMealDB API and store them in the cloud using File.io API.
-- **Community Interaction**: Share recipes with others and engage with their contributions since the user and recipe databases are stored in File.IO API.
+- **Community Interaction**: Share recipes with others and engage with their contributions since the user and recipe databases are stored in File.io API.
 
 ---
 
@@ -42,12 +42,11 @@ This system was developed to streamline recipe management and promote collaborat
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/username/repo.git
+   git clone https://github.com/EricWcr7/CSC207-Project.git
 2. **Set Up APIs**:
-   Obtain API keys for TheMealDB and File.io.
-   Configure the api_keys.json file in the project directory.
-3. **Install Dependencies**:
-   Ensure you have Java 17 or later installed.
-   Use your IDE to build the project (e.g., IntelliJ IDEA, Eclipse).
-4. **Run the Application**:
+   There is nothing to do with setting up the APIs.
+4. **Install Dependencies**:
+   Please make sure you have Java 17 or later installed. It is encouraged to use IntelliJ IDEA IDE to build the project.
+   
+5. **Run the Application**:
    Run the Main class to start the program.
