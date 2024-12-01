@@ -7,8 +7,7 @@ public interface ShoppingListInputBoundary {
 
     /**
      * Executes the ShoppingList use case.
-     * @param inputData the input data
      */
-    void execute(ShoppingListInputData inputData);
+    void execute();
 }
 

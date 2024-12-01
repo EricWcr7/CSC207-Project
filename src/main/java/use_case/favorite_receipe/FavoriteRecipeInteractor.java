@@ -39,15 +39,7 @@ public class FavoriteRecipeInteractor implements FavoriteRecipeInputBoundary {
     }
 
     @Override
-    public void switchToShoppingListView(FavoriteRecipeInputData favoriteRecipeInputData) {
-        final String username = favoriteRecipeInputData.getUsername();
-        final String[] recipeNames = favoriteRecipeInputData.getRecipeNames();
-        System.out.println("Current logged in account: " + username);
-        System.out.println("Current favoriteRecipe in account: " + Arrays.toString(recipeNames));
-
-        final FavoriteRecipeOutputData favoriteRecipeOutputData = new FavoriteRecipeOutputData(
-                inMemoryUserDataAccessObject.get(username).getName(),
-                inMemoryUserDataAccessObject.get(username).getFavoriteRecipes());
-        favoriteRecipePresenter.switchToShoppingListView(favoriteRecipeOutputData);
+    public void switchToShoppingListView() {
+        favoriteRecipePresenter.switchToShoppingListView();
     }
 }

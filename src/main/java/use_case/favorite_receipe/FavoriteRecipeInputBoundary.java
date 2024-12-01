@@ -13,7 +13,6 @@ public interface FavoriteRecipeInputBoundary {
 
     /**
      * Executes the switchToShoppingListView method in FavoriteRecipe use case.
-     * @param favoriteRecipeInputData the input data
      */
-    void switchToShoppingListView(FavoriteRecipeInputData favoriteRecipeInputData);
+    void switchToShoppingListView();
 }
