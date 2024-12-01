@@ -13,7 +13,6 @@ public class RecipeSearchController {
         this.recipeSearchInteractor = recipeSearchInteractor;
     }
 
-
     /**
      * Executes the Recipe Search Use Case.
      * @param searchKeyword the keyword user types to search for
@@ -46,5 +45,3 @@ public class RecipeSearchController {
         System.out.println("RecipeSearchController work");
     }
 }
-
-

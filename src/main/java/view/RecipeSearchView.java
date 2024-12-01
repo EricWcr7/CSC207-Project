@@ -187,9 +187,3 @@ public class RecipeSearchView extends JPanel implements ActionListener, Property
         this.recipeSearchController = recipeSearchController;
     }
 }
-
-
-
-
-
-

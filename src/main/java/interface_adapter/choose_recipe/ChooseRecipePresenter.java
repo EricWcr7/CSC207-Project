@@ -39,23 +39,14 @@ public class ChooseRecipePresenter implements ChooseRecipeOutputBoundary {
         displayState.setInstructions(outputData.getDishInstructions());
         displayState.setLikeNumber(dishName, outputData.getLikeNumber());
         displayState.setDislikeNumber(dishName, outputData.getDislikeNumber());
-
-        // Notify that the state has changed
         this.displayRecipeViewModel.setState(displayState);
         this.displayRecipeViewModel.firePropertyChanged();
-
-        // Debug: After setting the state
         System.out.println("Setting new state in ViewModel with data: ");
         System.out.println("Dish Name: " + displayState.getDishName());
-//        System.out.println("Ingredients: " + displayState.getIngredients());
-//        System.out.println("Instructions: " + displayState.getInstructions());
-
         final DisplayRecipeState currentState = displayRecipeViewModel.getState();
         currentState.setUsername(outputData.getUsername());
         currentState.setFavoriteRecipes(outputData.getFavoriteRecipes());
         displayRecipeViewModel.setState(currentState);
-
-        // Switch to the display recipe view
         this.viewManagerModel.setState(displayRecipeViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
@@ -65,8 +56,8 @@ public class ChooseRecipePresenter implements ChooseRecipeOutputBoundary {
      * @param recipeNames the list of recipe names to be displayed in the view
      */
     public void presentRecipeList(List<String> recipeNames) {
-        chooseRecipeViewModel.getState().setRecipeNames(recipeNames);  // Update the recipe names in the view model state
-        chooseRecipeViewModel.firePropertyChanged();  // Notify any listeners that the view model has changed
+        chooseRecipeViewModel.getState().setRecipeNames(recipeNames);
+        chooseRecipeViewModel.firePropertyChanged();
     }
 
     /**
@@ -74,8 +65,8 @@ public class ChooseRecipePresenter implements ChooseRecipeOutputBoundary {
      * @param selectedRecipe the name of the selected recipe
      */
     public void presentSelectedRecipe(String selectedRecipe) {
-        chooseRecipeViewModel.getState().setSearchKeyword(selectedRecipe);  // Update the selected recipe in the view model state
-        chooseRecipeViewModel.firePropertyChanged();  // Notify any listeners that the view model has changed
+        chooseRecipeViewModel.getState().setSearchKeyword(selectedRecipe);
+        chooseRecipeViewModel.firePropertyChanged();
     }
 
     /**
@@ -83,8 +74,8 @@ public class ChooseRecipePresenter implements ChooseRecipeOutputBoundary {
      * @param errorMessage the error message to display in the view
      */
     public void presentError(String errorMessage) {
-        chooseRecipeViewModel.getState().setErrorMessage(errorMessage);  // Set an error message in the view model state
-        chooseRecipeViewModel.firePropertyChanged();  // Notify any listeners that the view model has changed
+        chooseRecipeViewModel.getState().setErrorMessage(errorMessage);
+        chooseRecipeViewModel.firePropertyChanged();
     }
 }
 
