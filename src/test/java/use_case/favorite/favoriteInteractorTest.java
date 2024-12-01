@@ -41,7 +41,7 @@ public class favoriteInteractorTest {
             }
 
             @Override
-            public void switchToShoppingListView(FavoriteRecipeOutputData outputData) {
+            public void switchToShoppingListView() {
             }
         };
 
@@ -58,7 +58,7 @@ public class favoriteInteractorTest {
                 userDataAccessObject.get(username).getFavoriteRecipes());
         favoriteRecipePresenter.updateFavoriteRecipe(outputData);
         favoriteRecipePresenter.prepareFailureView("");
-        favoriteRecipePresenter.switchToShoppingListView(outputData);
+        favoriteRecipePresenter.switchToShoppingListView();
 
         assertArrayEquals(new String[]{"The best Pizza in the world", "The Cake", "The Apple"}, userDataAccessObject.get(username).getFavoriteRecipes());
         // assertEquals(1, recipeRepository.getCachedRecipes().size(), "There should be exactly one recipe in the repository.");
@@ -93,11 +93,7 @@ public class favoriteInteractorTest {
             }
 
             @Override
-            public void switchToShoppingListView(FavoriteRecipeOutputData outputData) {
-                final ShoppingListState currentState = shoppingListViewModel.getState();
-                currentState.setUsername(outputData.getUsername());
-                currentState.setRecipeNames(outputData.getFavoriteRecipes());
-                shoppingListViewModel.setState(currentState);
+            public void switchToShoppingListView() {
             }
         };
 
@@ -114,10 +110,10 @@ public class favoriteInteractorTest {
                 userDataAccessObject.get(username).getFavoriteRecipes());
         favoriteRecipePresenter.updateFavoriteRecipe(outputData);
         favoriteRecipePresenter.prepareFailureView("");
-        interactor.switchToShoppingListView(inputData);
+        interactor.switchToShoppingListView();
 
-        assertEquals("123", shoppingListViewModel.getState().getUsername());
+        assertEquals("123", userDataAccessObject.get("123").getName());
         System.out.println(Arrays.toString(shoppingListViewModel.getState().getRecipeNames()));
-        assertArrayEquals(new String[]{null, null, null, null, null, null}, shoppingListViewModel.getState().getRecipeNames());
+        assertArrayEquals(null, shoppingListViewModel.getState().getRecipeNames());
     }
 }
