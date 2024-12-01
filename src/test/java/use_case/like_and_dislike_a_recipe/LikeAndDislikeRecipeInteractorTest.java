@@ -58,6 +58,11 @@ class LikeAndDislikeRecipeInteractorTest {
             // Simulate uploading a file
         }
 
+        @Override
+        public void updateChangedRecipes(List<Recipe> updatedRecipes) {
+
+        }
+
     }
 
     /**
