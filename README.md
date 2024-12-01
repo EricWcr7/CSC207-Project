@@ -45,8 +45,17 @@ This system was developed to streamline recipe management and promote collaborat
    git clone https://github.com/EricWcr7/CSC207-Project.git
 2. **Set Up APIs**:
    There is nothing to do with setting up the APIs.
-4. **Install Dependencies**:
+3. **Set Up IDE**:
    Please make sure you have Java 17 or later installed. It is encouraged to use IntelliJ IDEA IDE to build the project.
-   
+   Use Java corretto-17 as SDK.
+4. **Install and Set Up Dependencies**
+   Add Google Gson library to your project and select the latest version.
+   ```bash
+   google.code.gson
+   ```
+   Add OKHTTP library to your project and select the latest version. Example in below:
+   ```bash
+   com.squareup.okhttp3:okhttp:5.0.0-alpha.14
+   ```
 5. **Run the Application**:
    Run the Main class to start the program.
