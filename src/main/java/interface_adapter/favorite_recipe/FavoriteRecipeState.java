@@ -15,7 +15,8 @@ public class FavoriteRecipeState {
     public FavoriteRecipeState() {
         // Ensure favoriteRecipes array is initialized with non-null values
         for (int i = 0; i < six; i++) {
-            favoriteRecipes[i] = "null"; // Initialize each element with an empty string to avoid nulls
+            favoriteRecipes[i] = "null";
+            // Initialize each element with an empty string to avoid nulls
         }
     }
 
@@ -31,31 +32,23 @@ public class FavoriteRecipeState {
         return favoriteRecipes;
     }
 
+    /**
+     * Set new favoriteRecipes in FavoriteRecipeState.
+     * @param favoriteRecipes the list of favoriteRecipes.
+     */
     public void setFavoriteRecipes(String[] favoriteRecipes) {
         final String[] oldValue = this.favoriteRecipes;
         this.favoriteRecipes = favoriteRecipes;
-        support.firePropertyChange("favoriteRecipes", oldValue, favoriteRecipes); // Notify listeners
+        support.firePropertyChange("favoriteRecipes", oldValue, favoriteRecipes);
+        // Notify listeners
     }
 
+    /**
+     * Set new favoriteRecipes in FavoriteRecipeState.
+     * @param listener the listener any change about favoriteRecipe view.
+     */
     // Add a PropertyChangeListener
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
-    }
-
-    // Remove a PropertyChangeListener
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        support.removePropertyChangeListener(listener);
-    }
-
-    // Getter for state value
-    public String[] getStateValue() {
-        return favoriteRecipes;
-    }
-
-    // Setter for state value (notifies listeners of changes)
-    public void setStateValue(String[] newValue) {
-        final String[] oldValue = this.favoriteRecipes;
-        this.favoriteRecipes = newValue;
-        support.firePropertyChange("stateValue", oldValue, newValue); // Notify listeners
     }
 }
