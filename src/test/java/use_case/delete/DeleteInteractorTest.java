@@ -6,10 +6,6 @@ import use_case.delete.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.TestCase.fail;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-
 class DeleteInteractorTest {
 
     /**
@@ -28,6 +24,21 @@ class DeleteInteractorTest {
 
         @Override
         public void writeRecipesToFile(List<Recipe> updatedRecipes) {
+
+        }
+
+        @Override
+        public List<Recipe> getCachedRecipes() {
+            return null;
+        }
+
+        @Override
+        public void loadRecipesFromCloud() {
+
+        }
+
+        @Override
+        public void removeRecipeByName(String recipeName) {
 
         }
     }
@@ -175,10 +186,10 @@ class DeleteInteractorTest {
                 recipeDataAccessObject
         );
 
-        // 设置输入数据
+
         DeleteInputData inputData = new DeleteInputData("TestRecipe");
 
-        // 调用 deleteUserRecipe 方法以确保代码行覆盖
+
         interactor.deleteUserRecipe(inputData);
     }
 
