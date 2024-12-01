@@ -1,4 +1,4 @@
-package use_case.return_to_RecipeSearchView;
+package use_case.return_to_recipe_search_view;
 
 import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
 import use_case.shopping_list.ShoppingListUserDataAccessInterface;

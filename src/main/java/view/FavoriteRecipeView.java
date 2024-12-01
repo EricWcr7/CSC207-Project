@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 import javax.swing.*;
 
-import interface_adapter.return_to_RecipeSearchView.ReturnToSearchMenuController;
+import interface_adapter.return_to_recipe_search_view.ReturnToSearchMenuController;
 import interface_adapter.choose_recipe.ChooseRecipeController;
 import interface_adapter.favorite_recipe.FavoriteRecipeController;
 import interface_adapter.favorite_recipe.FavoriteRecipeState;
