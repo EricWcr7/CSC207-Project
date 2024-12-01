@@ -111,7 +111,7 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
 
             if (selectedRecipe != null && !selectedRecipe.isEmpty()) {
                 // Call the DeleteController to handle the deletion logic
-                deleteController.deleteRecipeFromAllRecipes(selectedRecipe);
+                deleteController.deleteRecipe(selectedRecipe);
                 deleteController.deleteRecipeFromUserCreatedRecipes(selectedRecipe);
                 // Refresh the combo box after deleting a recipe
 
@@ -232,6 +232,5 @@ public class EditView extends JPanel implements ActionListener, PropertyChangeLi
         recipeComboBox.revalidate();
         recipeComboBox.repaint();
     }
-
 
 }

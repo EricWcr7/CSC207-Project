@@ -590,7 +590,7 @@ public class AppBuilder {
     public AppBuilder addDeleteUseCase() {
         final DeleteViewModel deleteViewModel = new DeleteViewModel();
         final DeleteOutputBoundary deleteOutputBoundary = new DeletePresenter(deleteViewModel);
-        final DeleteInputBoundary deleteInteractor = new DeleteInteractor(recipeDataAccessObject, userDataAccessObject, deleteOutputBoundary);
+        final DeleteInputBoundary deleteInteractor = new DeleteInteractor(recipeDataAccessObject, userDataAccessObject, deleteOutputBoundary, recipeDataAccessObject );
         final DeleteController deleteController = new DeleteController(deleteInteractor);
         editView.setDeleteController(deleteController);
         System.out.println("Delete Use Case added successfully.");

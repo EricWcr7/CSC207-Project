@@ -11,15 +11,15 @@ public class DeleteController {
     }
 
 
-    /**
-     * Deletes a recipe from all_recipes.json based on the recipe name.
-     *
-     * @param recipeName The name of the recipe to delete.
-     */
-    public void deleteRecipeFromAllRecipes(String recipeName) {
-        DeleteInputData inputData = new DeleteInputData(recipeName);
-        deleteInputBoundary.deleteRecipe(inputData);
-    }
+//    /**
+//     * Deletes a recipe from all_recipes.json based on the recipe name.
+//     *
+//     * @param recipeName The name of the recipe to delete.
+//     */
+//    public void deleteRecipeFromAllRecipes(String recipeName) {
+//        DeleteInputData inputData = new DeleteInputData(recipeName);
+//        deleteInputBoundary.deleteRecipe(inputData);
+//    }
 
     /**
      * Deletes a recipe from all_users.json for the current user based on the recipe name.
@@ -32,11 +32,22 @@ public class DeleteController {
     }
 
     /**
-     * Gets the current user's name from the session.
+     * Deletes a recipe with the given name by validating the input and delegating
+     * the task to the use case interactor.
      *
-     * @return The name of the currently logged-in user.
+     * @param recipeName the name of the recipe to be deleted. Must not be null or empty.
+     * @throws IllegalArgumentException if the recipe name is null or empty.
      */
-    private String getCurrentUserName() {
-        return util.Session.getCurrentUser().getName();
+    public void deleteRecipe(String recipeName) {
+        // Validate input to ensure the recipe name is not null or empty
+        if (recipeName == null || recipeName.isEmpty()) {
+            throw new IllegalArgumentException("Recipe name cannot be null or empty.");
+        }
+
+        // Wrap the recipe name in a DeleteInputData object to pass to the interactor
+        DeleteInputData inputData = new DeleteInputData(recipeName);
+
+        // Delegate the execution to the interactor through the input boundary
+        deleteInputBoundary.execute(inputData);
     }
 }
