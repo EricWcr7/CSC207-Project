@@ -1,9 +1,6 @@
 package use_case.delete;
 
 public interface DeleteInputBoundary {
-
-
-
     /**
      * Deletes a recipe from a user's created recipes in all_users.json.
      *

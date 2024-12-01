@@ -1,11 +1,9 @@
 package use_case.delete;
 
+import data_access.RecipeDataAccessObject;
 import entity.Recipe;
 
 import java.util.List;
-import data_access.RecipeDataAccessObject;
-
-import javax.annotation.processing.Generated;
 
 public class DeleteInteractor implements DeleteInputBoundary {
 
@@ -25,8 +23,6 @@ public class DeleteInteractor implements DeleteInputBoundary {
         this.recipeDataAccessObject = recipeDataAccessObject;
     }
 
-
-
     @Override
     public void deleteUserRecipe(DeleteInputData inputData) {
         deleteUserDataAccess.deleteRecipeForUser(inputData.getRecipeName());
@@ -35,7 +31,6 @@ public class DeleteInteractor implements DeleteInputBoundary {
 
     /**
      * Executes the delete logic for a given recipe name.
-
      * This method first deletes the recipe from the local file (`new_recipes.json`) and then
      * checks and removes it from the cloud data. If the recipe is successfully removed from both
      * locations, it updates the cloud file and notifies the presenter of success. Otherwise, it
@@ -54,7 +49,7 @@ public class DeleteInteractor implements DeleteInputBoundary {
         // Step 4.1: Remove the recipe from the cached cloud recipes
         deleteDataAccess.removeRecipeByName(recipeName);
 
-        List<Recipe> updatedRecipes = deleteDataAccess.getCachedRecipes();
+        final List<Recipe> updatedRecipes = deleteDataAccess.getCachedRecipes();
         deleteDataAccess.writeRecipesToFile(updatedRecipes);
 
         deleteDataAccess.deleteFileFromFileIo();

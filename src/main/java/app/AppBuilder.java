@@ -142,8 +142,10 @@ public class AppBuilder {
         if (recipeSearchInteractor != null) {
             System.out.println("Calling initializeRecipeStorage in RecipeSearchInteractor...");
             recipeSearchInteractor.initializeRecipeStorage();
-        } else {
-            System.err.println("RecipeSearchInteractor not initialized. Ensure addRecipeSearchUseCase is called first.");
+        }
+        else {
+            System.err.println("RecipeSearchInteractor not initialized. "
+                    + "Ensure addRecipeSearchUseCase is called first.");
         }
     }
 
@@ -151,7 +153,8 @@ public class AppBuilder {
         if (loginInteractor != null) {
             System.out.println("Calling initializeUserStorage in LogInInteractor...");
             loginInteractor.initializeUserStorage();
-        } else {
+        }
+        else {
             System.err.println("LogInInteractor not initialized. Ensure addLogInUseCase is called first.");
         }
     }
@@ -380,7 +383,8 @@ public class AppBuilder {
                 new ReturnToSearchMenuInteractor(returnToSearchMenuOutputBoundary, userDataAccessObject,
                         userDataAccessObject);
 
-        final ReturnToSearchMenuController returnToSearchMenuController = new ReturnToSearchMenuController(returnToSearchMenuInteractor);
+        final ReturnToSearchMenuController returnToSearchMenuController =
+                new ReturnToSearchMenuController(returnToSearchMenuInteractor);
         chooseRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
         displayRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
         favoriteRecipeView.setReturnToSearchMenuController(returnToSearchMenuController);
@@ -405,7 +409,8 @@ public class AppBuilder {
         final BackToEditViewInputBoundary backToEditViewInteractor =
                 new BackToEditViewInteractor(backToEditViewOutputBoundary);
 
-        final BackToEditViewController backToEditViewController = new BackToEditViewController(backToEditViewInteractor);
+        final BackToEditViewController backToEditViewController =
+                new BackToEditViewController(backToEditViewInteractor);
         createView.setBackToEditViewConTroller(backToEditViewController);
         return this;
     }
@@ -423,7 +428,8 @@ public class AppBuilder {
         final RecipeSearchOutputBoundary recipeSearchOutputBoundary = new RecipeSearchPresenter(
                 viewManagerModel, chooseRecipeViewModel, favoriteRecipeViewModel, editViewModel, recipeSearchViewModel);
 
-        recipeSearchInteractor = new RecipeSearchInteractor(recipeDataAccessObject, recipeSearchOutputBoundary, userDataAccessObject);
+        recipeSearchInteractor =
+                new RecipeSearchInteractor(recipeDataAccessObject, recipeSearchOutputBoundary, userDataAccessObject);
 
         final RecipeSearchController recipeSearchController = new RecipeSearchController(recipeSearchInteractor);
         recipeSearchView.setRecipeSearchController(recipeSearchController);
@@ -468,7 +474,8 @@ public class AppBuilder {
         final FavoriteRecipeInputBoundary favoriteRecipeInteractor = new FavoriteRecipeInteractor(
                 favoriteRecipeOutputBoundary, userDataAccessObject);
 
-        final FavoriteRecipeController favoriteRecipeController = new FavoriteRecipeController(favoriteRecipeInteractor);
+        final FavoriteRecipeController favoriteRecipeController =
+                new FavoriteRecipeController(favoriteRecipeInteractor);
         favoriteRecipeView.setFavoriteRecipeController(favoriteRecipeController);
         displayRecipeView.setFavoriteRecipeController(favoriteRecipeController);
         return this;
@@ -503,7 +510,8 @@ public class AppBuilder {
      * @return the current {@link AppBuilder} instance, allowing for method chaining
      */
     public AppBuilder addEditUseCase() {
-        final EditOutputBoundary editOutputBoundary = new EditPresenter(viewManagerModel, createRecipeViewModel, editViewModel);
+        final EditOutputBoundary editOutputBoundary =
+                new EditPresenter(viewManagerModel, createRecipeViewModel, editViewModel);
 
         final EditInputBoundary editInteractor = new EditInteractor(editOutputBoundary);
         final EditController editController = new EditController(editInteractor);
@@ -520,8 +528,10 @@ public class AppBuilder {
      * @return the current {@link AppBuilder} instance, allowing for method chaining
      */
     public AppBuilder addCreateUseCase() {
-        final CreateRecipeOutputBoundary createRecipeOutputBoundary = new CreateRecipeRecipePresenter(viewManagerModel, recipeSearchViewModel, createRecipeViewModel);
-        final CreateRecipeInputBoundary createInteractor = new CreateRecipeInteractor(createRecipeOutputBoundary, recipeFactory, recipeDataAccessObject, userDataAccessObject);
+        final CreateRecipeOutputBoundary createRecipeOutputBoundary =
+                new CreateRecipeRecipePresenter(viewManagerModel, recipeSearchViewModel, createRecipeViewModel);
+        final CreateRecipeInputBoundary createInteractor = new CreateRecipeInteractor(
+                createRecipeOutputBoundary, recipeFactory, recipeDataAccessObject, userDataAccessObject);
 
         final CreateRecipeController createRecipeController = new CreateRecipeController(createInteractor);
         createView.setCreateController(createRecipeController);
@@ -556,8 +566,8 @@ public class AppBuilder {
      * @return the current {@link AppBuilder} instance, allowing for method chaining
      */
     public AppBuilder addDislikeRecipeUseCase() {
-        final DislikeRecipeOutputBoundary dislikeRecipeOutputBoundary = new DislikeRecipePresenter(displayRecipeViewModel);
-
+        final DislikeRecipeOutputBoundary dislikeRecipeOutputBoundary =
+                new DislikeRecipePresenter(displayRecipeViewModel);
         final LikeAndDislikeRecipeInputBoundary dislikeRecipeInteractor = new DislikeRecipeInteractor(
                 recipeDataAccessObject, userDataAccessObject, dislikeRecipeOutputBoundary);
 
@@ -566,18 +576,16 @@ public class AppBuilder {
         return this;
     }
 
-
     /**
      * Configures and adds the "Delete Recipe" use case to the application.
      * This method initializes the components required for handling the deletion of recipes,
      * including the presenter, interactor, and controller. It assigns the controller
      * to the edit view, enabling users to delete recipes from the application.
-     *
      * The method performs the following steps:
-     * 1. Creates a {@link DeleteViewModel} to store and manage delete-related view data.
-     * 2. Initializes a {@link DeletePresenter} as the output boundary for presenting the results of the delete operation.
-     * 3. Sets up a {@link DeleteInteractor} as the input boundary for handling business logic related to recipe deletion.
-     * 4. Configures a {@link DeleteController} to handle user actions related to recipe deletion.
+     * 1. Creates a DeleteViewModel to store and manage delete-related view data.
+     * 2. Initializes a DeletePresenter as the output boundary for presenting the results of the delete operation.
+     * 3. Sets up a DeleteInteractor as the input boundary for handling business logic related to recipe deletion.
+     * 4. Configures a DeleteController to handle user actions related to recipe deletion.
      * 5. Attaches the delete controller to the edit view.
      *
      * @return the current {@link AppBuilder} instance, allowing for method chaining
@@ -585,7 +593,9 @@ public class AppBuilder {
     public AppBuilder addDeleteUseCase() {
         final DeleteViewModel deleteViewModel = new DeleteViewModel();
         final DeleteOutputBoundary deleteOutputBoundary = new DeletePresenter(deleteViewModel);
-        final DeleteInputBoundary deleteInteractor = new DeleteInteractor(recipeDataAccessObject, userDataAccessObject, deleteOutputBoundary, recipeDataAccessObject );
+        final DeleteInputBoundary deleteInteractor =
+                new DeleteInteractor(recipeDataAccessObject, userDataAccessObject,
+                        deleteOutputBoundary, recipeDataAccessObject);
         final DeleteController deleteController = new DeleteController(deleteInteractor);
         editView.setDeleteController(deleteController);
         System.out.println("Delete Use Case added successfully.");
@@ -604,20 +614,19 @@ public class AppBuilder {
      * Error handling includes printing the stack trace and logging an error message if file creation fails.
      */
     public void initializeNewRecipesFile() {
-        File file = new File("new_recipes.json");
+        final File file = new File("new_recipes.json");
         if (!file.exists()) {
             try (FileWriter writer = new FileWriter(file)) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.add("recipes", new JsonArray());
                 writer.write(jsonObject.toString());
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
                 System.err.println("Failed to initialize new_recipes.json file.");
             }
         }
     }
-
-
 
     /**
      * Constructs and initializes the main application window for the Mealmaster application.
@@ -629,16 +638,12 @@ public class AppBuilder {
     public JFrame build() {
         final JFrame application = new JFrame("Mealmaster");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
         initializeSharedUserStorage();
         initializeSharedRecipeStorage();
-
         application.add(cardPanel);
-
         System.out.println("Setting initial view state to: " + loginView.getViewName());
         viewManagerModel.setState(loginView.getViewName());
         viewManagerModel.firePropertyChanged();
-
         return application;
     }
 }

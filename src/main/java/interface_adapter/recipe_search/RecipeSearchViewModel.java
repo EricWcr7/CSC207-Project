@@ -17,16 +17,4 @@ public class RecipeSearchViewModel extends ViewModel<RecipeSearchState> {
     public String getErrorMessage() {
         return getState().getErrorMessage();
     }
-
-    // Clear the state, useful for resetting after each search or handling new searches
-    public void clearState() {
-        getState().clearState();
-        firePropertyChanged();
-    }
 }
-
-
-
-
-
-

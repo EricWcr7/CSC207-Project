@@ -3,9 +3,6 @@ package interface_adapter.choose_recipe;
 import use_case.choose_recipe.ChooseRecipeInputBoundary;
 import use_case.choose_recipe.ChooseRecipeInputData;
 
-
-import java.util.List;
-
 public class ChooseRecipeController {
 
     private final ChooseRecipeInputBoundary chooseRecipeInteractor;

@@ -1,6 +1,5 @@
 package interface_adapter.shopping_list;
 
-import interface_adapter.ViewManagerModel;
 import use_case.shopping_list.ShoppingListOutputBoundary;
 import use_case.shopping_list.ShoppingListOutputData;
 

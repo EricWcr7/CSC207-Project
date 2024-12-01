@@ -16,7 +16,7 @@ public class DeleteController {
      * @param recipeName The name of the recipe to delete.
      */
     public void deleteRecipeFromUserCreatedRecipes(String recipeName) {
-        DeleteInputData inputData = new DeleteInputData(recipeName);
+        final DeleteInputData inputData = new DeleteInputData(recipeName);
         deleteInputBoundary.deleteUserRecipe(inputData);
     }
 
@@ -34,7 +34,7 @@ public class DeleteController {
         }
 
         // Wrap the recipe name in a DeleteInputData object to pass to the interactor
-        DeleteInputData inputData = new DeleteInputData(recipeName);
+        final DeleteInputData inputData = new DeleteInputData(recipeName);
 
         // Delegate the execution to the interactor through the input boundary
         deleteInputBoundary.execute(inputData);

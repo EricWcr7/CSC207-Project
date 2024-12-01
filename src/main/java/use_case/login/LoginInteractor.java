@@ -29,32 +29,26 @@ public class LoginInteractor implements LoginInputBoundary {
 
         if (!userDataAccessObject.existsByName(username)) {
             loginPresenter.prepareFailView(username + ": Account does not exist.");
-        } else {
+        }
+        else {
             final User user = userDataAccessObject.get(username);
             if (!password.equals(user.getPassword())) {
                 loginPresenter.prepareFailView("Incorrect password for \"" + username + "\".");
-            } else {
-                // 登录成功，将用户名或用户对象存入 Session
-                util.Session.initialize(user); // 初始化 Session
-
-                // 同时保留原有的 setCurrentUsername（如果仍需要）
+            }
+            else {
+                util.Session.initialize(user);
                 userDataAccessObject.setCurrentUsername(user.getName());
-
-                // 创建并返回输出数据
                 final LoginOutputData loginOutputData = new LoginOutputData(
                         user.getName(),
                         false,
                         user.getFavoriteRecipes());
                 loginPresenter.prepareSuccessView(loginOutputData);
-
-                // 日志记录（可选）
                 System.out.println("Current logged in account: " + username);
                 System.out.println("Session initialized for user: " + user.getName());
                 System.out.println("Current favorite recipes: " + Arrays.toString(user.getFavoriteRecipes()));
             }
         }
     }
-
 
     @Override
     public void initializeUserStorage() {

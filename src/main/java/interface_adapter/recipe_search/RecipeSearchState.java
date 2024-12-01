@@ -2,7 +2,7 @@ package interface_adapter.recipe_search;
 
 public class RecipeSearchState {
     private String searchKeyword = "";
-    private String errorMessage = ""; // New field to store error messages
+    private String errorMessage = "";
     private final int six = 6;
     private String username = "";
     private String[] favoriteRecipes = new String[six];
@@ -10,7 +10,7 @@ public class RecipeSearchState {
     // Sets the search keyword for a successful search
     public void setSearchKeyWord(String searchKeyword) {
         this.searchKeyword = searchKeyword;
-        this.errorMessage = ""; // Clear any error messages on new search
+        this.errorMessage = "";
     }
 
     public String getSearchKeyword() {
@@ -48,7 +48,3 @@ public class RecipeSearchState {
         this.favoriteRecipes = favoriteRecipes;
     }
 }
-
-
-
-
