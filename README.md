@@ -88,7 +88,10 @@ The Meal Master platform is designed for users to manage their recipes and engag
 - **Add Recipes**: Use the "Add Recipe" feature to upload your own creations. Input the recipe name, ingredients, and step-by-step instructions.
 - **Edit Recipes**: Modify your previously uploaded recipes as needed.
 - **Delete Recipes**: Remove recipes you no longer want to share or manage.
-### 6. **License**:
+
+---
+
+# License
    Copyright (c) 2024 Madeline and Contributors
 
    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
