@@ -1,4 +1,4 @@
-package interface_adapter.return_to_RecipeSearchView;
+package interface_adapter.return_to_recipe_search_view;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.choose_recipe.ChooseRecipeState;
@@ -13,7 +13,7 @@ import interface_adapter.recipe_search.RecipeSearchState;
 import interface_adapter.recipe_search.RecipeSearchViewModel;
 import interface_adapter.shopping_list.ShoppingListState;
 import interface_adapter.shopping_list.ShoppingListViewModel;
-import use_case.return_to_RecipeSearchView.ReturnToSearchMenuOutputBoundary;
+import use_case.return_to_recipe_search_view.ReturnToSearchMenuOutputBoundary;
 
 public class ReturnToSearchMenuPresenter implements ReturnToSearchMenuOutputBoundary {
 

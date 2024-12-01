@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import interface_adapter.return_to_RecipeSearchView.ReturnToSearchMenuController;
+import interface_adapter.return_to_recipe_search_view.ReturnToSearchMenuController;
 import interface_adapter.shopping_list.ShoppingListController;
 import interface_adapter.shopping_list.ShoppingListViewModel;
 

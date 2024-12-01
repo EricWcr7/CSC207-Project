@@ -1,4 +1,4 @@
-package use_case.back_to_EditView;
+package use_case.back_to_edit_view;
 
 /**
  * Input Boundary for actions which are related to BackToEditView.
