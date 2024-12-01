@@ -41,13 +41,10 @@ This system was developed to streamline recipe management and promote collaborat
    ```bash
    git clone https://github.com/username/repo.git
 2. **Set Up APIs**:
-   ```bash
    Obtain API keys for TheMealDB and File.io.
    Configure the api_keys.json file in the project directory.
 3. **Install Dependencies**:
-   ```bash
    Ensure you have Java 17 or later installed.
    Use your IDE to build the project (e.g., IntelliJ IDEA, Eclipse).
 4. **Run the Application**:
-   ```bash
    Run the Main class to start the program.
