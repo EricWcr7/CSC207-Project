@@ -155,14 +155,14 @@ public class DisplayRecipeView extends JPanel implements PropertyChangeListener 
                         else {
                             final String[] currentList = state.getFavoriteRecipes();
                             currentList[findPlaceToSaveFavoriteRecipe(state)] = state.getDishName();
-                            state.setFavoriteRecipes(currentList);
-                            displayRecipeViewModel.setState(state);
-                            System.out.println("Add " + state.getDishName() + " into my favoriteRecipes file !");
-                            final String username = state.getUsername();
-                            final String[] favoriteRecipes = state.getFavoriteRecipes();
-                            System.out.println("Current logged in account: " + username);
-                            System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
-                            favoriteRecipeController.execute(state.getUsername(), state.getFavoriteRecipes());
+                            // state.setFavoriteRecipes(currentList);
+                            // displayRecipeViewModel.setState(state);
+                            // System.out.println("Add " + state.getDishName() + " into my favoriteRecipes file !");
+                            // final String username = state.getUsername();
+                            // final String[] favoriteRecipes = state.getFavoriteRecipes();
+                            // System.out.println("Current logged in account: " + username);
+                            // System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
+                            favoriteRecipeController.execute(state.getUsername(), currentList);
 
                         }
 

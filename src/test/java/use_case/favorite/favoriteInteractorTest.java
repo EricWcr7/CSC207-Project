@@ -33,7 +33,7 @@ public class favoriteInteractorTest {
 
         FavoriteRecipeOutputBoundary favoriteRecipePresenter = new FavoriteRecipeOutputBoundary() {
             @Override
-            public void prepareSuccessView(FavoriteRecipeOutputData outputData) {
+            public void updateFavoriteRecipe(FavoriteRecipeOutputData outputData) {
             }
 
             @Override
@@ -56,7 +56,7 @@ public class favoriteInteractorTest {
         final FavoriteRecipeOutputData outputData = new FavoriteRecipeOutputData(
                 userDataAccessObject.get(username).getName(),
                 userDataAccessObject.get(username).getFavoriteRecipes());
-        favoriteRecipePresenter.prepareSuccessView(outputData);
+        favoriteRecipePresenter.updateFavoriteRecipe(outputData);
         favoriteRecipePresenter.prepareFailureView("");
         favoriteRecipePresenter.switchToShoppingListView(outputData);
 
@@ -85,7 +85,7 @@ public class favoriteInteractorTest {
 
         FavoriteRecipeOutputBoundary favoriteRecipePresenter = new FavoriteRecipeOutputBoundary() {
             @Override
-            public void prepareSuccessView(FavoriteRecipeOutputData outputData) {
+            public void updateFavoriteRecipe(FavoriteRecipeOutputData outputData) {
             }
 
             @Override
@@ -112,7 +112,7 @@ public class favoriteInteractorTest {
         final FavoriteRecipeOutputData outputData = new FavoriteRecipeOutputData(
                 userDataAccessObject.get(username).getName(),
                 userDataAccessObject.get(username).getFavoriteRecipes());
-        favoriteRecipePresenter.prepareSuccessView(outputData);
+        favoriteRecipePresenter.updateFavoriteRecipe(outputData);
         favoriteRecipePresenter.prepareFailureView("");
         interactor.switchToShoppingListView(inputData);
 
