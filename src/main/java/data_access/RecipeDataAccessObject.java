@@ -376,6 +376,13 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         }
     }
 
+    @Override
+    public void updateChangedRecipes(List<Recipe> updatedRecipes) {
+        writeRecipesToFile(updatedRecipes);
+        deleteFileFromFileIo();
+        uploadFileToFileIo();
+    }
+
     /**
      * Constructs a multipart request body for file upload.
      *

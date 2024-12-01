@@ -44,4 +44,10 @@ public interface LikeAndDislikeRecipeDataAccessInterface {
      * within the file system.
      */
     void uploadFileToFileIo();
+
+    /**
+     * Updates the list of recipes with the changes provided.
+     * @param updatedRecipes a list of {@link Recipe} objects containing the updated data for the recipes.
+     */
+    void updateChangedRecipes(List<Recipe> updatedRecipes);
 }

@@ -44,16 +44,15 @@ public class DislikeRecipeInteractor implements LikeAndDislikeRecipeInputBoundar
 
             // Write updated recipes to file and delete the old file
             final List<Recipe> updatedRecipes = recipeDataAccessObject.getCachedRecipes();
-            recipeDataAccessObject.writeRecipesToFile(updatedRecipes);
-            recipeDataAccessObject.deleteFileFromFileIo();
-            recipeDataAccessObject.uploadFileToFileIo();
+            recipeDataAccessObject.updateChangedRecipes(updatedRecipes);
 
             // Add the dislike to user data
             dislikeRecipeDataAccessObject.addDislikedRecipe(recipeName);
             dislikeRecipeDataAccessObject.updateUserDislikedRecipe(recipeName);
 
             final int updatedDislikeNumber = theRecipe.getDislikeNumber();
-            final DislikeRecipeOutputData dislikeRecipeOutputData = new DislikeRecipeOutputData(recipeName, updatedDislikeNumber);
+            final DislikeRecipeOutputData dislikeRecipeOutputData = new DislikeRecipeOutputData(recipeName,
+                    updatedDislikeNumber);
             dislikeRecipePresenter.prepareSuccessView(dislikeRecipeOutputData);
         }
 
