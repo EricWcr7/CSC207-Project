@@ -89,7 +89,6 @@ The Meal Master platform is designed for users to manage their recipes and engag
 
 ---
 
----
 
 # License
    Copyright (c) 2024 Jiacan Sun, Qihong Liu, Zenghao Chen, Xiangyu Shen, Yi Fan (Eric) Wang
