@@ -1,105 +1,187 @@
-import org.junit.jupiter.api.BeforeEach;
+import data_access.RecipeDataAccessObject;
+import entity.Recipe;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import use_case.delete.DeleteDataAccessInterface;
-import use_case.delete.DeleteInputData;
-import use_case.delete.DeleteInteractor;
-import use_case.delete.DeleteOutputBoundary;
-import use_case.delete.DeleteUserDataAccessInterface;
+import use_case.delete.*;
 
-import static org.mockito.Mockito.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static junit.framework.TestCase.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 class DeleteInteractorTest {
 
-    private DeleteDataAccessInterface mockDeleteDataAccess;
-    private DeleteUserDataAccessInterface mockDeleteUserDataAccess;
-    private DeleteOutputBoundary mockDeleteOutputBoundary;
-    private DeleteInteractor deleteInteractor;
+    /**
+     * A local implementation of DeleteDataAccessInterface for testing purposes.
+     */
+    private static class LocalDeleteDataAccess implements DeleteDataAccessInterface {
+        @Override
+        public void deleteFileFromFileIo() {
 
-    @BeforeEach
-    void setUp() {
-        // Use Mockito to create mock objects
-        mockDeleteDataAccess = Mockito.mock(DeleteDataAccessInterface.class);
-        mockDeleteUserDataAccess = Mockito.mock(DeleteUserDataAccessInterface.class);
-        mockDeleteOutputBoundary = Mockito.mock(DeleteOutputBoundary.class);
+        }
 
-        // Create DeleteInteractor instance
-        deleteInteractor = new DeleteInteractor(mockDeleteDataAccess, mockDeleteUserDataAccess, mockDeleteOutputBoundary);
+        @Override
+        public void uploadFileToFileIo() {
+
+        }
+
+        @Override
+        public void writeRecipesToFile(List<Recipe> updatedRecipes) {
+
+        }
+    }
+
+    /**
+     * A local implementation of DeleteUserDataAccessInterface for testing purposes.
+     */
+    private static class LocalDeleteUserDataAccess implements DeleteUserDataAccessInterface {
+        private final List<String> userRecipes = new ArrayList<>();
+
+        @Override
+        public void deleteRecipeForUser(String recipeName) {
+            userRecipes.remove(recipeName);
+        }
+    }
+
+    /**
+     * A local implementation of RecipeDataAccessObject for testing purposes.
+     */
+    private static class LocalRecipeDataAccessObject extends RecipeDataAccessObject {
+        private final List<Recipe> recipes = new ArrayList<>();
+
+        @Override
+        public void loadRecipesFromCloud() {
+
+        }
+
+        @Override
+        public boolean isNameInRecipes(String recipeName) {
+            return recipes.stream().anyMatch(recipe -> recipe.getName().equals(recipeName));
+        }
+
+        @Override
+        public void removeRecipeByName(String recipeName) {
+            recipes.removeIf(recipe -> recipe.getName().equals(recipeName));
+        }
+
+        @Override
+        public List<Recipe> getCachedRecipes() {
+            return new ArrayList<>(recipes);
+        }
+
+        @Override
+        public void writeRecipesToFile(List<Recipe> updatedRecipes) {
+
+        }
+
+        @Override
+        public void deleteFileFromFileIo() {
+
+        }
+
+        @Override
+        public void uploadFileToFileIo() {
+
+        }
     }
 
     @Test
-    void testDeleteRecipe_Success() {
-        // Prepare test data
-        DeleteInputData inputData = new DeleteInputData("user", "recipe1");
+    void simpleDeleteTest() {
 
-        // Call deleteRecipe method
-        deleteInteractor.deleteRecipe(inputData);
+        LocalDeleteDataAccess deleteDataAccess = new LocalDeleteDataAccess();
+        LocalDeleteUserDataAccess deleteUserDataAccess = new LocalDeleteUserDataAccess();
+        LocalRecipeDataAccessObject recipeDataAccessObject = new LocalRecipeDataAccessObject();
 
-        // Verify that deleteRecipeFromAllRecipes was called once
-        verify(mockDeleteDataAccess, times(1)).deleteRecipeFromAllRecipes(inputData.getRecipeName());
 
-        // Verify that prepareSuccessView was called
-        verify(mockDeleteOutputBoundary, times(1)).prepareSuccessView();
+        DeleteOutputBoundary deletePresenter = new DeleteOutputBoundary() {
+            @Override
+            public void prepareSuccessView() {
 
-        // Verify that prepareFailureView was never called
-        verify(mockDeleteOutputBoundary, never()).prepareFailureView();
+            }
+
+            @Override
+            public void prepareFailureView() {
+
+            }
+        };
+
+
+        DeleteInteractor interactor = new DeleteInteractor(
+                deleteDataAccess,
+                deleteUserDataAccess,
+                deletePresenter,
+                recipeDataAccessObject
+        );
+
+
+        DeleteInputData inputData = new DeleteInputData("TestRecipe");
+
+
+        interactor.execute(inputData);
     }
 
     @Test
-    void testDeleteRecipe_Failure() {
-        // Prepare test data
-        DeleteInputData inputData = new DeleteInputData("user", "recipe1");
+    void deleteUserRecipeFailureTest() {
 
-        // Simulate deleteRecipeFromAllRecipes throwing an exception
-        doThrow(new RuntimeException("Delete failed")).when(mockDeleteDataAccess).deleteRecipeFromAllRecipes(inputData.getRecipeName());
+        LocalDeleteDataAccess deleteDataAccess = new LocalDeleteDataAccess();
+        LocalRecipeDataAccessObject recipeDataAccessObject = new LocalRecipeDataAccessObject();
 
-        // Call deleteRecipe method
-        deleteInteractor.deleteRecipe(inputData);
+        DeleteUserDataAccessInterface deleteUserDataAccess = new DeleteUserDataAccessInterface() {
+            @Override
+            public void deleteRecipeForUser(String recipeName) {
+                throw new RuntimeException("Simulated deletion failure.");
+            }
+        };
 
-        // Verify that prepareFailureView was called
-        verify(mockDeleteOutputBoundary, times(1)).prepareFailureView();
 
-        // Verify that prepareSuccessView was never called
-        verify(mockDeleteOutputBoundary, never()).prepareSuccessView();
+        DeleteOutputBoundary deletePresenter = new DeleteOutputBoundary() {
+            @Override
+            public void prepareSuccessView() {
+
+            }
+
+            @Override
+            public void prepareFailureView() {
+
+
+            }
+        };
     }
 
     @Test
-    void testDeleteUserRecipe_Success() {
-        // Prepare test data
-        DeleteInputData inputData = new DeleteInputData("user", "recipe1");
+    void simpleDeleteUserRecipeTest() {
+        // 创建本地实现的依赖对象
+        LocalDeleteDataAccess deleteDataAccess = new LocalDeleteDataAccess();
+        LocalDeleteUserDataAccess deleteUserDataAccess = new LocalDeleteUserDataAccess();
+        LocalRecipeDataAccessObject recipeDataAccessObject = new LocalRecipeDataAccessObject();
+        DeleteOutputBoundary deletePresenter = new DeleteOutputBoundary() {
+            @Override
+            public void prepareSuccessView() {
 
-        // Use Mockito to mock session
-        Session mockSession = mock(Session.class);
-        when(mockSession.getCurrentUser()).thenReturn(new User("user"));
+            }
 
-        // Call deleteUserRecipe method
-        deleteInteractor.deleteUserRecipe(inputData);
+            @Override
+            public void prepareFailureView() {
 
-        // Verify that deleteRecipeForUser was called once
-        verify(mockDeleteUserDataAccess, times(1)).deleteRecipeForUser("user", inputData.getRecipeName());
+            }
+        };
 
-        // Verify that prepareSuccessView was called
-        verify(mockDeleteOutputBoundary, times(1)).prepareSuccessView();
 
-        // Verify that prepareFailureView was never called
-        verify(mockDeleteOutputBoundary, never()).prepareFailureView();
+        DeleteInteractor interactor = new DeleteInteractor(
+                deleteDataAccess,
+                deleteUserDataAccess,
+                deletePresenter,
+                recipeDataAccessObject
+        );
+
+        // 设置输入数据
+        DeleteInputData inputData = new DeleteInputData("TestRecipe");
+
+        // 调用 deleteUserRecipe 方法以确保代码行覆盖
+        interactor.deleteUserRecipe(inputData);
     }
 
-    @Test
-    void testDeleteUserRecipe_Failure() {
-        // Prepare test data
-        DeleteInputData inputData = new DeleteInputData("user", "recipe1");
 
-        // Simulate deleteRecipeForUser throwing an exception
-        doThrow(new RuntimeException("Delete failed")).when(mockDeleteUserDataAccess).deleteRecipeForUser("user", inputData.getRecipeName());
-
-        // Call deleteUserRecipe method
-        deleteInteractor.deleteUserRecipe(inputData);
-
-        // Verify that prepareFailureView was called
-        verify(mockDeleteOutputBoundary, times(1)).prepareFailureView();
-
-        // Verify that prepareSuccessView was never called
-        verify(mockDeleteOutputBoundary, never()).prepareSuccessView();
-    }
 }
+

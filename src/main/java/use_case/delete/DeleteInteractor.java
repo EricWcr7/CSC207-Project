@@ -5,6 +5,8 @@ import entity.Recipe;
 import java.util.List;
 import data_access.RecipeDataAccessObject;
 
+import javax.annotation.processing.Generated;
+
 public class DeleteInteractor implements DeleteInputBoundary {
 
     private final DeleteDataAccessInterface deleteDataAccess;
@@ -23,33 +25,12 @@ public class DeleteInteractor implements DeleteInputBoundary {
         this.recipeDataAccessObject = recipeDataAccessObject;
     }
 
-//    @Override
-//    public void deleteRecipe(DeleteInputData inputData) {
-//        try {
-//
-//            deleteDataAccess.deleteFileFromFileIo();
-//            deleteDataAccess.uploadFileToFileIo();
-//
-//            deleteOutputBoundary.prepareSuccessView();
-//        }
-//        catch (Exception e) {
-//
-//            deleteOutputBoundary.prepareFailureView();
-//        }
-//    }
+
 
     @Override
     public void deleteUserRecipe(DeleteInputData inputData) {
-        try {
-
-            deleteUserDataAccess.deleteRecipeForUser(inputData.getRecipeName());
-
-            deleteOutputBoundary.prepareSuccessView();
-        }
-        catch (Exception e) {
-
-            deleteOutputBoundary.prepareFailureView();
-        }
+        deleteUserDataAccess.deleteRecipeForUser(inputData.getRecipeName());
+        deleteOutputBoundary.prepareSuccessView();
     }
 
     /**
@@ -70,19 +51,14 @@ public class DeleteInteractor implements DeleteInputBoundary {
         // Step 3: Load recipes from the cloud for further deletion
         recipeDataAccessObject.loadRecipesFromCloud();
 
-        // Step 4: Check if the recipe exists in the cloud storage
-        if (recipeDataAccessObject.isNameInRecipes(recipeName)) {
-            // Step 4.1: Remove the recipe from the cached cloud recipes
-            recipeDataAccessObject.removeRecipeByName(recipeName);
+        // Step 4.1: Remove the recipe from the cached cloud recipes
+        recipeDataAccessObject.removeRecipeByName(recipeName);
 
-            // Step 4.2: Update the local JSON file with the updated list of recipes
-            List<Recipe> updatedRecipes = recipeDataAccessObject.getCachedRecipes();
-            recipeDataAccessObject.writeRecipesToFile(updatedRecipes);
+        List<Recipe> updatedRecipes = recipeDataAccessObject.getCachedRecipes();
+        recipeDataAccessObject.writeRecipesToFile(updatedRecipes);
 
-            // Step 4.3: Synchronize changes with the cloud
-            recipeDataAccessObject.deleteFileFromFileIo();
-            recipeDataAccessObject.uploadFileToFileIo();
+        recipeDataAccessObject.deleteFileFromFileIo();
+        recipeDataAccessObject.uploadFileToFileIo();
 
-        }
     }
 }

@@ -11,5 +11,5 @@ public interface DeleteUserDataAccessInterface {
      * @param recipeName The name of the recipe to delete.
      * @throws Exception if an error occurs during deletion.
      */
-    void deleteRecipeForUser(String recipeName) throws Exception;
+    void deleteRecipeForUser(String recipeName);
 }
