@@ -18,11 +18,6 @@ public class DeleteInputData {
      * @throws IllegalArgumentException If the username or recipe name is null or empty.
      */
     public DeleteInputData(String recipeName) {
-
-        if (recipeName == null || recipeName.isEmpty()) {
-            throw new IllegalArgumentException("Recipe name cannot be null or empty.");
-        }
-
         this.recipeName = recipeName;
     }
 
