@@ -44,9 +44,7 @@ public class LikeRecipeInteractor implements LikeAndDislikeRecipeInputBoundary {
 
             // Write updated recipes to file and delete the old file
             final List<Recipe> updatedRecipes = recipeDataAccessObject.getCachedRecipes();
-            recipeDataAccessObject.writeRecipesToFile(updatedRecipes);
-            recipeDataAccessObject.deleteFileFromFileIo();
-            recipeDataAccessObject.uploadFileToFileIo();
+            recipeDataAccessObject.updateChangedRecipes(updatedRecipes);
 
             // Add the like to user data
             likeRecipeDataAccessObject.addLikedRecipe(recipeName);
