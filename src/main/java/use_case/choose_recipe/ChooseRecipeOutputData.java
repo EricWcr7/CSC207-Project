@@ -15,16 +15,12 @@ public class ChooseRecipeOutputData {
     private final String dishInstructions;
     private int likeNumber;
     private int dislikeNumber;
-    private final String username;
-    private final String[] favoriteRecipes;
 
     public ChooseRecipeOutputData(String dishName, String dishIngredients, String dishInstructions,
-                                  int likeNumber, int dislikeNumber, String username, String[] favoriteRecipes) {
+                                  int likeNumber, int dislikeNumber) {
         this.dishName = dishName;
         this.dishIngredients = dishIngredients;
         this.dishInstructions = dishInstructions;
-        this.username = username;
-        this.favoriteRecipes = favoriteRecipes;
         this.likeNumber = likeNumber;
         this.dislikeNumber = dislikeNumber;
     }
@@ -63,24 +59,6 @@ public class ChooseRecipeOutputData {
      */
     public int getLikeNumber() {
         return likeNumber;
-    }
-
-    /**
-     * Gets the username of the currently logged-in user.
-     *
-     * @return the username of the current user
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * Gets the favorite recipes of the current user.
-     *
-     * @return an array of favorite recipes
-     */
-    public String[] getFavoriteRecipes() {
-        return favoriteRecipes;
     }
 
     /**

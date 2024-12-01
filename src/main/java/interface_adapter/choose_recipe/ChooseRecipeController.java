@@ -17,13 +17,10 @@ public class ChooseRecipeController {
     /**
      * Executes the Recipe Choose Use Case.
      * @param searchDishName the keyword user types to search for
-     * @param username the username
-     * @param favoriteRecipes the favoriteRecipes
      */
-    public void execute(String searchDishName, String username, String[] favoriteRecipes) {
+    public void execute(String searchDishName) {
         // Create the input data for the search operation
-        final ChooseRecipeInputData chooseRecipeInputData = new ChooseRecipeInputData(searchDishName,
-                username, favoriteRecipes);
+        final ChooseRecipeInputData chooseRecipeInputData = new ChooseRecipeInputData(searchDishName);
 
         // Perform the choose dish through the interactor
         chooseRecipeInteractor.execute(chooseRecipeInputData);

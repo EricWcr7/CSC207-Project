@@ -7,11 +7,11 @@ import entity.User;
  */
 public interface FavoriteRecipeDataAccessInterface {
 
-    /**
-     * Return the Username.
-     * @return Username when this method execute.
-     */
-    String getUsername();
+//    /**
+//     * Return the Username.
+//     * @return Username when this method execute.
+//     */
+//    String getUsername();
 
     /**
      * Return the FavoriteRecipes.
@@ -19,11 +19,11 @@ public interface FavoriteRecipeDataAccessInterface {
      */
     String[] getFavoriteRecipes();
 
-    /**
-     * Set the username.
-     * @param username the username.
-     */
-    void setUsername(String username);
+//    /**
+//     * Set the username.
+//     * @param username the username.
+//     */
+//    void setUsername(String username);
 
     /**
      * Set the favoriteRecipes.
@@ -43,4 +43,6 @@ public interface FavoriteRecipeDataAccessInterface {
      * @return User when this method execute.
      */
     User get(String username);
+
+    String getCurrentUsername();
 }

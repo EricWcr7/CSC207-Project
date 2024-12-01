@@ -10,8 +10,8 @@ public class DisplayRecipeState {
     private String dishName;
     private String ingredients;
     private String instructions;
-    private String username;
-    private String[] favoriteRecipes;
+//    private String username;
+//    private String[] favoriteRecipes;
     private Map<String, Integer> likeNumbers = new HashMap<>();
     private Map<String, Integer> dislikeNumbers = new HashMap<>();
     private String likedMessage;
@@ -41,21 +41,21 @@ public class DisplayRecipeState {
         return instructions;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String[] getFavoriteRecipes() {
-        return favoriteRecipes;
-    }
-
-    public void setFavoriteRecipes(String[] favoriteRecipes) {
-        this.favoriteRecipes = favoriteRecipes;
-    }
+//    public String getUsername() {
+//        return username;
+//    }
+//
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
+//
+//    public String[] getFavoriteRecipes() {
+//        return favoriteRecipes;
+//    }
+//
+//    public void setFavoriteRecipes(String[] favoriteRecipes) {
+//        this.favoriteRecipes = favoriteRecipes;
+//    }
 
     /**
      * Sets the like count for a specific recipe.

@@ -426,20 +426,20 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         return this.currentUsername;
     }
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
+//    @Override
+//    public String getUsername() {
+//        return username;
+//    }
 
     @Override
     public String[] getFavoriteRecipes() {
         return favoriteRecipes;
     }
 
-    @Override
-    public void setUsername(String username) {
-        this.username = username;
-    }
+//    @Override
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
 
     @Override
     public void setFavoriteRecipes(String[] favoriteRecipes) {

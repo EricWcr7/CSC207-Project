@@ -8,13 +8,9 @@ package use_case.choose_recipe;
  */
 public class ChooseRecipeInputData {
     private final String dishName;
-    private final String username;
-    private final String[] favoriteRecipes;
 
-    public ChooseRecipeInputData(String dishName, String username, String[] favoriteRecipes) {
+    public ChooseRecipeInputData(String dishName) {
         this.dishName = dishName;
-        this.username = username;
-        this.favoriteRecipes = favoriteRecipes;
     }
 
     /**
@@ -26,21 +22,4 @@ public class ChooseRecipeInputData {
         return dishName;
     }
 
-    /**
-     * Gets the username of the currently logged-in user.
-     *
-     * @return the username of the current user
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * Gets the favorite recipes of the current user.
-     *
-     * @return an array of favorite recipes
-     */
-    public String[] getFavoriteRecipes() {
-        return favoriteRecipes;
-    }
 }

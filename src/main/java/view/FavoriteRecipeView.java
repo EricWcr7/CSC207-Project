@@ -11,6 +11,7 @@ import javax.swing.*;
 
 import interface_adapter.ReturnToSearchMenu.ReturnToSearchMenuController;
 import interface_adapter.choose_recipe.ChooseRecipeController;
+import interface_adapter.display_recipe.DisplayRecipeController;
 import interface_adapter.favorite_recipe.FavoriteRecipeController;
 import interface_adapter.favorite_recipe.FavoriteRecipeState;
 import interface_adapter.favorite_recipe.FavoriteRecipeViewModel;
@@ -134,8 +135,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             }
             else {
                 final FavoriteRecipeState currentState1 = favoriteRecipeViewModel.getState();
-                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[0],
-                        currentState1.getUsername(), currentState1.getFavoriteRecipes());
+                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[0]);
             }
         });
 
@@ -218,8 +218,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             }
             else {
                 final FavoriteRecipeState currentState1 = favoriteRecipeViewModel.getState();
-                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[1],
-                        currentState1.getUsername(), currentState1.getFavoriteRecipes());
+                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[1]);
             }
         });
 
@@ -302,8 +301,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             }
             else {
                 final FavoriteRecipeState currentState1 = favoriteRecipeViewModel.getState();
-                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[2],
-                        currentState1.getUsername(), currentState1.getFavoriteRecipes());
+                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[2]);
             }
         });
 
@@ -384,8 +382,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             }
             else {
                 final FavoriteRecipeState currentState1 = favoriteRecipeViewModel.getState();
-                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[2 + 1],
-                        currentState1.getUsername(), currentState1.getFavoriteRecipes());
+                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[2 + 1]);
             }
         });
 
@@ -464,8 +461,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             }
             else {
                 final FavoriteRecipeState currentState1 = favoriteRecipeViewModel.getState();
-                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[2 + 2],
-                        currentState1.getUsername(), currentState1.getFavoriteRecipes());
+                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[2 + 2]);
             }
         });
 
@@ -547,8 +543,7 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
             }
             else {
                 final FavoriteRecipeState currentState1 = favoriteRecipeViewModel.getState();
-                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[2 + 2 + 1],
-                        currentState1.getUsername(), currentState1.getFavoriteRecipes());
+                chooseRecipeController.execute(currentState1.getFavoriteRecipes()[2 + 2 + 1]);
             }
         });
 
@@ -653,4 +648,5 @@ public class FavoriteRecipeView extends JPanel implements ActionListener, Proper
     public void setShoppingListController(ShoppingListController shoppingListController) {
         this.shoppingListController = shoppingListController;
     }
+
 }

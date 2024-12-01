@@ -50,11 +50,6 @@ public class ChooseRecipePresenter implements ChooseRecipeOutputBoundary {
 //        System.out.println("Ingredients: " + displayState.getIngredients());
 //        System.out.println("Instructions: " + displayState.getInstructions());
 
-        final DisplayRecipeState currentState = displayRecipeViewModel.getState();
-        currentState.setUsername(outputData.getUsername());
-        currentState.setFavoriteRecipes(outputData.getFavoriteRecipes());
-        displayRecipeViewModel.setState(currentState);
-
         // Switch to the display recipe view
         this.viewManagerModel.setState(displayRecipeViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();

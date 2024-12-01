@@ -8,16 +8,4 @@ public class DisplayRecipeViewModel extends ViewModel<DisplayRecipeState> {
         setState(new DisplayRecipeState());
     }
 
-//    public String getDishName() {
-//        return getState().getDishName();
-//    }
-//
-//    public String getIngredients() {
-//        return getState().getIngredients();
-//    }
-//
-//    public String getInstructions() {
-//        return getState().getInstructions();
-//    }
-
 }

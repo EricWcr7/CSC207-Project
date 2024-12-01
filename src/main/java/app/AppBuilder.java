@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import data_access.FavoriteRecipeDataAccessObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import data_access.InMemoryUserDataAccessObject;
@@ -92,7 +91,6 @@ public class AppBuilder {
     private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
     private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
 
-    private final FavoriteRecipeDataAccessObject favoriteRecipeDataAccessObject = new FavoriteRecipeDataAccessObject();
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
