@@ -65,6 +65,7 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         final JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         final JLabel nameLabel = new JLabel("Dish name:");
         nameField = new JTextField(CreateRecipeViewModel.INSTRUCTIONS_AREA_COLUMNS);
+        nameField.setFont(new Font("Arial", Font.PLAIN, CreateRecipeViewModel.FONT_SIZE));
         nameField.setPreferredSize(new Dimension(CreateRecipeViewModel.NAME_FIELD_WIDTH, CreateRecipeViewModel.NAME_FIELD_HEIGHT));
         namePanel.add(nameLabel);
         namePanel.add(nameField);
@@ -116,6 +117,7 @@ public class CreateView extends JPanel implements ActionListener, PropertyChange
         final JPanel cookPanel = new JPanel(new BorderLayout());
         final JLabel cookLabel = new JLabel("Instructions:");
         cookArea = new JTextArea(CreateRecipeViewModel.INSTRUCTIONS_AREA_ROWS, CreateRecipeViewModel.INSTRUCTIONS_AREA_COLUMNS);
+        cookArea.setFont(new Font("Arial", Font.BOLD, CreateRecipeViewModel.FONT_SIZE));
         cookArea.setLineWrap(true);
         cookArea.setWrapStyleWord(true);
         cookPanel.add(cookLabel, BorderLayout.NORTH);
