@@ -28,6 +28,7 @@ public class CreateRecipeInteractor implements CreateRecipeInputBoundary {
     public void execute(CreateRecipeInputData createRecipeInputData) {
         if (!recipesLoaded) {
             System.out.println("Loading recipes from cloud");
+            recipeDataAccessObject.findFileOnFileIo("all_recipes.json");
             recipeDataAccessObject.loadRecipesFromCloud();
             recipesLoaded = true;
         }

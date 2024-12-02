@@ -41,13 +41,10 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
      */
     @Override
     public void execute(RecipeSearchInputData recipeSearchInputData) {
-        // Ensure recipes are loaded from the cloud only once
-        if (!recipesLoaded) {
-            System.out.println("Loading recipes from cloud for the first time...");
-            recipeDataAccessObject.loadRecipesFromCloud();
-            recipesLoaded = true;
-        }
-
+        System.out.println("Loading recipes from cloud for the first time...");
+        recipeDataAccessObject.findFileOnFileIo("all_recipes.json");
+        recipeDataAccessObject.loadRecipesFromCloud();
+        recipesLoaded = true;
         final String searchKeyword = recipeSearchInputData.getSearchKeyword();
         System.out.println("Interactor received search keyword: " + searchKeyword);
         final String username = recipeSearchInputData.getUsername();

@@ -38,6 +38,7 @@ public class ChooseRecipeInteractor implements ChooseRecipeInputBoundary {
         // Ensure recipes are loaded from the cloud only once
         if (!recipesLoaded) {
             System.out.println("Loading recipes from cloud for the first time...");
+            recipeDataAccessObject.findFileOnFileIo("all_recipes.json");
             recipeDataAccessObject.loadRecipesFromCloud();
             recipesLoaded = true;
         }

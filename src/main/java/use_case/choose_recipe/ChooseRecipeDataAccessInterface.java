@@ -18,5 +18,7 @@ public interface ChooseRecipeDataAccessInterface {
      * Download the json database from File.IO and Upload it again immediately due to auto delete.
      */
     void loadRecipesFromCloud();
+
+    String findFileOnFileIo(String fileName);
 }
 

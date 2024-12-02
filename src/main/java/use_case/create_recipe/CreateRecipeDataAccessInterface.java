@@ -54,4 +54,6 @@ public interface CreateRecipeDataAccessInterface {
      * @param recipeCreated the new created Recipe.
      */
     void saveRecipe(Recipe recipeCreated);
+
+    String findFileOnFileIo(String fileName);
 }

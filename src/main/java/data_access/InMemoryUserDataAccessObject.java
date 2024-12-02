@@ -403,6 +403,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public void save(User user) {
         users.put(user.getName(), user);
+        findFileOnFileIo(FILE_PATH);
         if (!userFileKey.isEmpty()) {
             deleteFileFromFileIo();
         }
@@ -448,6 +449,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public void updateUserFavoriteRecipes(User user) {
         users.put(user.getName(), user);
+        findFileOnFileIo("all_users.json");
         deleteFileFromFileIo();
         writeUsersToFile(users);
         uploadFileToFileIo();
@@ -482,6 +484,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         final User currentUser = get(getCurrentUsername());
         // Replace the old entry with the new password
         users.put(currentUser.getName(), currentUser);
+        findFileOnFileIo("all_users.json");
         deleteFileFromFileIo();
         writeUsersToFile(users);
         uploadFileToFileIo();
@@ -492,6 +495,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         final User currentUser = get(getCurrentUsername());
         // Replace the old entry with the new password
         users.put(currentUser.getName(), currentUser);
+        findFileOnFileIo("all_users.json");
         deleteFileFromFileIo();
         writeUsersToFile(users);
         uploadFileToFileIo();
@@ -501,6 +505,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public void addCreatedRecipe(Recipe recipe) {
         final User currentUser = get(getCurrentUsername());
         currentUser.addCreatedRecipe(recipe.getName());
+        findFileOnFileIo("all_users.json");
         deleteFileFromFileIo();
         writeUsersToFile(users);
         uploadFileToFileIo();
@@ -511,6 +516,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public void deleteRecipeForUser(String recipeName) {
         final User currentUser = get(getCurrentUsername());
         currentUser.removeCreatedRecipe(recipeName);
+        findFileOnFileIo("all_users.json");
         deleteFileFromFileIo();
         writeUsersToFile(users);
         uploadFileToFileIo();

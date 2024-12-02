@@ -43,6 +43,7 @@ public class DeleteInteractor implements DeleteInputBoundary {
         // Step 1: Extract the recipe name from input data
         final String recipeName = inputData.getRecipeName();
 
+        deleteDataAccess.findFileOnFileIo("all_recipes.json");
         // Step 3: Load recipes from the cloud for further deletion
         deleteDataAccess.loadRecipesFromCloud();
 
