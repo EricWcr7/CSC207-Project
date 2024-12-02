@@ -35,21 +35,23 @@ public class LikeRecipeInteractor implements LikeAndDislikeRecipeInputBoundary {
         final boolean alreadyLiked = likeRecipeDataAccessObject.hasUserLikedRecipe(recipeName);
 
         if (alreadyLiked) {
+            // Presenter prepare failure view
             likeRecipePresenter.prepareFailureView("You have already liked this recipe");
             System.out.println("You have already liked this recipe");
         }
         else {
-            // Increment like count and persist
+            // Increment like count
             theRecipe.incrementLikeNumber();
 
-            // Write updated recipes to file and delete the old file
+            // Write updated recipes to file API
             final List<Recipe> updatedRecipes = recipeDataAccessObject.getCachedRecipes();
             recipeDataAccessObject.updateChangedRecipes(updatedRecipes);
 
-            // Add the like to user data
+            // Add the liked recipe to user data, and update the user data to file API
             likeRecipeDataAccessObject.addLikedRecipe(recipeName);
             likeRecipeDataAccessObject.updateUserLikedRecipe(recipeName);
 
+            // Presenter prepare successful view
             final int updatedLikeNumber = theRecipe.getLikeNumber();
             final LikeRecipeOutputData likeRecipeOutputData = new LikeRecipeOutputData(recipeName, updatedLikeNumber);
             likeRecipePresenter.prepareSuccessView(likeRecipeOutputData);
