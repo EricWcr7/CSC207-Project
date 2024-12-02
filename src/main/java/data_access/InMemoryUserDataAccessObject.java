@@ -403,8 +403,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public void save(User user) {
         users.put(user.getName(), user);
+        findFileOnFileIo(FILE_PATH);
         if (!userFileKey.isEmpty()) {
-            findFileOnFileIo("all_users.json");
             deleteFileFromFileIo();
         }
         writeUsersToFile(users);
@@ -516,6 +516,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public void deleteRecipeForUser(String recipeName) {
         final User currentUser = get(getCurrentUsername());
         currentUser.removeCreatedRecipe(recipeName);
+        findFileOnFileIo("all_users.json");
         deleteFileFromFileIo();
         writeUsersToFile(users);
         uploadFileToFileIo();
