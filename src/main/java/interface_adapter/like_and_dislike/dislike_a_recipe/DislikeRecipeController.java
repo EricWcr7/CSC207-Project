@@ -8,10 +8,10 @@ import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeInputData;
  */
 public class DislikeRecipeController {
 
-    private final LikeAndDislikeRecipeInputBoundary likeRecipeInteractor;
+    private final LikeAndDislikeRecipeInputBoundary dislikeRecipeInteractor;
 
     public DislikeRecipeController(LikeAndDislikeRecipeInputBoundary likeRecipeInteractor) {
-        this.likeRecipeInteractor = likeRecipeInteractor;
+        this.dislikeRecipeInteractor = likeRecipeInteractor;
     }
 
     /**
@@ -21,8 +21,8 @@ public class DislikeRecipeController {
      */
     public void execute(String dishName) {
 
-        final LikeAndDislikeRecipeInputData likeData = new LikeAndDislikeRecipeInputData(dishName);
-        likeRecipeInteractor.execute(likeData);
+        final LikeAndDislikeRecipeInputData dislikeData = new LikeAndDislikeRecipeInputData(dishName);
+        dislikeRecipeInteractor.execute(dislikeData);
 
         System.out.println("Dislike Recipe Controller, Dislike dish: " + dishName);
     }
