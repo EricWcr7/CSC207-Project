@@ -25,5 +25,7 @@ public interface DeleteDataAccessInterface {
     List<Recipe> getCachedRecipes();
 
     void removeRecipeByName(String recipeName);
+
+    String findFileOnFileIo(String fileName);
 }
 

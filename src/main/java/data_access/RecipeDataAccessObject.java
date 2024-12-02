@@ -394,6 +394,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
     @Override
     public void updateChangedRecipes(List<Recipe> updatedRecipes) {
         writeRecipesToFile(updatedRecipes);
+        findFileOnFileIo("all_recipes.json");
         deleteFileFromFileIo();
         uploadFileToFileIo();
     }
