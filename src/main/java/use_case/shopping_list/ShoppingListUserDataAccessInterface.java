@@ -14,12 +14,6 @@ public interface ShoppingListUserDataAccessInterface {
     String getCurrentUsername();
 
     /**
-     * Return the FavoriteRecipes.
-     * @return FavoriteRecipes when this method execute.
-     */
-    String[] getFavoriteRecipes();
-
-    /**
      * Return the User.
      * @param username the username.
      * @return User when this method execute.

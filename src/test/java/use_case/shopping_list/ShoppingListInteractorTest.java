@@ -35,12 +35,6 @@ class ShoppingListInteractorTest {
         }
 
         @Override
-        public String[] getFavoriteRecipes() {
-            User currentUser = users.get(currentUsername);
-            return currentUser != null ? currentUser.getFavoriteRecipes() : new String[0];
-        }
-
-        @Override
         public User get(String username) {
             return users.get(username);
         }
