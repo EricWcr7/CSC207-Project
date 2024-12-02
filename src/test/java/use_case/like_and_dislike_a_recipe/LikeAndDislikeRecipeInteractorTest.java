@@ -43,20 +43,6 @@ class LikeAndDislikeRecipeInteractorTest {
             return new ArrayList<>(recipes);
         }
 
-        @Override
-        public void writeRecipesToFile(List<Recipe> updatedRecipes) {
-            // Simulate writing to a file
-        }
-
-        @Override
-        public void deleteFileFromFileIo() {
-            // Simulate deleting a file
-        }
-
-        @Override
-        public void uploadFileToFileIo() {
-            // Simulate uploading a file
-        }
 
         @Override
         public void updateChangedRecipes(List<Recipe> updatedRecipes) {
