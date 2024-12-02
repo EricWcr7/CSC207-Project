@@ -15,6 +15,8 @@ public class LogoutInteractor implements LogoutInputBoundary {
 
     @Override
     public void execute() {
+        userDataAccessObject.findFileOnFileIo("all_users.json");
+        userDataAccessObject.loadUsersFromCloud();
         userDataAccessObject.setCurrentUsername(null);
         logoutPresenter.prepareSuccessView();
     }
