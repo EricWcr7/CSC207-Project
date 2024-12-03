@@ -16,7 +16,7 @@ public interface RecipeSearchDataAccessInterface {
      * @return a list of all recipes from the API
      * @throws Exception if there is an error during the fetch
      */
-    List<Recipe> fetchAllRecipes() throws Exception;
+    List<Recipe> fetchAllRecipes();
 
     /**
      * Return the List of Recipe by a searchKeyword input.

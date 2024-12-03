@@ -26,12 +26,4 @@ public class SignupOutputData {
         return username;
     }
 
-    /**
-     * Indicates whether the signup process failed.
-     *
-     * @return {@code true} if the signup process failed; {@code false} otherwise
-     */
-    public boolean isUseCaseFailed() {
-        return useCaseFailed;
-    }
 }
