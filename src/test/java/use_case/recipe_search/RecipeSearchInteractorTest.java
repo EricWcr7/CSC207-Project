@@ -2,7 +2,7 @@ package use_case.recipe_search;
 
 import entity.*;
 import org.junit.jupiter.api.Test;
-import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
+import use_case.favorite_recipe.FavoriteRecipeDataAccessInterface;
 
 import java.util.*;
 
