@@ -1,5 +1,8 @@
 import data_access.RecipeDataAccessObject;
+import entity.CommonUserFactory;
 import entity.Recipe;
+import entity.User;
+import entity.UserFactory;
 import org.junit.jupiter.api.Test;
 import use_case.delete.*;
 
@@ -52,11 +55,18 @@ class DeleteInteractorTest {
      * A local implementation of DeleteUserDataAccessInterface for testing purposes.
      */
     private static class LocalDeleteUserDataAccess implements DeleteUserDataAccessInterface {
-        private final List<String> userRecipes = new ArrayList<>();
+        private final User user;
+
+        private LocalDeleteUserDataAccess() {
+            UserFactory userFactory = new CommonUserFactory();
+            user = userFactory.create("test","test");
+            user.addCreatedRecipe("createdRecipe");
+
+        }
 
         @Override
         public void deleteRecipeForUser(String recipeName) {
-            userRecipes.remove(recipeName);
+            user.removeCreatedRecipe(recipeName);
         }
     }
 
@@ -193,7 +203,7 @@ class DeleteInteractorTest {
         );
 
 
-        DeleteInputData inputData = new DeleteInputData("TestRecipe");
+        DeleteInputData inputData = new DeleteInputData("createdRecipe");
 
 
         interactor.deleteUserRecipe(inputData);
