@@ -1,4 +1,4 @@
-package use_case.favorite_receipe;
+package use_case.favorite_recipe;
 
 import java.util.Arrays;
 

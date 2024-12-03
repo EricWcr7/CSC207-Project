@@ -5,8 +5,6 @@ import entity.*;
 import interface_adapter.shopping_list.ShoppingListViewModel;
 import org.junit.jupiter.api.Test;
 
-import use_case.favorite_receipe.*;
-
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,10 +12,61 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class favoriteInteractorTest {
 
+    /**
+     * A local implementation of FavoriteRecipeDataAccessInterface for testing purposes.
+     */
+    private static class LocalRecipeUserDataAccessObject implements FavoriteRecipeDataAccessInterface {
+        private static Map<String, User> users = new HashMap<>();
+        private String username;
+        private String[] favoriteRecipes;
+
+        private LocalRecipeUserDataAccessObject() {
+            UserFactory userFactory = new CommonUserFactory();
+            User user = userFactory.create("Test","Test");
+            users.put("Test", user);
+            username = "Test";
+            favoriteRecipes = new String[]{null, null, null, null, null, null};
+        }
+
+        public static void save(CommonUser user) {
+            users.put(user.getName(), user);
+        }
+
+        @Override
+        public String getUsername() {
+            return username;
+        }
+
+        @Override
+        public String[] getFavoriteRecipes() {
+            return favoriteRecipes;
+        }
+
+        @Override
+        public void setUsername(String username) {
+
+        }
+
+        @Override
+        public void setFavoriteRecipes(String[] favoriteRecipes) {
+            this.favoriteRecipes = favoriteRecipes;
+        }
+
+        @Override
+        public void updateUserFavoriteRecipes(User user) {
+            users.put(user.getName(), user);
+        }
+
+        @Override
+        public User get(String username) {
+            return users.get(username);
+        }
+    }
+
     @Test
     void execute() {
-        final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
-
+        // final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+        final LocalRecipeUserDataAccessObject userDataAccessObject = new LocalRecipeUserDataAccessObject();
         String username = "123";
 
         String[] recipeNames = new String[] {"The best Pizza in the world", "The Cake", "The Apple"};
@@ -48,6 +97,7 @@ public class favoriteInteractorTest {
                 favoriteRecipePresenter,
                 userDataAccessObject
         );
+        inputData.setRecipeNames(inputData.getRecipeNames());
 
         interactor.execute(inputData);
         final FavoriteRecipeOutputData outputData = new FavoriteRecipeOutputData(
@@ -57,6 +107,13 @@ public class favoriteInteractorTest {
         favoriteRecipePresenter.prepareFailureView("");
         favoriteRecipePresenter.switchToShoppingListView();
 
+        String username1 = outputData.getUsername();
+        String[] favoriteRecipe1 = outputData.getFavoriteRecipes();
+        String username2 = userDataAccessObject.getUsername();
+        String[] favoriteRecipe2 = userDataAccessObject.getFavoriteRecipes();
+        userDataAccessObject.setUsername(username2);
+        userDataAccessObject.setFavoriteRecipes(favoriteRecipe2);
+
         assertArrayEquals(new String[]{"The best Pizza in the world", "The Cake", "The Apple"}, userDataAccessObject.get(username).getFavoriteRecipes());
         // assertEquals(1, recipeRepository.getCachedRecipes().size(), "There should be exactly one recipe in the repository.");
         // assertEquals(recipeName, userRepository.getCreatedRecipes().get(0).getName(), "The recipe should be added to the user's created recipes.");
@@ -65,7 +122,8 @@ public class favoriteInteractorTest {
     @Test
     void switchToShoppingListView() {
 
-        final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+        // final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+        final LocalRecipeUserDataAccessObject userDataAccessObject = new LocalRecipeUserDataAccessObject();
 
         final  ShoppingListViewModel shoppingListViewModel = new ShoppingListViewModel();
 

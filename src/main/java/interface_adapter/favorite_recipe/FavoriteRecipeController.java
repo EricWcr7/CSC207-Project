@@ -1,7 +1,7 @@
 package interface_adapter.favorite_recipe;
 
-import use_case.favorite_receipe.FavoriteRecipeInputBoundary;
-import use_case.favorite_receipe.FavoriteRecipeInputData;
+import use_case.favorite_recipe.FavoriteRecipeInputBoundary;
+import use_case.favorite_recipe.FavoriteRecipeInputData;
 
 /**
  * The controller for the FavoriteRecipe Use Case.

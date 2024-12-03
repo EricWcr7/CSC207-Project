@@ -2,8 +2,8 @@ package interface_adapter.favorite_recipe;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.shopping_list.ShoppingListViewModel;
-import use_case.favorite_receipe.FavoriteRecipeOutputBoundary;
-import use_case.favorite_receipe.FavoriteRecipeOutputData;
+import use_case.favorite_recipe.FavoriteRecipeOutputBoundary;
+import use_case.favorite_recipe.FavoriteRecipeOutputData;
 
 /**
  * The Presenter for the Login Use Case.

@@ -1,4 +1,4 @@
-package use_case.favorite_receipe;
+package use_case.favorite_recipe;
 
 /**
  * Represents the input data for the "favorite recipe" use case.
