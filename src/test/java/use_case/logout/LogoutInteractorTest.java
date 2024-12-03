@@ -33,7 +33,17 @@ class LogoutInteractorTest {
             return currentName;
         }
 
+        @Override
+        public String findFileOnFileIo(String fileName) {
+            return null;
+        }
+
+        @Override
+        public void loadUsersFromCloud() {
+
+        }
     }
+
     @Test
     void successTest() {
         // Set up the in-memory data access object

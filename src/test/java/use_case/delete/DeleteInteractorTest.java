@@ -41,6 +41,11 @@ class DeleteInteractorTest {
         public void removeRecipeByName(String recipeName) {
 
         }
+
+        @Override
+        public String findFileOnFileIo(String fileName) {
+            return null;
+        }
     }
 
     /**
@@ -95,6 +100,7 @@ class DeleteInteractorTest {
         public void uploadFileToFileIo() {
 
         }
+
     }
 
     @Test

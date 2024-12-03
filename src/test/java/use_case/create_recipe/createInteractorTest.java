@@ -56,8 +56,12 @@ class CreateInteractorTest {
         @Override
         public void uploadFileToFileIo() {
         }
-    }
 
+        @Override
+        public String findFileOnFileIo(String fileName) {
+            return null;
+        }
+    }
 
     /**
      * A local implementation of CreateUserDataAccessInterface for testing purposes.
