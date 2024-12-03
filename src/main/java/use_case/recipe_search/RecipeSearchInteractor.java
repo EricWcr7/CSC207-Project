@@ -52,56 +52,42 @@ public class RecipeSearchInteractor implements RecipeSearchInputBoundary {
         System.out.println("Current logged in account: " + username);
         System.out.println("Current favoriteRecipe in account: " + Arrays.toString(favoriteRecipes));
 
-        try {
-            // Use cached recipes to search for the keyword
-            final List<Recipe> recipes = recipeDataAccessObject.searchRecipes(searchKeyword);
+        final List<Recipe> recipes = recipeDataAccessObject.searchRecipes(searchKeyword);
 
-            // Check if any recipes were found
-            if (recipes.isEmpty()) {
-                System.out.println("No recipes found for keyword: " + searchKeyword);
-                recipeSearchPresenter.prepareFailureView("No recipes found for keyword: " + searchKeyword);
-            }
-            else {
-                System.out.println("Recipes found: " + recipes.size());
-                final RecipeSearchOutputData recipeSearchOutputData = new RecipeSearchOutputData(
-                        searchKeyword, recipes, username, favoriteRecipes);
-                recipeSearchPresenter.prepareSuccessView(recipeSearchOutputData);
-            }
+        // Check if any recipes were found
+        if (recipes.isEmpty()) {
+            System.out.println("No recipes found for keyword: " + searchKeyword);
+            recipeSearchPresenter.prepareFailureView("No recipes found for keyword: " + searchKeyword);
         }
-        catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-            recipeSearchPresenter.prepareFailureView(
-                    "An error occurred while searching for recipes: " + e.getMessage());
+        else {
+            System.out.println("Recipes found: " + recipes.size());
+            final RecipeSearchOutputData recipeSearchOutputData = new RecipeSearchOutputData(
+                    searchKeyword, recipes, username, favoriteRecipes);
+            recipeSearchPresenter.prepareSuccessView(recipeSearchOutputData);
         }
     }
 
     @Override
     public void initializeRecipeStorage() {
         System.out.println("Initializing shared recipe storage...");
-        try {
-            // Step 1: Check if "all_recipes.json" exists on File.io using the DAO
-            final String fileKey = recipeDataAccessObject.findFileOnFileIo("all_recipes.json");
-            System.out.println(fileKey);
-            if (!fileKey.isEmpty()) {
-                // Case 1: If the file exists, load it from File.io using the DAO
-                System.out.println("File 'all_recipes.json' found on File.io with ID: " + fileKey);
-                recipeDataAccessObject.loadRecipesFromCloud();
-                // Load recipes from the existing JSON file
-                System.out.println("Recipes loaded from 'all_recipes.json' successfully.");
-            }
-            else {
-                // Case 2: If the file does not exist, fetch all recipes from the API using the DAO
-                final List<Recipe> allRecipes = recipeDataAccessObject.fetchAllRecipes();
-                System.out.println("Total recipes fetched: " + allRecipes.size());
-                // Write all recipes to a shared JSON file and upload it
-                recipeDataAccessObject.writeRecipesToFile(allRecipes);
-                System.out.println("Shared recipe storage initialized successfully.");
-                System.out.println("Loading recipes from File.io...");
-                recipeDataAccessObject.loadRecipesFromCloud();
-            }
+        final String fileKey = recipeDataAccessObject.findFileOnFileIo("all_recipes.json");
+        System.out.println(fileKey);
+        if (!fileKey.isEmpty()) {
+            // Case 1: If the file exists, load it from File.io using the DAO
+            System.out.println("File 'all_recipes.json' found on File.io with ID: " + fileKey);
+            recipeDataAccessObject.loadRecipesFromCloud();
+            // Load recipes from the existing JSON file
+            System.out.println("Recipes loaded from 'all_recipes.json' successfully.");
         }
-        catch (Exception e) {
-            System.err.println("Failed to initialize recipe storage: " + e.getMessage());
+        else {
+            // Case 2: If the file does not exist, fetch all recipes from the API using the DAO
+            final List<Recipe> allRecipes = recipeDataAccessObject.fetchAllRecipes();
+            System.out.println("Total recipes fetched: " + allRecipes.size());
+            // Write all recipes to a shared JSON file and upload it
+            recipeDataAccessObject.writeRecipesToFile(allRecipes);
+            System.out.println("Shared recipe storage initialized successfully.");
+            System.out.println("Loading recipes from File.io...");
+            recipeDataAccessObject.loadRecipesFromCloud();
         }
     }
 

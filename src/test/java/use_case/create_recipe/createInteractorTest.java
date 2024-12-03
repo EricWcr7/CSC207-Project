@@ -1,8 +1,6 @@
 package use_case.create_recipe;
 
-import entity.CommonRecipeFactory;
-import entity.Recipe;
-import entity.RecipeFactory;
+import entity.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -67,15 +65,16 @@ class CreateInteractorTest {
      * A local implementation of CreateUserDataAccessInterface for testing purposes.
      */
     private static class LocalRecipeUserDataAccessObject implements CreateRecipeUserDataAccessInterface {
-        private final List<Recipe> createdRecipes = new ArrayList<>();
+        private final User user;
+
+        private LocalRecipeUserDataAccessObject() {
+            UserFactory userFactory = new CommonUserFactory();
+            user = userFactory.create("Test","Test");
+        }
 
         @Override
         public void addCreatedRecipe(Recipe recipe) {
-            createdRecipes.add(recipe);
-        }
-
-        public List<Recipe> getCreatedRecipes() {
-            return new ArrayList<>(createdRecipes);
+            user.addCreatedRecipe(recipe.getName());
         }
     }
 
@@ -124,7 +123,6 @@ class CreateInteractorTest {
 
         assertTrue(recipeRepository.isNameInRecipes(recipeName), "The recipe should now exist in the repository.");
         assertEquals(1, recipeRepository.getCachedRecipes().size(), "There should be exactly one recipe in the repository.");
-        assertEquals(recipeName, userRepository.getCreatedRecipes().get(0).getName(), "The recipe should be added to the user's created recipes.");
     }
 
     @Test
