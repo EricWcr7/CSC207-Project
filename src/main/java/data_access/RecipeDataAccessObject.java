@@ -575,6 +575,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
     @Override
     public void saveRecipe(Recipe recipe) {
         this.cachedRecipes.add(recipe);
+        findFileOnFileIo("all_recipes.json");
         writeRecipesToFile(cachedRecipes);
         deleteFileFromFileIo();
         uploadFileToFileIo();
