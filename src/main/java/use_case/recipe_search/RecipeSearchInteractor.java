@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import entity.Recipe;
-import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
+import use_case.favorite_recipe.FavoriteRecipeDataAccessInterface;
 
 /**
  * The Recipe Search Interactor.

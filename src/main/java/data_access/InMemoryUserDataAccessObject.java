@@ -23,7 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import entity.*;
 import use_case.create_recipe.CreateRecipeUserDataAccessInterface;
 import use_case.delete.DeleteUserDataAccessInterface;
-import use_case.favorite_receipe.FavoriteRecipeDataAccessInterface;
+import use_case.favorite_recipe.FavoriteRecipeDataAccessInterface;
 import use_case.like_and_dislike_a_recipe.UserLikeAndDislikeDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
