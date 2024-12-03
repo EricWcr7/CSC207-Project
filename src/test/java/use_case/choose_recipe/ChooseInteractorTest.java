@@ -1,24 +1,52 @@
 package use_case.choose_recipe;
 
-import data_access.RecipeDataAccessObject;
 import entity.CommonRecipeFactory;
 import entity.Recipe;
 import entity.RecipeFactory;
 import org.junit.jupiter.api.Test;
-import use_case.like_and_dislike_a_recipe.LikeAndDislikeRecipeInputData;
 
-
-import java.net.UnknownServiceException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
 public class ChooseInteractorTest {
 
+    /**
+     * A local implementation of CreateDataAccessInterface for testing purposes.
+     */
+    private static class LocalRecipeRecipeDataAccessObject implements ChooseRecipeDataAccessInterface {
+        private final List<Recipe> recipes = new ArrayList<>();
+        private String maxId = "0";
+        private List<Recipe> cachedRecipes = new ArrayList<>();
+
+
+        @Override
+        public Recipe getOneRecipe(String dishName) {
+
+            return cachedRecipes.get(0);
+        }
+
+        @Override
+        public void loadRecipesFromCloud() {
+
+        }
+
+        @Override
+        public String findFileOnFileIo(String fileName) {
+            return "";
+        }
+
+        public void saveRecipe(Recipe saladRecipe) {
+            cachedRecipes.add(saladRecipe);
+        }
+    }
+
     @Test
     void successTest() {
-        RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
+        LocalRecipeRecipeDataAccessObject recipeDataAccessObject = new LocalRecipeRecipeDataAccessObject();
         // Input data
         String username = "Lana Del Rey";
         String[] recipeNames = {"Pasta", "Salad"};
