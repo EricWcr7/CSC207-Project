@@ -1,8 +1,6 @@
 package use_case.like_and_dislike_a_recipe;
 
-import entity.CommonRecipeFactory;
-import entity.Recipe;
-import entity.RecipeFactory;
+import entity.*;
 import org.junit.jupiter.api.Test;
 import use_case.like_and_dislike_a_recipe.dislike.DislikeRecipeInteractor;
 import use_case.like_and_dislike_a_recipe.dislike.DislikeRecipeOutputBoundary;
@@ -121,6 +119,10 @@ class LikeAndDislikeRecipeInteractorTest {
         recipeRepository.addRecipe(saladRecipe);
         LocalUserDataAccessObject userRepository = new LocalUserDataAccessObject();
 
+        // Create a user using the UserFactory
+        UserFactory userFactory = new CommonUserFactory();
+        User lana = userFactory.create(username, "password123");
+
 
         LikeRecipeOutputBoundary presenter = new LikeRecipeOutputBoundary() {
             @Override
@@ -144,6 +146,9 @@ class LikeAndDislikeRecipeInteractorTest {
 
         interactor.execute(inputData);
         userRepository.addLikedRecipe(recipeName);
+
+        lana.hasUserLikedRecipe(recipeName);
+        lana.addLikedRecipe(recipeName);
 
         assertTrue(userRepository.hasUserLikedRecipe("Salad"), "The user should have liked the recipe.");
         assertEquals(6, saladRecipe.getLikeNumber(), "Recipe's like number should be incremented.");
@@ -230,6 +235,9 @@ class LikeAndDislikeRecipeInteractorTest {
         recipeRepository.addRecipe(saladRecipe);
         LocalUserDataAccessObject userRepository = new LocalUserDataAccessObject();
 
+        // Create a user using the UserFactory
+        UserFactory userFactory = new CommonUserFactory();
+        User lana = userFactory.create(username, "password123");
 
         DislikeRecipeOutputBoundary presenter = new DislikeRecipeOutputBoundary() {
             @Override
@@ -253,6 +261,9 @@ class LikeAndDislikeRecipeInteractorTest {
 
         interactor.execute(inputData);
         userRepository.addDislikedRecipe(recipeName);
+
+        lana.hasUserDislikedRecipe(recipeName);
+        lana.addDislikedRecipe(recipeName);
 
         assertTrue(userRepository.hasUserDislikedRecipe("Salad"), "The user should have disliked the recipe.");
         assertEquals(5, saladRecipe.getDislikeNumber(), "Recipe's dislike number should be incremented.");
