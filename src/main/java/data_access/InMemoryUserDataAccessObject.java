@@ -505,6 +505,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public void addCreatedRecipe(Recipe recipe) {
         final User currentUser = get(getCurrentUsername());
         currentUser.addCreatedRecipe(recipe.getName());
+        users.put(currentUser.getName(), currentUser);
         findFileOnFileIo("all_users.json");
         deleteFileFromFileIo();
         writeUsersToFile(users);
@@ -516,6 +517,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     public void deleteRecipeForUser(String recipeName) {
         final User currentUser = get(getCurrentUsername());
         currentUser.removeCreatedRecipe(recipeName);
+        users.put(currentUser.getName(), currentUser);
         findFileOnFileIo("all_users.json");
         deleteFileFromFileIo();
         writeUsersToFile(users);
