@@ -23,15 +23,34 @@ This platform was developed to streamline recipe management and promote collabor
 
 ## Features
 
+## Features
+
 - **User Account Management**: Sign up, log in, and save personalized preferences.
+  - Example: A user can create an account with their email and password. Upon logging in, they can view their saved recipes and preferences.
+  
 - **Recipe Search**: Search for recipes by name, displaying related dishes dynamically.
+  - Example: Typing "Pasta" in the search bar returns a list of recipes like "Spaghetti Bolognese," "Carbonara," and "Fettuccine Alfredo," each displayed as clickable buttons.
+
 - **Favorites**: Save favorite recipes for quick access.
-- **Shopping List Generator**: Generate shopping lists based on saved favourite recipes.
+  - Example: A user can click the "Save to Favorites" button on a recipe, and it will appear under their "Favorites" section for easy retrieval.
+
+- **Shopping List Generator**: Generate shopping lists based on saved favorite recipes.
+  - Example: Clicking the "Generate Shopping List" button creates a detailed shopping list with all the ingredients required for the selected recipes.
+
 - **Add Recipes**: Add self-designated recipes.
+  - Example: A user can upload a recipe by providing its name, category, ingredients, and step-by-step instructions, which are saved to the user's account.
+
 - **Delete Recipes**: Delete self-designated recipes.
-- **Social Interactions**: Like and dislike on recipes.
+  - Example: Users can click the "Delete Recipe" button on their own recipes to remove them permanently from their collection.
+
+- **Social Interactions**: Like and dislike recipes.
+  - Example: Clicking the "like" or "dislike button on a recipe adjusts its popularity ranking.
+
 - **API Integration**: Fetch existing high-quality recipes from TheMealDB API and store them in the cloud using File.io API.
+  - Example: TheMealDB API provides a collection of curated recipes that are downloaded, saved in a local JSON file, and backed up to File.io.
+
 - **Community Interaction**: Share recipes with others and engage with their contributions since the user and recipe databases are stored in File.io API.
+  - Example: Recipes added by one user are accessible to others, allowing them to like/dislike, or save those recipes to their favorites.
 
 ---
 
