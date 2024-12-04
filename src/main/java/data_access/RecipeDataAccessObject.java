@@ -505,7 +505,6 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
 
         for (Recipe recipe : cachedRecipes) {
             final String recipeName = recipe.getName().toLowerCase();
-            System.out.println("Checking recipe: " + recipe.getName() + " (Lowercase: " + recipeName + ")");
 
             if (recipeName.contains(keywordLower)) {
                 result.add(recipe);
@@ -526,7 +525,6 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
         Recipe matchingRecipe = null;
         for (Recipe recipe : cachedRecipes) {
             final String recipeName = recipe.getName().toLowerCase();
-            System.out.println("Checking recipe: " + recipe.getName() + " (Lowercase: " + recipeName + ")");
 
             if (recipeName.equals(dishNameLower)) {
                 System.out.println("Match found: " + recipe.getName());
