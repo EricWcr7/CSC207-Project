@@ -394,7 +394,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
     @Override
     public void updateChangedRecipes(List<Recipe> updatedRecipes) {
         writeRecipesToFile(updatedRecipes);
-        findFileOnFileIo("all_recipes.json");
+        findFileOnFileIo(FILE_PATH);
         deleteFileFromFileIo();
         uploadFileToFileIo();
     }
@@ -575,7 +575,7 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
     @Override
     public void saveRecipe(Recipe recipe) {
         this.cachedRecipes.add(recipe);
-        findFileOnFileIo("all_recipes.json");
+        findFileOnFileIo(FILE_PATH);
         writeRecipesToFile(cachedRecipes);
         deleteFileFromFileIo();
         uploadFileToFileIo();
@@ -586,8 +586,8 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
      * into a {@link Recipe} object and adding it to the cached recipes.
      *
      * @param recipesArray the {@link JsonArray} containing recipe data to be processed.
-     * @return a {@link List} of {@link Recipe} objects created from the valid entries
-     * in the provided {@link JsonArray}.
+     * @return a {@link List} of {@link Recipe} objects created from the valid entries in the provided {@link
+     * JsonArray}.
      */
     private List<Recipe> processRecipesArray(JsonArray recipesArray) {
         final List<Recipe> processedRecipes = new ArrayList<>();
@@ -692,13 +692,13 @@ public class RecipeDataAccessObject implements RecipeSearchDataAccessInterface,
                 ingredientMeasureMap, likeNumber, dislikeNumber);
     }
 
-        /**
-         * Extracts a map of ingredients and their corresponding measures from the provided {@link JsonObject}.
-         *
-         * @param recipeObject the {@link JsonObject} containing the ingredient-measure data for a recipe.
-         * @return a {@link Map} where the keys are ingredient names and the values are their corresponding measures.
-         * If no valid ingredient-measure data is found, an empty map is returned.
-         */
+    /**
+     * Extracts a map of ingredients and their corresponding measures from the provided {@link JsonObject}.
+     *
+     * @param recipeObject the {@link JsonObject} containing the ingredient-measure data for a recipe.
+     * @return a {@link Map} where the keys are ingredient names and the values are their corresponding measures. If no
+     *           valid ingredient-measure data is found, an empty map is returned.
+     */
     private Map<String, String> extractIngredientMeasureMapForRecipes(JsonObject recipeObject) {
         final Map<String, String> ingredientMeasureMap = new HashMap<>();
 
