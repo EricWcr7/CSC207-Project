@@ -3,7 +3,7 @@ package use_case.shopping_list;
 import entity.User;
 
 /**
- * DAO for the ShoppingList Use Case.
+ * User DAO for the ShoppingList Use Case.
  */
 public interface ShoppingListUserDataAccessInterface {
 

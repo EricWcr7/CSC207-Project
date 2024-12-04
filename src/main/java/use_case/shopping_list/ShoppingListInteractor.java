@@ -8,7 +8,11 @@ import entity.Recipe;
 import entity.User;
 
 /**
- * The ShoppingList Interactor.
+ * The ShoppingListInteractor is responsible for generating a shopping list based on a user's favorite recipes.
+ * It retrieves the user's favorite recipes, extracts and normalizes unique ingredients,
+ * and prepares the shopping list data to be presented to the user.
+ * This class adheres to the Clean Architecture principles by acting as the interactor for the
+ * shopping list use case, coordinating between the input boundary, data access interfaces, and output boundary.
  */
 public class ShoppingListInteractor implements ShoppingListInputBoundary {
     private final ShoppingListOutputBoundary shoppingListPresenter;

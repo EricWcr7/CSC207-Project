@@ -3,7 +3,7 @@ package use_case.shopping_list;
 import entity.Recipe;
 
 /**
- * DAO for the ShoppingList Use Case.
+ * Recipe DAO for the ShoppingList Use Case.
  */
 public interface ShoppingListRecipeDataAccessInterface {
 
