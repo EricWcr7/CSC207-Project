@@ -82,6 +82,7 @@ This platform was developed to streamline recipe management and promote collabor
 6. **Run the Application**:
    Run the Main class to start the program.
 
+Note: Build the project again if the packages of the app does not appear appropriately.
 ---
 
 ## Usage
