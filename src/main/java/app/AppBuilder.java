@@ -10,7 +10,7 @@ import javax.swing.WindowConstants;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import data_access.InMemoryUserDataAccessObject;
+import data_access.UserDataAccessObject;
 import data_access.RecipeDataAccessObject;
 import entity.*;
 import interface_adapter.*;
@@ -88,7 +88,7 @@ public class AppBuilder {
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    private final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+    private final UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
     private final RecipeDataAccessObject recipeDataAccessObject = new RecipeDataAccessObject();
 
     private SignupView signupView;

@@ -24,9 +24,9 @@ public class FavoriteRecipeInteractor implements FavoriteRecipeInputBoundary {
         final User user = userDataAccessObject.get(username);
         user.setFavoriteRecipes(favoriteRecipes);
         userDataAccessObject.updateUserFavoriteRecipes(user);
-        System.out.println("Current account in InMemoryUserDataAccessObject: "
+        System.out.println("Current account in UserDataAccessObject: "
                 + userDataAccessObject.get(username).getName());
-        System.out.println("Current favoriteRecipes in InMemoryUserDataAccessObject: "
+        System.out.println("Current favoriteRecipes in UserDataAccessObject: "
                 + Arrays.toString(userDataAccessObject.get(username).getFavoriteRecipes()));
         final FavoriteRecipeOutputData favoriteRecipeOutputData = new FavoriteRecipeOutputData(
                 userDataAccessObject.get(username).getName(),

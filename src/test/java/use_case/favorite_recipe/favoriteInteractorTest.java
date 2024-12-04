@@ -1,6 +1,5 @@
 package use_case.favorite_recipe;
 
-import data_access.InMemoryUserDataAccessObject;
 import entity.*;
 import interface_adapter.shopping_list.ShoppingListViewModel;
 import org.junit.jupiter.api.Test;
@@ -65,7 +64,7 @@ public class favoriteInteractorTest {
 
     @Test
     void execute() {
-        // final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+        // final UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
         final LocalRecipeUserDataAccessObject userDataAccessObject = new LocalRecipeUserDataAccessObject();
         String username = "123";
 
@@ -122,7 +121,7 @@ public class favoriteInteractorTest {
     @Test
     void switchToShoppingListView() {
 
-        // final InMemoryUserDataAccessObject userDataAccessObject = new InMemoryUserDataAccessObject();
+        // final UserDataAccessObject userDataAccessObject = new UserDataAccessObject();
         final LocalRecipeUserDataAccessObject userDataAccessObject = new LocalRecipeUserDataAccessObject();
 
         final  ShoppingListViewModel shoppingListViewModel = new ShoppingListViewModel();
