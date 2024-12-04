@@ -65,14 +65,20 @@ This platform was developed to streamline recipe management and promote collabor
    Please make sure you have Java 17 or later installed. It is encouraged to use IntelliJ IDEA IDE to build the project.
    Use Java corretto-17 as SDK.
 4. **Install and Set Up Dependencies**:
-   Add Google Gson library to your project and select the latest version.
+   Add Google Gson library to your project in your **Project Structure/Library** by clicking the "add" icon on the left and selecting the following version. Enter the code below just like the image below. (You may use the latest version if the app can run properly.)
+   
    ```bash
-   google.code.gson
+   com.google.code.gson:gson:2.11.0
    ```
-   Add OKHTTP library to your project and select the latest version. Example in below:
+   
+   <img width="1504" alt="Screenshot 2024-12-03 at 9 32 24 PM" src="https://github.com/user-attachments/assets/eccffdcf-c49c-479e-8418-39f987d47183">
+   Add OKHTTP library to your project in your **Project Structure/Library** by clicking the "add" icon on the left and selecting the following version. Enter the code below just like the image below. (You may use the latest version if the app can run properly.)
+   
    ```bash
    com.squareup.okhttp3:okhttp:5.0.0-alpha.14
    ```
+   
+   <img width="1512" alt="Screenshot 2024-12-03 at 9 29 57 PM" src="https://github.com/user-attachments/assets/afb7c31f-6008-4d95-9df7-4c29165c9521">
 6. **Run the Application**:
    Run the Main class to start the program.
 
