@@ -23,8 +23,6 @@ This platform was developed to streamline recipe management and promote collabor
 
 ## Features
 
-## Features
-
 - **User Account Management**: Sign up, log in, and save personalized preferences.
   - Example: A user can create an account with their email and password. Upon logging in, they can view their saved recipes and preferences.
   
