@@ -58,7 +58,7 @@ This platform was developed to streamline recipe management and promote collabor
    ```bash
    https://github.com/EricWcr7/CSC207-Project.git
 2. **Set Up APIs**:
-   There is nothing to do with setting up the APIs.
+   The app stores user and recipe data on File.io. Set the `FILEIO_API_KEY` environment variable to your own File.io API key, either in your shell or in the IntelliJ run configuration (**Run > Edit Configurations > Environment variables**). Never commit the key. Without it, File.io requests are rejected (HTTP 401).
 3. **Set Up IDE**:
    Please make sure you have Java 17 or later installed. It is encouraged to use IntelliJ IDEA IDE to build the project.
    Use Java corretto-17 as SDK.
