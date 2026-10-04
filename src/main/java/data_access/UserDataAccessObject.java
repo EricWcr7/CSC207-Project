@@ -44,7 +44,14 @@ public class UserDataAccessObject implements SignupUserDataAccessInterface,
         DeleteUserDataAccessInterface {
 
     private static final String FILE_IO_API_URL = "https://file.io";
-    private static final String API_KEY = "35F52QF.ZQV4A4E-ASHMAQD-QSPTZ93-NHYCJT6";
+    private static final String API_KEY = System.getenv("FILEIO_API_KEY");
+
+    static {
+        if (API_KEY == null || API_KEY.isEmpty()) {
+            System.err.println("FILEIO_API_KEY is not set; File.io requests for user data will fail.");
+        }
+    }
+
     private static final int STATUS_CODE_OK = 200;
     private static final String FILE_PATH = "all_users.json";
     private static String userFileKey = "";
